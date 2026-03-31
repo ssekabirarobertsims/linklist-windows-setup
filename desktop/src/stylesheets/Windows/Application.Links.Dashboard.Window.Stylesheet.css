@@ -1,0 +1,485 @@
+/*  */
+main[class="application-links-dashboard-window"] {
+  height: 100vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0em;
+  flex-grow: 1;
+  /* border: 1px solid red; */
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"] {
+  height: 100vh;
+  width: min(100%, 85%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0em;
+  background-color: var(--lighter-primary-theme-color);
+  /* border: 1px solid red; */
+}
+
+/*  */
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  button[id="add new link"] {
+  height: 3.5em;
+  width: 3.5em;
+  border: none;
+  border-radius: 100%;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  z-index: 10;
+}
+
+/*  */
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"]) {
+  min-height: 88vh;
+  width: min(98%, 98%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5em;
+  /* border: 1px solid red; */
+}
+
+/*  */
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="search-input-wrapper"] {
+  min-height: 3em;
+  width: min(100%, 30em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  /* border: 1px solid var(--border-secondary-color); */
+  border-radius: 20em;
+  background-color: #fff;
+  -webkit-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="search-input-wrapper"]
+  > input {
+  min-height: 2.8em;
+  width: min(80%, 80%);
+  padding: 5px 5px 5px 5px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 20em;
+  border: none;
+  background-color: transparent;
+  outline-style: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  :is(aside[class="_add-link-button-wrapper"]) {
+  min-height: 2em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  :is(aside[class="_add-link-button-wrapper"])
+  > button {
+  height: 3em;
+  width: min(90%, 8em);
+  border: none;
+  border-radius: 0.3em;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  :where(span[class="links_count"]) {
+  font-weight: calc(240 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+}
+
+/*  */
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  list-style: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"]
+  li
+  :is(a) {
+  font-weight: calc(290 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+  text-decoration: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"] {
+  min-height: 2em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 0em;
+  list-style: none;
+  /* border: 1px solid hsl(0, 100%, 50%); */
+  position: relative;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > button {
+  height: 2.9em;
+  width: min(90%, 12em);
+  border: none;
+  background-color: #0066ff;
+  color: hsl(0, 0%, 100%);
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom-left-radius: 0.4em;
+  border-top-left-radius: 0.4em;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > span {
+  height: 2.4em;
+  width: min(10%, 2em);
+  border: none;
+  background-color: hsl(216, 100%, 47%);
+  color: hsl(0, 0%, 100%);
+  font-weight: bold;
+  border-bottom-right-radius: 0.4em;
+  border-top-right-radius: 0.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article {
+  height: 8em;
+  width: min(90%, 17em);
+  background-color: hsl(0, 0%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5em;
+  border: 1px solid hsl(0, 0%, 90%);
+  position: absolute;
+  bottom: -9em;
+  right: 0em;
+  z-index: 5;
+  -webkit-box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article
+  :is(ul) {
+  height: 100%;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0em;
+  border-radius: 0.3em;
+  flex-grow: 1;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article
+  :is(ul)
+  > li {
+  height: 2.5em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 0em;
+  flex-grow: 1;
+  cursor: pointer;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article
+  :is(ul)
+  > li:where(:hover, :focus, :active) {
+  background-color: hsl(0, 0%, 96%);
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article
+  :is(ul)
+  > li
+  span {
+  font-weight: calc(250 + 250);
+  color: hsl(0, 0%, 20%);
+  font-size: 0.8em;
+  text-decoration: none;
+  padding: 0px 0px 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 0.3em;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > div[class="_save-links-collection-button-wrapper"]
+  > article
+  :is(ul)
+  > li
+  span
+  p {
+  font-size: 1.2em;
+}
+
+/*  */
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"] {
+  height: 23em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.6em;
+  list-style: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5em;
+  padding-top: 0.5em;
+  border-radius: 0.5em;
+  position: relative;
+  /* border: 1px solid hsl(0, 100%, 50%); */
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li {
+  height: 7em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 0.5em;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* border: 1px solid hsl(0, 0%, 90%); */
+  -webkit-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li:is(:hover, :focus) {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(img) {
+  height: 4.5em;
+  width: min(7%, 7%);
+  border-radius: 0.2em;
+  margin-left: 10px;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside) {
+  height: 4.5em;
+  width: min(93%, 93%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 0.5em;
+  gap: 0.3em;
+  list-style: none;
+  position: relative;
+  text-decoration: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  input {
+  height: 1.5em;
+  width: 1.5;
+  position: absolute;
+  top: 2em;
+  right: 1.5em;
+  cursor: pointer;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  > div {
+  height: 2em;
+  width: min(98%, 98%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  /* border: 1px solid hsl(0, 100%, 50%); */
+  gap: 0em;
+  list-style: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  span {
+  font-weight: calc(290 + 250);
+  color: hsl(0, 0%, 20%);
+  font-size: 0.8em;
+  text-decoration: none;
+  line-height: 01em;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  a {
+  font-weight: calc(290 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.7em;
+  text-decoration: none;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  a:where(:hover, :focus, :active) {
+  color: hsl(0, 0%, 20%);
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  > div
+  :is(button) {
+  height: 2em;
+  width: 2em;
+  border: none;
+  border-radius: 0.3em;
+  color: #000;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1em;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  > div
+  :is(a) {
+  height: 2em;
+  width: 2em;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-list"]
+  > li
+  :where(aside)
+  > div
+  :is(a)
+  > button {
+  height: 2em;
+  width: 2em;
+  border: none;
+  border-radius: 0.3em;
+  color: #000;
+  background-color: transparent;
+  cursor: pointer;
+}

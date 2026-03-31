@@ -1,0 +1,378 @@
+/*  */
+main[class="application-user-profile-dashboard-window"] {
+  min-height: 100vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0em;
+  flex-grow: 1;
+  /* border: 1px solid red; */
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"] {
+  min-height: 100vh;
+  width: min(100%, 85%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0em;
+  background-color: var(--lighter-primary-theme-color);
+  /* border: 1px solid red; */
+}
+
+/*  */
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  ) {
+  min-height: 85vh;
+  width: min(98%, 98%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5em;
+  /* border: 1px solid hsl(0, 100%, 50%); */
+  -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 0.5em;
+}
+
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header {
+  height: 9em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2em;
+  border-bottom: 1px solid hsl(0, 0%, 90%);
+  position: relative;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > aside {
+  width: 95px;
+  height: 95px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0em;
+  /* border: 1px solid red; */
+  position: relative;
+  margin-left: 1em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > aside
+  img {
+  width: 95px;
+  height: 95px;
+  border-radius: 100%;
+  object-fit: cover;
+  margin-left: 0em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  div {
+  height: 7em;
+  width: min(85%, 40em);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.7em;
+  /* border: 1px solid red; */
+  flex-grow: 1;
+  position: relative;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > div
+  input {
+  display: none;
+}
+
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > div
+  label {
+  font-weight: calc(200 + 200);
+  font-size: 0.8em;
+  cursor: pointer;
+  height: 2.5em;
+  width: min(100%, 15em);
+  border-radius: 0.5em;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(0, 0%, 10%);
+  border: 1px solid hsl(0, 0%, 80%);
+  padding: 5px 10px;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > div
+  p {
+  font-weight: calc(200 + 200);
+  font-size: 0.7em;
+  color: hsl(0, 0%, 10%);
+  line-height: 0.8em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > div
+  .edit-btn {
+  height: 3em;
+  width: 5em;
+  border: 1px solid hsl(0, 0%, 90%);
+  border-radius: 0.8em;
+  color: hsl(0, 0%, 10%);
+  background-color: hsl(0, 0%, 100%);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  header
+  > div
+  .edit-btn
+  :is(span) {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  div
+  > .profile-name {
+  font-weight: calc(290 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 1.2em;
+  text-decoration: none;
+  line-height: 01em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-profile-dashboard-window-components-wrapper"]
+  )
+  div
+  > .profile-username {
+  font-weight: calc(200 + 250);
+  color: hsl(0, 0%, 20%);
+  font-size: 1em;
+  text-decoration: none;
+  line-height: 01.5em;
+}
+
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"]) {
+  border: 1px solid hsl(0, 0%, 90%);
+  min-height: 3.5em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.4em;
+  border-radius: 0.5em;
+  padding: 15px;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"])
+  > h3 {
+  font-weight: 600;
+  color: hsl(0, 0%, 20%);
+  font-size: 1em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"])
+  > .user-bio-input-field {
+  height: 3em;
+  width: 100%;
+  border-radius: 0.3em;
+  border: 1px solid #ccc;
+  padding: 10px;
+  resize: none;
+  font-size: 15px;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"]) {
+  min-height: 5em;
+  width: min(100%, 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 0.5em;
+  border: 1px solid hsl(0, 0%, 90%);
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > h3 {
+  font-weight: 600;
+  color: hsl(0, 0%, 20%);
+  font-size: 1em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > aside {
+  min-height: 4.7em;
+  width: min(100%, 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > aside
+  > div {
+  height: 4em;
+  width: min(100%, 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.5em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > aside
+  > div
+  span {
+  font-weight: 500;
+  color: hsl(0, 0%, 40%);
+  font-size: 1em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > aside
+  > div
+  p {
+  font-weight: 600;
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-stats"]) {
+  min-height: 6em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 25px;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-stats"])
+  aside[class="stat-card"] {
+  height: 5.5em;
+  width: min(30%, 30%);
+  padding: 15px;
+  border-radius: 0.5em;
+  text-align: center;
+  flex-grow: 1;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(ul) {
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1em;
+  list-style: none;
+  flex-direction: row;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(ul)
+  > li
+  a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  text-decoration: none;
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+  font-weight: calc(230 + 100);
+}
+/*  */
+.name {
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+  line-height: 0.9em;
+}

@@ -1,0 +1,131 @@
+/*
+    Main global stylesheet for the app.
+    - Sets up CSS variables for theme colors, font families, and body background.
+    - Applies a CSS reset and box-sizing for all elements and pseudo-elements.
+    - Uses flexbox for body, root, and main containers to ensure responsive, centered layouts.
+    - Hides scrollbars for a cleaner look.
+    - Utility selectors and variables are used for easy maintenance and scalability.
+    - Each section is commented for easier navigation and future updates.
+*/
+* {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  transition: all 300ms;
+}
+
+*::before {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  transition: all 300ms;
+}
+
+*::after {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  transition: all 300ms;
+}
+
+:root {
+  /* font colors */
+  --primary-font-color: hsl(0, 0%, 80%);
+  --secondary-font-color: hsl(0, 0%, 10%);
+
+  /* theme colors */
+  --primary-theme-color: hsl(238, 84%, 66%);
+  --light-primary-theme-color: hsl(238, 84%, 75%);
+  --lighter-primary-theme-color: hsl(238, 84%, 97%);
+  --secondary-theme-color: hsl(251, 93%, 34%);
+  --dark-secondary-theme-color: hsl(251, 93%, 10%);
+
+  /* body theme color */
+  --body-theme-color-option-1: #0d0d0d;
+  --body-theme-color-option-2: #010f24;
+  --body-theme-color-option-3: hsl(215, 29%, 10%);
+  --body-theme-color-option-4: #121212;
+
+  /* borders */
+  --border-primary-color: hsl(0, 0%, 30%);
+  --border-secondary-color: hsl(0, 0%, 90%);
+
+  /* font family */
+  --primary-font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  --secondary-font-family: "IBM Plex Mono", monospace;
+  --senior-font-family: "Lexend", sans-serif;
+}
+
+@layer base {
+  :root {
+    --chart-1: oklch(94.224% 0.0312 45.147);
+    --chart-1-dark: oklch(64.71% 0.21732 36.839);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+  }
+
+  .dark {
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+  }
+}
+
+body {
+  min-height: 90vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
+  position: relative;
+  /* overflow: scroll; */
+  font-family: var(--primary-font-family);
+}
+
+#root {
+  min-height: 90vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  /* border: 1px solid red; */
+}
+
+main {
+  min-height: 100vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+::-webkit-scrollbar {
+  width: 0.1em;
+  display: block;
+  background-color: transparent;
+  border-radius: 100em;
+}
+::-webkit-scrollbar-button {
+  border-radius: 100em;
+}
+::-webkit-scrollbar-thumb {
+  width: 0.1em;
+  display: block;
+  background-color: hsl(0, 0%, 30%);
+  border-radius: 100em;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}

@@ -1,0 +1,59 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "main": "../dist/app/main/application.main.process.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build && electron ../dist/app/main/application.main.process.js",
+    "dev": "electron ../dist/app/main/application.main.process.js",
+    "dev:mon": "nodemon --watch ../dist/app/main --exec electron ../dist/app/main/application.main.process.js",
+    "dev:desktop": "cd ../desktop && npm run dev",
+    "dev:backend": "cd ../backend && npm run dev",
+    "watch": "npx tsc -w",
+    "compile:app": "npx tsc --build",
+    "dev:app": "concurrently \"npm run dev:desktop\" \"npm run dev:mon\"",
+    "build:desktop": "cd ../desktop && npm run build",
+    "build:win": "npm run build:desktop && electron-builder --win --x64",
+    "build:linux": "npm run build:desktop && electron-builder --linux --x64",
+    "build:mac": "npm run build:desktop && electron-builder --mac --arm64"
+  },
+  "repository": "https://github.com/ssekabirarobertsims/linklist-windows-setup",
+  "publish": {
+    "owner": "ssekabirarobertsims",
+    "repo": "https://github.com/ssekabirarobertsims/linklist-windows-setup",
+    "provider": "github"
+  },
+  "asar": true,
+  "keywords": [
+    "desktop",
+    "application",
+    "links",
+    "organizer",
+    "manager",
+    "cross-platform"
+  ],
+  "author": "ssekabirarobertsims",
+  "license": "ISC",
+  "description": " A powerful, cross-platform desktop application for organizing, managing, and sharing your links with ease.",
+  "devDependencies": {
+    "@types/electron": "^1.4.38",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "electron": "^39.0.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "check-disk-space": "^3.4.0",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "date-fns": "^4.1.0",
+    "electron-log": "^5.4.3",
+    "electron-updater": "^6.6.2",
+    "express": "^5.1.0",
+    "node": "^25.1.0",
+    "os-utils": "^0.0.14",
+    "uuid": "^13.0.0"
+  }
+}
