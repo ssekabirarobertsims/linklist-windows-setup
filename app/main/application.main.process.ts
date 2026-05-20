@@ -27,7 +27,8 @@ import { generateExportFilename } from "../functions/generate.file.names";
 import fs from "node:fs";
 import { format } from "date-fns";
 import os from "node:os";
-// console.log(os.userInfo());
+console.log(os.userInfo());
+console.log(os.hostname());
 
 // native icon for the application
 const nativeIcon: string = nativeImage.createFromPath(

@@ -63,7 +63,7 @@ const CreateUserInformation = async (
         console.log("Error while reading user information", error);
       }
 
-      //   update the user information
+      //   update the user information 
       userInformation.username = user.username;
       userInformation.name = user.name;
       userInformation.email = user.email;

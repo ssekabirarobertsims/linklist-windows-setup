@@ -1,5 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import ApplicationLoginFormWindow from "./windows/Application.Login.Form.Window";
+import ApplicationSignupFormWindow from "./windows/Application.Signup.Form.Window";
 
 /**
  * @author LinkList Dev Team
@@ -9,40 +11,71 @@ import { Routes, Route } from "react-router-dom";
  */
 
 const ApplicationAuthRedirectWindow = lazy(
-  () => import("./windows/Application.Auth.Redirect.Window")
+  () => import("./windows/Application.Auth.Redirect.Window"),
 );
 const ApplicationLinksDashboardWindow = lazy(
-  () => import("./windows/Application.Links.Dashboard.Window")
+  () => import("./windows/Application.Links.Dashboard.Window"),
 );
 const ApplicationArchivesDashboardWindow = lazy(
-  () => import("./windows/Application.Archives.Dashboard.Window")
+  () => import("./windows/Application.Archives.Dashboard.Window"),
 );
 const ApplicationLinksReadDashboardWindow = lazy(
-  () => import("./windows/Application.Links.Read.Dashboard.Window")
+  () => import("./windows/Application.Links.Read.Dashboard.Window"),
 );
 const ApplicationHomeDashboardWindow = lazy(
-  () => import("./windows/Application.Home.Dashboard.Window")
+  () => import("./windows/Application.Home.Dashboard.Window"),
 );
 const ApplicationCreateLinkDashboardWindow = lazy(
-  () => import("./windows/Application.Create.Link.Dashboard.Window")
+  () => import("./windows/Application.Create.Link.Dashboard.Window"),
 );
 const ApplicationSettingsDashboardWindow = lazy(
-  () => import("./windows/Application.Settings.Dashboard.Window.Stylesheet")
+  () => import("./windows/Application.Settings.Dashboard.Window.Stylesheet"),
 );
 const ApplicationCollectionsDashboardWindow = lazy(
-  () => import("./windows/Application.Collections.Dashboard.Window")
+  () => import("./windows/Application.Collections.Dashboard.Window"),
 );
 const UserProfile = lazy(
-  () => import("./windows/Application.User.Profile.Dashboard.Window")
+  () => import("./windows/Application.User.Profile.Dashboard.Window"),
 );
 const ApplicationExportFormatsDashboardWindow = lazy(
-  () => import("./windows/Application.Export.Formats.Dashboard.Window")
+  () => import("./windows/Application.Export.Formats.Dashboard.Window"),
 );
 const ApplicationDataBackupDashboardWindow = lazy(
-  () => import("./windows/Application.Data.Backup.Dashboard.Window")
+  () => import("./windows/Application.Data.Backup.Dashboard.Window"),
 );
 
+/**
+ * @description<user type>
+ */
+interface user {
+  username: string;
+  name: string;
+  email: string;
+  profile_picture_path: string;
+  token: string;
+  id: string;
+  loggedIn: boolean;
+  login_date: string;
+  bio: string;
+  joined: string;
+}
+
 function Application() {
+  const [user, setUser] = useState<user>({} as user);
+  const getUserInformation = async (): Promise<string> => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const userInformation = await window.app_api.readUserInformation();
+    setUser(userInformation);
+    return userInformation;
+  };
+
+  console.log(user);
+
+  useEffect(() => {
+    getUserInformation();
+  }, []);
+
   return (
     // lazy load components to allow minimizing on the mem usage while Application loading
     <Suspense
@@ -53,35 +86,131 @@ function Application() {
       }
     >
       <Routes>
-        <Route path="/" element={<ApplicationHomeDashboardWindow />} />
-        <Route path="/home" element={<ApplicationHomeDashboardWindow />} />
-        <Route path="/links" element={<ApplicationLinksDashboardWindow />} />
-        <Route path="/read" element={<ApplicationLinksReadDashboardWindow />} />
-        <Route path="/new" element={<ApplicationCreateLinkDashboardWindow />} />
         <Route
-          path="/archives"
-          element={<ApplicationArchivesDashboardWindow />}
+          path="/"
+          element={
+            user.loggedIn === Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationHomeDashboardWindow />
+            )
+          }
         />
         <Route
-          path="/settings"
-          element={<ApplicationSettingsDashboardWindow />}
+          path="/home"
+          element={
+            user.loggedIn === Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationHomeDashboardWindow />
+            )
+          }
         />
         <Route
-          path="/collections"
-          element={<ApplicationCollectionsDashboardWindow />}
+          path={"/links"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationLinksDashboardWindow />
+            )
+          }
         />
         <Route
-          path="/export/formats"
-          element={<ApplicationExportFormatsDashboardWindow />}
+          path={"/read"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationLinksReadDashboardWindow />
+            )
+          }
         />
         <Route
-          path="/backup"
-          element={<ApplicationDataBackupDashboardWindow />}
+          path={"/new"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationCreateLinkDashboardWindow />
+            )
+          }
         />
-        <Route path="/profile" element={<UserProfile />} />
+        <Route
+          path={
+            user.loggedIn !== Boolean(true)
+              ? "/auth/redirect/login"
+              : "/archives"
+          }
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationArchivesDashboardWindow />
+            )
+          }
+        />
+        <Route
+          path={"/settings"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationSettingsDashboardWindow />
+            )
+          }
+        />
+        <Route
+          path={"/collections"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationCollectionsDashboardWindow />
+            )
+          }
+        />
+        <Route
+          path={"/export/formats"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationExportFormatsDashboardWindow />
+            )
+          }
+        />
+        <Route
+          path={"/backup"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <ApplicationDataBackupDashboardWindow />
+            )
+          }
+        />
+        <Route
+          path={"/profile"}
+          element={
+            user.loggedIn !== Boolean(true) ? (
+              <ApplicationAuthRedirectWindow />
+            ) : (
+              <UserProfile />
+            )
+          }
+        />
         <Route
           path="/auth/redirect"
           element={<ApplicationAuthRedirectWindow />}
+        />
+        <Route
+          path="/auth/redirect/login"
+          element={<ApplicationLoginFormWindow />}
+        />
+        <Route
+          path="/auth/redirect/signup"
+          element={<ApplicationSignupFormWindow />}
         />
       </Routes>
     </Suspense>

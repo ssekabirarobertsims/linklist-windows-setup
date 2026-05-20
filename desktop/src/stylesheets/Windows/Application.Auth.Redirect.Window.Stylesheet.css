@@ -38,9 +38,18 @@ main[class="application-auth-redirect-window"]
 }
 main[class="application-auth-redirect-window"]
   > section[class="_application-auth-redirect-window-wrapper"]
-  :is(button) {
+  a {
   height: 3em;
   width: min(90%, 25em);
+  border: none;
+  text-decoration: none;
+}
+main[class="application-auth-redirect-window"]
+  > section[class="_application-auth-redirect-window-wrapper"]
+  a
+  :is(button) {
+  height: 3em;
+  width: min(100%, 100%);
   border: none;
   border-radius: 0.3em;
   color: #fff;

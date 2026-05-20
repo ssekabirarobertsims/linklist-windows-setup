@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.User.Profile.Dashboard.Window.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-import { CiEdit } from "react-icons/ci";
+// import { CiEdit } from "react-icons/ci";
 import { GiHelp } from "react-icons/gi";
 import { MdFeedback, MdPrivacyTip } from "react-icons/md";
-import { TiTick } from "react-icons/ti";
+// import { TiTick } from "react-icons/ti";
 
 interface user {
   username: string;
@@ -35,9 +35,9 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
   }, []);
 
   // state to handle editing
-  const [editing, setEditing] = useState<boolean>(false);
+  // const [editing, setEditing] = useState<boolean>(false);
   // state to set the user bio
-  const [userBio, setUserBio] = useState<string>();
+  // const [userBio, setUserBio] = useState<string>();
   // state to set the user profile picture file path
   const [profilePictureFilePath, setProfilePictureFilePath] =
     useState<string>();
@@ -47,7 +47,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
   }>(
     {} as {
       size: number;
-    }
+    },
   );
 
   // Set the document title on mount
@@ -60,14 +60,14 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-user-profile-dashboard-window"
+          "application-user-profile-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
           className={String(
-            "_application-user-profile-dashboard-window-wrapper"
+            "_application-user-profile-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -90,7 +90,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                 />
               </aside>
               <div>
-                <p>Atleast 800 * 800 px recommended.</p>
+                <p>Profile picture for @{user.username}.</p>
                 <p>Any file format of your choice.</p>
                 <p>
                   {profilePictureInformation?.size ? (
@@ -102,7 +102,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                     ""
                   )}
                 </p>
-                {editing && <label htmlFor="file">Upload Profile Photo</label>}
+                {/* {editing && <label htmlFor="file">Upload Profile Photo</label>} */}
                 <input
                   type="file"
                   name="file"
@@ -120,10 +120,10 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                         async (): Promise<void> => {
                           return (
                             window.document.querySelector(
-                              ".profile-avatar"
+                              ".profile-avatar",
                             ) as HTMLImageElement
                           ).setAttribute("src", reader.result as string);
-                        }
+                        },
                       );
 
                       // set the data as url
@@ -135,7 +135,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                     }
                   }}
                 />
-                <button
+                {/* <button
                   className="edit-btn"
                   onClick={() => {
                     // change state for editing the profile
@@ -160,7 +160,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                       Edit
                     </>
                   )}
-                </button>
+                </button> */}
               </div>
             </header>
             {/*  */}
@@ -181,8 +181,8 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                   <p className="detail-value">{user.email}</p>
                 </div>
                 <div className="detail-row">
-                  <span className="detail-label">Logged In:</span>
-                  <p className="detail-value">{user.login_date}</p>
+                  <span className="detail-label">Joined:</span>
+                  <p className="detail-value">{user.joined}</p>
                 </div>
               </aside>
             </div>
@@ -190,8 +190,8 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
 
             {/*  */}
             <div className="profile-section">
-              <h3>Bio</h3>
-              {editing ? (
+              {/* <h3>Bio</h3> */}
+              {/* {editing ? (
                 <textarea
                   className="user-bio-input-field"
                   value={user.bio}
@@ -203,9 +203,9 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                     console.log(userBio);
                   }}
                 />
-              ) : (
-                <p className="profile-bio">{user.bio}</p>
-              )}
+              ) : ( */}
+              {/* <p className="profile-bio">{user.bio}</p> */}
+              {/* )} */}
             </div>
             {/*  */}
             <br />
@@ -220,7 +220,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
                     window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/users/feedback"
+                      "https://linklists.netlify.app/users/feedback",
                     );
                   }}
                 >
@@ -251,7 +251,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
                     window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/policy"
+                      "https://linklists.netlify.app/policy",
                     );
                   }}
                 >

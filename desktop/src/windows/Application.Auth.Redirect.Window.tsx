@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "../stylesheets/Windows/Application.Auth.Redirect.Window.Stylesheet.css";
+import { Link } from "react-router-dom";
 
 const ApplicationAuthRedirectWindow: React.FunctionComponent = () => {
   // Set the document title on mount
@@ -21,20 +22,33 @@ const ApplicationAuthRedirectWindow: React.FunctionComponent = () => {
           <p></p>
           {/* add event to be triggered to open an external link */}
           <p>
-            Log in with your registered email to continue or{" "}
-            <a href="">Sign up</a> for a new account.
+            Log in with your registered username to continue or{" "}
+            <Link
+              to={{
+                pathname: "/auth/redirect/signup",
+              }}
+            >
+              Sign up
+            </Link>{" "}
+            for a new account.
           </p>
           <p></p>
           {/* add event to be triggered to open an external link */}
-          <button type="button" title="click to log in">
-            Log in
-          </button>
+          <Link
+            to={{
+              pathname: "/auth/redirect/login",
+            }}
+          >
+            <button type="button" title="click to log in">
+              Log in
+            </button>
+          </Link>
           <br />
           <br />
           <div>
             <span>
               {" "}
-              Linklist © 2024. Links Management System. All Rights Reserved
+              Linklist © 2019. Links Management System. All Rights Reserved
             </span>
           </div>
         </section>

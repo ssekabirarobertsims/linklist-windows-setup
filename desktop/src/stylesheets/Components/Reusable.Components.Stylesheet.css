@@ -98,7 +98,8 @@ div[class="page-content-loader-wrapper"] > div[class="loader"] {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 2.5px solid hsl(0, 0%, 100%);
-  animation: page-content-loader-l20-1 0.8s infinite linear alternate,
+  animation:
+    page-content-loader-l20-1 0.8s infinite linear alternate,
     page-content-loader-l20-2 1.6s infinite linear;
 }
 
@@ -208,7 +209,8 @@ div[class="content-loader-wrapper"] > div[class="loader"] {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 2.5px solid var(--primary-theme-color);
-  animation: loader-l20-1 0.8s infinite linear alternate,
+  animation:
+    loader-l20-1 0.8s infinite linear alternate,
     loader-l20-2 1.6s infinite linear;
 }
 
@@ -318,7 +320,8 @@ article[class="create-link-request-loader-wrapper"]
   aspect-ratio: 1;
   border-radius: 50%;
   border: 2.5px solid hsl(0, 0%, 100%);
-  animation: loader-l21-1 0.8s infinite linear alternate,
+  animation:
+    loader-l21-1 0.8s infinite linear alternate,
     loader-l21-2 1.6s infinite linear;
 }
 
@@ -784,9 +787,12 @@ div[class="links-sharing-form"] :is(aside) > div > article :is(p) {
   font-size: 0.8em;
 }
 
-div[class="links-sharing-form"] :is(aside) > div :is(button) {
+div[class="links-sharing-form"]
+  :is(aside)
+  > div
+  :is(button[class="copy-link-to-share-button"]) {
   height: 2.3em !important;
-  width: min(100%, 100%);
+  width: min(20%, 20%);
   border: none !important;
   color: #fff !important;
   background-color: var(--primary-theme-color) !important;

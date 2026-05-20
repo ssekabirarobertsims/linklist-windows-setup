@@ -52,14 +52,14 @@ const ApplicationSettingsDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-settings-dashboard-window"
+          "application-settings-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
           className={String(
-            "_application-settings-dashboard-window-wrapper"
+            "_application-settings-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -168,7 +168,7 @@ const ApplicationSettingsDashboardWindow: React.FunctionComponent = () => {
             </span>
             <span>
               {" "}
-              Linklist © 2024. Links Management System. All Rights Reserved
+              Linklist © 2019. Links Management System. All Rights Reserved
             </span>
           </div>
         </section>

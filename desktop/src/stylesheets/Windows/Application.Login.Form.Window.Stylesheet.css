@@ -1,0 +1,174 @@
+/*  */
+main[class="application-login-form-window"] {
+  min-height: 100vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0em;
+  flex-grow: 1;
+  /* border: 1px solid red; */
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"] {
+  min-height: 100vh;
+  width: min(100%, 85%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  /* border: 1px solid red; */
+}
+
+/*  */
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(h1) {
+  font-weight: calc(240 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 1.9em;
+}
+
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(input) {
+  height: 3em;
+  width: min(90%, 35em);
+  border: 1px solid #363636;
+  border-radius: 0.3em;
+  color: #131313;
+  padding: 10px;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(button) {
+  height: 3em;
+  width: min(90%, 15em);
+  border: none;
+  border-radius: 0.3em;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(p) {
+  font-weight: calc(240 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(p)
+  a {
+  color: hsl(0, 0%, 10%);
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  > div {
+  min-height: 3em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  /* border: 1px solid red; */
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  > div
+  :is(span) {
+  font-weight: calc(240 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.7em;
+}
+
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  > div[class="search-input-wrapper"] {
+  min-height: 3em;
+  width: min(100%, 25em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  border: 1px solid var(--border-secondary-color);
+  border-radius: 20em;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  > div[class="search-input-wrapper"]
+  > input {
+  min-height: 2.8em;
+  width: min(80%, 80%);
+  padding: 5px 5px 5px 5px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 20em;
+  border: none;
+  background-color: transparent;
+  outline-style: none;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  :is(aside[class="_add-link-button-wrapper"]) {
+  min-height: 2em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  :is(aside[class="_add-link-button-wrapper"])
+  > button {
+  height: 3em;
+  width: min(90%, 8em);
+  border: none;
+  border-radius: 0.3em;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  :where(span[class="links_count"]) {
+  font-weight: calc(240 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.7em;
+}
+
+/*  */
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  list-style: none;
+}
+main[class="application-login-form-window"]
+  > section[class="_application-login-form-window-wrapper"]
+  :is(div[class="_application-login-form-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"]
+  li
+  :is(a) {
+  font-weight: calc(290 + 250);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+  text-decoration: none;
+}

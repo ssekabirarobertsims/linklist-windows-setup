@@ -5,8 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { BiArchive, BiLink } from "react-icons/bi";
-import { FaSignOutAlt } from "react-icons/fa";
+import { BiArchive, BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
 import { MdOutlineCollectionsBookmark } from "react-icons/md";
@@ -142,9 +141,9 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
-            <button className="logout-btn">
-              <FaSignOutAlt />
-              Log Out
+            <button className="exit-application-btn">
+              <BiExit />
+              Exit Application
             </button>
           </div>
         </aside>

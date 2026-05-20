@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { v4 } from "uuid";
+import { Link } from "react-router-dom";
 
 const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
   // State for form fields
@@ -26,7 +27,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
       title: title ?? "Title",
       link: link ?? "https://www.example.com",
       user_id: "", // replace with actual user ID if available
-      _date: format(new Date(), "EEE, MMMM d, yyyy"),
+      _date: link ?? format(new Date(), "EEE, MMMM d, yyyy"),
       description: description,
       id: v4(),
     };
@@ -65,13 +66,13 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-create-link-dashboard-window"
+          "application-create-link-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
-            "_application-create-link-dashboard-window-wrapper"
+            "_application-create-link-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -149,19 +150,29 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                 ></textarea>
                 <p></p>
                 <p></p>
-                {/* Save button */}
-                <button
-                  type="button"
-                  ref={buttonRef.current}
-                  onClick={handleSaveLink}
-                >
-                  {showLoader && (
-                    <article className="create-link-request-loader-wrapper">
-                      <div className="create-link-request-loader"></div>
-                    </article>
-                  )}
-                  submit
-                </button>
+                <div className="form-buttons-container">
+                  {/* Save button */}
+                  <button
+                    type="button"
+                    ref={buttonRef.current}
+                    onClick={handleSaveLink}
+                  >
+                    {showLoader && (
+                      <article className="create-link-request-loader-wrapper">
+                        <div className="create-link-request-loader"></div>
+                      </article>
+                    )}
+                    submit
+                  </button>
+                  {/* Save button */}
+                  <Link
+                    to={{
+                      pathname: "/",
+                    }}
+                  >
+                    <button type="button">cancel</button>
+                  </Link>
+                </div>
               </article>
             </form>
           </div>

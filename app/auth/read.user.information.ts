@@ -51,32 +51,13 @@ const ReadUserInformation = async (
           })
         );
       } else null;
-
-      // update data
-      userInformation = {
-        username: os.userInfo()?.username,
-        name: "",
-        email: "sampleuser@example.com",
-        profile_picture_path:
-          "E:_ProjectsDesktopAppsLinklist.desktop-appdesktoppublicavatarsavatar-1.webp",
-        token: "Bearer token",
-        id: v4(),
-        loggedIn: true,
-        login_date: `${format(new Date(), "EEE, MMMM d, yyyy")}`,
-        bio: "This is my bio",
-        joined: `${format(new Date(), "EEE, MMMM d, yyyy")}`,
-      };
-
-      // write back to file
-      fs.writeFileSync(
-        userInformationFilePath,
-        JSON.stringify(userInformation, null, 2)
-      );
     } catch (error) {
       console.log("Error while reading user information", error);
     }
 
-    return userInformation;
+    return userInformationFilePath ? userInformation : {
+      error: "user is not logged in"
+    };
   });
 
   return "User information created successfully!";
