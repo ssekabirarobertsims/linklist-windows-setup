@@ -3,6 +3,7 @@ import { app } from "electron";
 import path from "node:path";
 import { v4 } from "uuid";
 import { format } from "date-fns";
+import os from "os";
 
 /**
  * @description Checks and creates user information file tree if not exists
@@ -23,8 +24,8 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       app.getPath("appData"),
       "Linklist",
       "Collections",
-      "collections.json"
-    )
+      "collections.json",
+    ),
   );
 
   const generateCollectionsFileStructure = async (): Promise<void> => {
@@ -38,9 +39,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "Collections",
-        "collections.json"
+        "collections.json",
       ),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   };
 
@@ -48,7 +49,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   // settings.json file
   const settingsFile = fs.existsSync(
-    path.join(app.getPath("appData"), "Linklist", "Settings", "settings.json")
+    path.join(app.getPath("appData"), "Linklist", "Settings", "settings.json"),
   );
 
   const generateSettingsFileStructure = async (): Promise<void> => {
@@ -62,7 +63,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "Settings",
-        "settings.json"
+        "settings.json",
       ),
       JSON.stringify({
         appTheme: "dark",
@@ -73,7 +74,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         enableNotifications: true,
         showAppInMenuBar: false,
         startAppOnSystemStartup: false,
-      })
+      }),
     );
   };
 
@@ -85,11 +86,13 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       app.getPath("appData"),
       "Linklist",
       "User",
-      "user_information.json"
-    )
+      "user_information.json",
+    ),
   );
 
   const generateUserInformationFileStructure = async (): Promise<void> => {
+    // random number
+    const randomAvatarNumber: number = Math.floor(Math.random() * 11);
     // make directory first
     fs.mkdirSync(path.join(app.getPath("appData"), "Linklist", "User"), {
       recursive: true,
@@ -100,25 +103,24 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "User",
-        "user_information.json"
+        "user_information.json",
       ),
       JSON.stringify(
         {
-          username: "username",
-          name: "@name",
-          email: "sampleuser@example.com",
-          profile_picture_path:
-            "E:_ProjectsDesktopAppsLinklist.desktop-appdesktoppublicavatarsavatar-1.webp",
-          token: "Bearer token",
-          id: v4(),
+          username: os.userInfo().username,
+          name: os.hostname(),
+          id: `${v4()}`,
+          avatar: `/avatars/avatar-${randomAvatarNumber}.webp`,
           loggedIn: false,
+          signed_in: false,
           login_date: `${format(new Date(), "EEE, MMMM d, yyyy")}`,
-          bio: "This is my bio",
+          bio: `Hi, i am ${os.hostname()}, i am a user of Linklist, i am using this software to manage my links and bookmarks in a more efficient way. I enjoy saving links in order to cut on the cost of saving videos and webpages.
+                   `,
           joined: `${format(new Date(), "EEE, MMMM d, yyyy")}`,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
   };
 
@@ -126,7 +128,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   // saved links information file
   const savedLinksFile = fs.existsSync(
-    path.join(app.getPath("appData"), "Linklist", "Links", "saved_links.json")
+    path.join(app.getPath("appData"), "Linklist", "Links", "saved_links.json"),
   );
 
   const generateSavedLinksFileStructure = async (): Promise<void> => {
@@ -140,13 +142,53 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "Links",
-        "saved_links.json"
+        "saved_links.json",
       ),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   };
 
   !savedLinksFile ? generateSavedLinksFileStructure() : null;
+
+  // shared links information file
+  const sharedLinksFile = fs.existsSync(
+    path.join(app.getPath("appData"), "Linklist", "Links", "shared_links.json"),
+  );
+
+  const generateSharedLinksFileStructure = async (): Promise<void> => {
+    // then create the file
+    fs.writeFileSync(
+      path.join(
+        app.getPath("appData"),
+        "Linklist",
+        "Links",
+        "shared_links.json",
+      ),
+      JSON.stringify([]),
+    );
+  };
+
+  !sharedLinksFile ? generateSharedLinksFileStructure() : null;
+
+  // opened links information file
+  const openedLinksFile = fs.existsSync(
+    path.join(app.getPath("appData"), "Linklist", "Links", "opened_links.json"),
+  );
+
+  const generateOpenedLinksFileStructure = async (): Promise<void> => {
+    // then create the file
+    fs.writeFileSync(
+      path.join(
+        app.getPath("appData"),
+        "Linklist",
+        "Links",
+        "opened_links.json",
+      ),
+      JSON.stringify([]),
+    );
+  };
+
+  !openedLinksFile ? generateOpenedLinksFileStructure() : null;
 
   // saved archived links information file
   const archivedLinksFile = fs.existsSync(
@@ -154,8 +196,8 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       app.getPath("appData"),
       "Linklist",
       "Archives",
-      "archived_links.json"
-    )
+      "archived_links.json",
+    ),
   );
 
   const generateArchivedLinksFileStructure = async (): Promise<void> => {
@@ -169,9 +211,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "Archives",
-        "archived_links.json"
+        "archived_links.json",
       ),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   };
 
@@ -183,14 +225,14 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       app.getPath("appData"),
       "Linklist",
       "About",
-      "app_information.json"
-    )
+      "app_information.json",
+    ),
   );
 
   // import data from application information file
   const aboutApplication = fs.readFileSync(
     path.join(__dirname, "..", "json", "about.software.information.json"),
-    { encoding: "utf-8" }
+    { encoding: "utf-8" },
   );
 
   const generateApplicationInformationFileStructure =
@@ -205,9 +247,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
           app.getPath("appData"),
           "Linklist",
           "About",
-          "app_information.json"
+          "app_information.json",
         ),
-        aboutApplication
+        aboutApplication,
       );
     };
 
@@ -215,7 +257,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   // backups information file
   const Backups = fs.existsSync(
-    path.join(app.getPath("appData"), "Linklist", "Backups")
+    path.join(app.getPath("appData"), "Linklist", "Backups"),
   );
 
   const generateBackupsFileStructure = async (): Promise<void> => {
@@ -226,13 +268,13 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
     // then create the file
     fs.writeFileSync(
       path.join(app.getPath("appData"), "Linklist", "Backups", "backups.json"),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
 
     // backup settings
     const _settings = fs.readFileSync(
       path.join(__dirname, "..", "json", "user.data.backup.settings.json"),
-      { encoding: "utf8" }
+      { encoding: "utf8" },
     );
 
     // backup settings
@@ -241,9 +283,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         app.getPath("appData"),
         "Linklist",
         "Backups",
-        "backup.settings.json"
+        "backup.settings.json",
       ),
-      JSON.stringify(JSON.stringify(_settings))
+      JSON.stringify(JSON.stringify(_settings)),
     );
   };
 
@@ -251,7 +293,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   // user data backups information file
   const UserDataBackups = fs.existsSync(
-    path.join(app.getPath("appData"), "Linklist", "Backups", "Data")
+    path.join(app.getPath("appData"), "Linklist", "Backups", "Data"),
   );
 
   const generateUserDataBackupsFileStructure = async (): Promise<void> => {
@@ -260,7 +302,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       path.join(app.getPath("appData"), "Linklist", "Backups", "Data"),
       {
         recursive: true,
-      }
+      },
     );
     // create file
     fs.writeFileSync(
@@ -269,9 +311,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         "Linklist",
         "Backups",
         "Data",
-        "data_backups.json"
+        "data_backups.json",
       ),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   };
 
@@ -279,7 +321,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   // application backups information file
   const ApplicationBackups = fs.existsSync(
-    path.join(app.getPath("appData"), "Linklist", "Backups", "Application")
+    path.join(app.getPath("appData"), "Linklist", "Backups", "Application"),
   );
 
   const generateApplicationBackupsFileStructure = async (): Promise<void> => {
@@ -288,7 +330,7 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
       path.join(app.getPath("appData"), "Linklist", "Backups", "Application"),
       {
         recursive: true,
-      }
+      },
     );
     // create file
     fs.writeFileSync(
@@ -297,9 +339,9 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         "Linklist",
         "Backups",
         "Application",
-        "application_backups.json"
+        "application_backups.json",
       ),
-      JSON.stringify([])
+      JSON.stringify([]),
     );
   };
 

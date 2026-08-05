@@ -32,7 +32,7 @@ console.log(os.hostname());
 
 // native icon for the application
 const nativeIcon: string = nativeImage.createFromPath(
-  path.join("../../public/icons/linklist-logo.jpg")
+  path.join("../../public/icons/linklist-logo.jpg"),
 ) as unknown as string;
 
 // set application name before starting up
@@ -69,7 +69,7 @@ app.on("ready", (): void => {
 
   // load file for the splash window
   ApplicationSplashWindow.loadFile(
-    path.join(__dirname, "../../../app/windows/Application.Splash.Window.html")
+    path.join(__dirname, "../../../app/windows/Application.Splash.Window.html"),
   );
   ApplicationSplashWindow.show(); // show the application splash window
 
@@ -86,7 +86,7 @@ app.on("ready", (): void => {
     webPreferences: {
       preload: path.resolve(
         app.getAppPath(),
-        "../context/application.context.bridge.js"
+        "../context/application.context.bridge.js",
       ),
       nodeIntegration: false,
       contextIsolation: true,
@@ -147,7 +147,7 @@ ipcMain.handle(
     await shell.openExternal(url);
     shell.beep(); // make window sound for alert
     await console.log(`Opened external link: ${url}`);
-  }
+  },
 );
 
 /**
@@ -163,7 +163,7 @@ ipcMain.handle(
   async (_: any, pathToShowItemInFolder: string): Promise<void> => {
     // open in windows file explorer
     await shell.showItemInFolder(pathToShowItemInFolder);
-  }
+  },
 );
 
 /**
@@ -184,12 +184,12 @@ const ensureDirectoryExists = (filePath: string): void => {
 const collectionsFilePath = path.join(
   app.getPath("userData"),
   "Collections",
-  "collections.json"
+  "collections.json",
 );
 const archivesFilePath = path.join(
   app.getPath("userData"),
   "Archives",
-  "archived_links.json"
+  "archived_links.json",
 );
 
 /**
@@ -274,10 +274,42 @@ DeleteExistingCollection(ipcMain, app, shell);
 const savedLinksFilePath = path.join(
   app.getPath("userData"),
   "Links",
-  "saved_links.json"
+  "saved_links.json",
 );
 import CreateNewLink from "../modules/create.link";
 CreateNewLink(ipcMain, app);
+
+/**
+ * @function
+ * @description create opened links and save to json file
+ * @access public
+ * @returns {Promise<any>}
+ *  @argument {IpcMain, app}
+ */
+// path to opened_links.json file
+const openedLinksFilePath = path.join(
+  app.getPath("userData"),
+  "Links",
+  "opened_links.json",
+);
+import CreateNewOpenedLink from "../modules/create.opened.link";
+CreateNewOpenedLink(ipcMain, app);
+
+/**
+ * @function
+ * @description create shared links and save to json file
+ * @access public
+ * @returns {Promise<any>}
+ *  @argument {IpcMain, app}
+ */
+// path to shared_links.json file
+const sharedLinksFilePath = path.join(
+  app.getPath("userData"),
+  "Links",
+  "shared_links.json",
+);
+import CreateNewSharedLink from "../modules/create.shared.link";
+CreateNewSharedLink(ipcMain, app);
 
 /**
  * @function
@@ -351,7 +383,17 @@ FindRecentBackup(ipcMain, app);
 
 /**
  * @function
- * @description create user information after maybe login
+ * @description fetch the last created backup by user
+ * @access public
+ * @returns {Promise<object>}
+ * @argument {IpcMain, app}
+ */
+import FindAllRecentBackup from "../backups/all.backups";
+FindAllRecentBackup(ipcMain, app);
+
+/**
+ * @function
+ * @description create user information after maybe sign up
  * @access public
  * @returns {Promise<string>}
  * @argument {IpcMain, app}

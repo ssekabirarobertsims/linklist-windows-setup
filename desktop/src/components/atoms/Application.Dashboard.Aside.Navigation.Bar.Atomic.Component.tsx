@@ -75,9 +75,9 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
     const [list_2, setList_2] = useState<NavigationListItemProps[]>([
       {
         id: uuidV4(),
-        content: "My Profile",
-        link: `/profile`,
+        content: "Profile",
         icon: <CgProfile />,
+        link: `/profile`,
       },
       {
         id: uuidV4(),

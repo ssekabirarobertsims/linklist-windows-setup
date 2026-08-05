@@ -5,6 +5,7 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 // import { CiEdit } from "react-icons/ci";
 import { GiHelp } from "react-icons/gi";
 import { MdFeedback, MdPrivacyTip } from "react-icons/md";
+import { Link } from "react-router-dom";
 // import { TiTick } from "react-icons/ti";
 
 interface user {
@@ -37,7 +38,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
   // state to handle editing
   // const [editing, setEditing] = useState<boolean>(false);
   // state to set the user bio
-  // const [userBio, setUserBio] = useState<string>();
+  const [userBio, setUserBio] = useState<string>(user.bio || "");
   // state to set the user profile picture file path
   const [profilePictureFilePath, setProfilePictureFilePath] =
     useState<string>();
@@ -50,6 +51,10 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
     },
   );
 
+  // set user bio on user information change
+  useEffect(() => {
+    setUserBio(user.bio || "");
+  }, [user.bio]);
   // Set the document title on mount
   useEffect(() => {
     document.title = "Dashboard - Profile | LinkList";
@@ -78,8 +83,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
           <div className="_application-user-profile-dashboard-window-components-wrapper">
             {/*  */}
             <p></p>
-            <h2>{user.username?.toLocaleUpperCase()}'S PROFILE</h2>
-            <p className="name">@{user.name ? user.name : "name"}</p>
+            <h2>LINKLIST USER'S PROFILE</h2>
             {/* Header */}
             <header className="profile-header">
               <aside>
@@ -90,8 +94,9 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                 />
               </aside>
               <div>
-                <p>Profile picture for @{user.username}.</p>
-                <p>Any file format of your choice.</p>
+                <p>{user.username?.toLocaleUpperCase()}'S PROFILE.</p>
+                <p>@{user.name ? user.name : "name"}.</p>
+                <p>Random Id: {user.id?.slice(0, 20)}...</p>
                 <p>
                   {profilePictureInformation?.size ? (
                     <span>
@@ -169,7 +174,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
             {/* User Info Section */}
 
             {/* Details */}
-            <div className="profile-details">
+            {/* <div className="profile-details">
               <h3>Personal Info</h3>
               <aside>
                 <div className="detail-row">
@@ -185,12 +190,23 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                   <p className="detail-value">{user.joined}</p>
                 </div>
               </aside>
-            </div>
+            </div> */}
             {/*  */}
 
             {/*  */}
             <div className="profile-section">
-              {/* <h3>Bio</h3> */}
+              <h3>Add an email</h3>
+              <p>
+                Sing up so as to add an email account to your profile for more
+                security purposes.
+              </p>
+              <Link
+                to={{
+                  pathname: "/auth/redirect/signup",
+                }}
+              >
+                <button title="add email">Add Your Email</button>
+              </Link>
               {/* {editing ? (
                 <textarea
                   className="user-bio-input-field"
@@ -204,10 +220,10 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                   }}
                 />
               ) : ( */}
-              {/* <p className="profile-bio">{user.bio}</p> */}
+              {/* <p className="profile-bio">{userBio}</p> */}
               {/* )} */}
             </div>
-            {/*  */}
+
             <br />
             <ul>
               <br />

@@ -86,120 +86,42 @@ function Application() {
       }
     >
       <Routes>
-        <Route
-          path="/"
-          element={
-            user.loggedIn === Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationHomeDashboardWindow />
-            )
-          }
-        />
-        <Route
-          path="/home"
-          element={
-            user.loggedIn === Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationHomeDashboardWindow />
-            )
-          }
-        />
-        <Route
-          path={"/links"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationLinksDashboardWindow />
-            )
-          }
-        />
+        <Route path="/" element={<ApplicationHomeDashboardWindow />} />
+        <Route path="/home" element={<ApplicationHomeDashboardWindow />} />
+        <Route path={"/links"} element={<ApplicationLinksDashboardWindow />} />
         <Route
           path={"/read"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationLinksReadDashboardWindow />
-            )
-          }
+          element={<ApplicationLinksReadDashboardWindow />}
         />
         <Route
           path={"/new"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationCreateLinkDashboardWindow />
-            )
-          }
+          element={<ApplicationCreateLinkDashboardWindow />}
         />
         <Route
           path={
-            user.loggedIn !== Boolean(true)
+            user.loggedIn === Boolean(true)
               ? "/auth/redirect/login"
               : "/archives"
           }
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationArchivesDashboardWindow />
-            )
-          }
+          element={<ApplicationArchivesDashboardWindow />}
         />
         <Route
           path={"/settings"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationSettingsDashboardWindow />
-            )
-          }
+          element={<ApplicationSettingsDashboardWindow />}
         />
         <Route
           path={"/collections"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationCollectionsDashboardWindow />
-            )
-          }
+          element={<ApplicationCollectionsDashboardWindow />}
         />
         <Route
           path={"/export/formats"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationExportFormatsDashboardWindow />
-            )
-          }
+          element={<ApplicationExportFormatsDashboardWindow />}
         />
         <Route
           path={"/backup"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <ApplicationDataBackupDashboardWindow />
-            )
-          }
+          element={<ApplicationDataBackupDashboardWindow />}
         />
-        <Route
-          path={"/profile"}
-          element={
-            user.loggedIn !== Boolean(true) ? (
-              <ApplicationAuthRedirectWindow />
-            ) : (
-              <UserProfile />
-            )
-          }
-        />
+        <Route path={"/profile"} element={<UserProfile />} />
         <Route
           path="/auth/redirect"
           element={<ApplicationAuthRedirectWindow />}

@@ -18,21 +18,21 @@ contextBridge?.exposeInMainWorld("app_api", {
   exportDataToHTMLFile: (
     data: (string | number)[],
     extension: string,
-    category: string
+    category: string,
   ): Promise<any> =>
     ipcRenderer.invoke("export-data-to-html-file", data, extension, category),
   // export data to *.txt file
   exportDataToTXTFile: (
     data: (string | number)[],
     extension: string,
-    category: string
+    category: string,
   ): Promise<any> =>
     ipcRenderer.invoke("export-data-to-txt-file", data, extension, category),
   // export data to *.json file
   exportDataToJSONFile: (
     data: (string | number)[],
     extension: string,
-    category: string
+    category: string,
   ): Promise<any> =>
     ipcRenderer.invoke("export-data-to-json-file", data, extension, category),
   // provide system information for the machine running the app
@@ -43,19 +43,31 @@ contextBridge?.exposeInMainWorld("app_api", {
     ipcRenderer.invoke("read-collections-data"),
   deleteExistingCollection: (
     collectionId: string,
-    collectionPath: string
+    collectionPath: string,
   ): Promise<string> =>
     ipcRenderer.invoke(
       "delete-existing-collection",
       collectionId,
-      collectionPath
+      collectionPath,
     ), // filter out links.id !== collectionId
   // create new links to a json file or db
   createNewLink: (LinkData: object): Promise<string> =>
     ipcRenderer.invoke("create-new-link", LinkData),
+  // create new links to a json file or db
+  createNewOpenedLink: (LinkData: object): Promise<string> =>
+    ipcRenderer.invoke("create-new-opened-link", LinkData),
+  // create new links to a json file or db
+  createNewSharedLink: (LinkData: object): Promise<string> =>
+    ipcRenderer.invoke("create-new-shared-link", LinkData),
   // fetch all existing links
   readAllExistingLinks: (): Promise<object> =>
     ipcRenderer.invoke("read-all-existing-links"),
+  // fetch all existing links
+  readAllExistingOpenedLinks: (): Promise<object> =>
+    ipcRenderer.invoke("read-all-existing-opened-links"),
+  // fetch all existing links
+  readAllExistingSharedLinks: (): Promise<object> =>
+    ipcRenderer.invoke("read-all-existing-shared-links"),
   // update existing link data
   updateExistingLink: (LinkData: object): Promise<string> =>
     ipcRenderer.invoke("update-existing-link", LinkData),
@@ -88,6 +100,9 @@ contextBridge?.exposeInMainWorld("app_api", {
   // fetch the last backup created by user
   readRecentBackup: (): Promise<object> =>
     ipcRenderer.invoke("read-recent-backup"),
+  // fetch the last backup created by user
+  readAllRecentBackup: (): Promise<object> =>
+    ipcRenderer.invoke("read-all-recent-backup"),
   /**
    * @description handle all user CRUD operations
    * @author ssekabira robert sims

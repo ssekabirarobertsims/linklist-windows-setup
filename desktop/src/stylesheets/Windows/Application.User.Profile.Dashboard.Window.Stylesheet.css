@@ -259,6 +259,27 @@ main[class="application-user-profile-dashboard-window"]
 }
 main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"])
+  > a {
+  height: 2.5em;
+  width: min(90%, 8em);
+  text-decoration: none;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"])
+  > a
+  button {
+  height: 100%;
+  width: min(100%, 100%);
+  border: none;
+  border-radius: 0.3em;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
   :is(div[class="profile-details"]) {
   min-height: 5em;
   width: min(100%, 100%);
