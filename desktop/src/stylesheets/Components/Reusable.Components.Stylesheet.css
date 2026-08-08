@@ -887,6 +887,54 @@ div[class="no-results-message"] :where(span) {
   text-align: center;
   line-height: 0.9em;
 }
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count,
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="others"]
+  :where(li)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2em;
+  height: 2em;
+  padding: 0 0.45em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-left: 0.5em;
+  box-sizing: border-box;
+}
+
+/* Emphasize badge when present */
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li):is(:hover, :focus)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count,
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="others"]
+  :where(li):is(:hover, :focus)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count {
+  background: var(--primary-theme-color);
+  color: #fff;
+}
+
 div[class="no-results-message"] :where(h2) {
   font-size: 1em;
   font-weight: calc(250 + 250);

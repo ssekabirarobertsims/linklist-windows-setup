@@ -7,6 +7,7 @@
 
 import { shell } from "electron";
 import path from "node:path";
+import { v4 } from "uuid";
 
 const CreateNewSharedLink = async (
   process: {
@@ -29,6 +30,33 @@ const CreateNewSharedLink = async (
     async (event, LinkData: object): Promise<string> => {
       // save the link data to shared_links.json file
       const fs = require("fs");
+      const normalizedLinkData = LinkData as Record<string, string>;
+      const title = normalizedLinkData.title?.trim() || "Shared link";
+      const originalUrl =
+        normalizedLinkData.originalUrl || normalizedLinkData.link || "";
+      const shortUrl =
+        normalizedLinkData.shortUrl ||
+        `ll://${Math.random().toString(36).slice(2, 8)}`;
+      const customAlias =
+        normalizedLinkData.customAlias ||
+        title
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "") ||
+        `link-${v4().slice(0, 6)}`;
+
+      const linkEntry = {
+        ...normalizedLinkData,
+        id: normalizedLinkData.id || v4(),
+        title,
+        originalUrl,
+        link: originalUrl,
+        shortUrl,
+        customAlias,
+        description:
+          normalizedLinkData.description || "Saved from shared links",
+      };
 
       // read existing links
       let existingLinks = [];
@@ -46,7 +74,7 @@ const CreateNewSharedLink = async (
       }
 
       // add new link data
-      existingLinks.push(LinkData);
+      existingLinks.push(linkEntry);
 
       // write back to file
       fs.writeFileSync(

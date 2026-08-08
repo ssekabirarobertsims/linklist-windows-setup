@@ -227,7 +227,7 @@ main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"]
   :is(div[class="profile-section"]) {
   border: 1px solid hsl(0, 0%, 90%);
-  min-height: 3.5em;
+  min-height: 5em;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
@@ -248,6 +248,14 @@ main[class="application-user-profile-dashboard-window"]
 main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"]
   :is(div[class="profile-section"])
+  > p {
+  font-weight: 300;
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-section"])
   > .user-bio-input-field {
   height: 3em;
   width: 100%;
@@ -262,7 +270,7 @@ main[class="application-user-profile-dashboard-window"]
   :is(div[class="profile-section"])
   > a {
   height: 2.5em;
-  width: min(90%, 8em);
+  width: min(90%, 9em);
   text-decoration: none;
 }
 main[class="application-user-profile-dashboard-window"]
@@ -299,6 +307,7 @@ main[class="application-user-profile-dashboard-window"]
   font-weight: 600;
   color: hsl(0, 0%, 20%);
   font-size: 1em;
+  text-align: center;
 }
 main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"]
@@ -320,7 +329,7 @@ main[class="application-user-profile-dashboard-window"]
   width: min(100%, 100%);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   gap: 0.5em;
 }
@@ -332,6 +341,7 @@ main[class="application-user-profile-dashboard-window"]
   span {
   font-weight: 500;
   color: hsl(0, 0%, 40%);
+  text-align: center;
   font-size: 1em;
 }
 main[class="application-user-profile-dashboard-window"]
@@ -342,7 +352,18 @@ main[class="application-user-profile-dashboard-window"]
   p {
   font-weight: 600;
   color: hsl(0, 0%, 10%);
-  font-size: 0.9em;
+  font-size: 0.8em;
+}
+main[class="application-user-profile-dashboard-window"]
+  > section[class="_application-user-profile-dashboard-window-wrapper"]
+  :is(div[class="profile-details"])
+  > aside
+  > div
+  p
+  > a {
+  font-weight: 600;
+  color: hsl(0, 0%, 10%);
+  text-decoration: none;
 }
 main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"]

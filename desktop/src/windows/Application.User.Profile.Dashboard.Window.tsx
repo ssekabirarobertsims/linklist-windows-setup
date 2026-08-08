@@ -6,43 +6,64 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { GiHelp } from "react-icons/gi";
 import { MdFeedback, MdPrivacyTip } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { BsExclamation } from "react-icons/bs";
 // import { TiTick } from "react-icons/ti";
+import { TbApiApp } from "react-icons/tb";
+import { AiFillWindows } from "react-icons/ai";
 
-interface user {
-  username: string;
-  name: string;
-  email: string;
-  profile_picture_path: string;
-  token: string;
-  id: string;
-  loggedIn: boolean;
-  login_date: string;
-  bio: string;
-  joined: string;
+interface DeviceInfo {
+  appVersion: string;
+  systemVersion: string;
+  platform: string;
+  release: string;
+  deviceName: string;
+  registeredUser: string;
+  totalMemoryGB: number;
+  usedMemoryGB: number;
+  freeMemoryGB: number;
+  diskTotalGB: number;
+  diskFreeGB: number;
+  diskUsedGB: number;
+  diskUsagePercent: number;
+  now: string;
 }
 
+// Define the shape of a saved link item
+type ListItemProperties = {
+  id: string;
+  title: string;
+  link: string;
+  user_id: string;
+  date_created?: string;
+};
+// // Ensure that the environment variables are loaded correctly
+// Define the shape of a saved link item
+type collectionProps = {
+  id: string;
+  filename: string;
+  filepath: string;
+  date_created?: string;
+};
+
 const ApplicationUserProfileDashboardWindow: React.FC = () => {
-  const [user, setUser] = useState<user>({} as user);
-  const getUserInformation = async (): Promise<string> => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const userInformation = await window.app_api.readUserInformation();
-    setUser(userInformation);
-    return userInformation;
+  const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>({} as DeviceInfo);
+
+  const getDeviceInformation = async (): Promise<void> => {
+    try {
+      const systemInformation =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.systemInformation()) as DeviceInfo;
+      setDeviceInfo(systemInformation);
+    } catch (error) {
+      console.warn("Failed to read device information", error);
+    }
   };
 
   useEffect(() => {
-    getUserInformation();
+    getDeviceInformation();
   }, []);
 
-  // state to handle editing
-  // const [editing, setEditing] = useState<boolean>(false);
-  // state to set the user bio
-  const [userBio, setUserBio] = useState<string>(user.bio || "");
-  // state to set the user profile picture file path
-  const [profilePictureFilePath, setProfilePictureFilePath] =
-    useState<string>();
-  // state set profile picture information
   const [profilePictureInformation, setProfilePictureInformation] = useState<{
     size: number;
   }>(
@@ -50,15 +71,87 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
       size: number;
     },
   );
-
-  // set user bio on user information change
-  useEffect(() => {
-    setUserBio(user.bio || "");
-  }, [user.bio]);
   // Set the document title on mount
   useEffect(() => {
-    document.title = "Dashboard - Profile | LinkList";
+    document.title = "Dashboard - Device Profile | LinkList";
   }, []);
+
+  // State for all links, search results, search value, and selected link for editing
+  // Initialize state for the list of links, search results, search value, and selected link
+  // State to hold the list of links
+  const [linkArchivesList, setLinkArchivesList] = useState<
+    ListItemProperties[]
+  >([] as ListItemProperties[]);
+
+  // fetch all existing links archives on component mount and display them
+  useEffect(() => {
+    const fetchLinkArchives = async (): Promise<ListItemProperties[]> => {
+      const links: ListItemProperties[] =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.readAllLinkArchives()) as ListItemProperties[];
+      // set the links list state
+      setLinkArchivesList(links);
+      // return an arr[] for the links
+      return links;
+    };
+
+    fetchLinkArchives();
+  }, []);
+
+  // State for all collections, search results, search value, and selected link for editing
+  // Initialize state for the list of collections, search results, search value, and selected link
+  // State to hold the list of collections
+  const [collection, setCollection] = useState<collectionProps[]>(
+    [] as collectionProps[],
+  );
+
+  useEffect(() => {
+    // fetch collections data from the main process
+    const readCollectionsData = async (): Promise<collectionProps[]> => {
+      const data: collectionProps[] =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.readCollectionsData()) as collectionProps[];
+      // set the collection state with fetched data
+      setCollection(data);
+      return data;
+    };
+
+    // call function to fetch collections data on component mount
+    readCollectionsData();
+  }, []);
+
+  // set state for the collections list
+  useEffect(() => {
+    setCollection(collection);
+  }, [collection]);
+
+  // State for all links, used to count saved links in device profile
+  const [linksList, setLinksList] = useState<ListItemProperties[]>(
+    [] as ListItemProperties[],
+  );
+
+  // fetch all existing links on component mount and display them
+  useEffect(() => {
+    const fetchLinks = async (): Promise<ListItemProperties[]> => {
+      const links: ListItemProperties[] =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.readAllExistingLinks()) as ListItemProperties[];
+      // set the links list state
+      setLinksList(links);
+      // return an arr[] for the links
+      return links;
+    };
+
+    fetchLinks();
+  }, []);
+
+  // set state for the link list
+  useEffect(() => {
+    setLinksList(linksList);
+  }, [linksList]);
 
   return (
     <>
@@ -81,33 +174,42 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
           />
           <br />
           <div className="_application-user-profile-dashboard-window-components-wrapper">
-            {/*  */}
             <p></p>
-            <h2>LINKLIST USER'S PROFILE</h2>
-            {/* Header */}
+            <h2>DEVICE PROFILE</h2>
             <header className="profile-header">
               <aside>
                 <img
-                  src={user.profile_picture_path}
+                  src="/avatars/laptop-avatar.avif"
                   className="profile-avatar"
-                  alt="avatar"
+                  alt="device avatar"
                 />
               </aside>
               <div>
-                <p>{user.username?.toLocaleUpperCase()}'S PROFILE.</p>
-                <p>@{user.name ? user.name : "name"}.</p>
-                <p>Random Id: {user.id?.slice(0, 20)}...</p>
+                <p className="profile-name">
+                  {deviceInfo.deviceName || "Unknown Device"}
+                </p>
+                <p className="profile-username">
+                  Registered user: {deviceInfo.registeredUser || "Unknown"}
+                </p>
+                <p>
+                  {deviceInfo.platform || "Platform"} •{" "}
+                  {deviceInfo.release || "OS Release"}
+                </p>
+                <p className="device-summary">
+                  LinkList is running on this device as a dedicated link
+                  manager. The page shows storage, memory, and OS details so you
+                  can see the host system at a glance.
+                </p>
                 <p>
                   {profilePictureInformation?.size ? (
                     <span>
-                      Current File Size{" "}
-                      {Math.floor(profilePictureInformation?.size / 1024)}kbs
+                      Current upload size{" "}
+                      {Math.floor(profilePictureInformation?.size / 1024)} KB
                     </span>
                   ) : (
                     ""
                   )}
                 </p>
-                {/* {editing && <label htmlFor="file">Upload Profile Photo</label>} */}
                 <input
                   type="file"
                   name="file"
@@ -131,41 +233,11 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                         },
                       );
 
-                      // set the data as url
                       reader.readAsDataURL(file);
-                      // set profile picture file path
-                      setProfilePictureFilePath(`${await file.name}`);
-                      // set profile picture information
                       setProfilePictureInformation(file);
                     }
                   }}
                 />
-                {/* <button
-                  className="edit-btn"
-                  onClick={() => {
-                    // change state for editing the profile
-                    setEditing(!editing);
-                    // set andd show profile edit button
-                  }}
-                >
-                  {editing ? (
-                    <>
-                      <span>
-                        {""}
-                        <TiTick />
-                      </span>
-                      Save
-                    </>
-                  ) : (
-                    <>
-                      <span>
-                        {" "}
-                        <CiEdit />
-                      </span>
-                      Edit
-                    </>
-                  )}
-                </button> */}
               </div>
             </header>
             {/*  */}
@@ -175,107 +247,112 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
 
             {/* Details */}
             {/* <div className="profile-details">
-              <h3>Personal Info</h3>
               <aside>
                 <div className="detail-row">
-                  <span className="detail-label">Unique Id:</span>
-                  <p className="detail-value">{user.id?.slice(0, 20)}...</p>
+                  <span className="detail-label">
+                    {" "}
+                    {
+                      Number(linksList?.length ?? [].length) as Required<number>
+                    }{" "}
+                  </span>
+                  <p className="detail-value">
+                    {" "}
+                    <Link
+                      to={{
+                        pathname: `/links`,
+                      }}
+                    >
+                      Saved link(s)
+                    </Link>
+                  </p>
                 </div>
                 <div className="detail-row">
-                  <span className="detail-label">Email:</span>
-                  <p className="detail-value">{user.email}</p>
+                  <span className="detail-label">
+                    {" "}
+                    {
+                      Number(
+                        linkArchivesList.length ?? [].length,
+                      ) as Required<number>
+                    }{" "}
+                  </span>
+                  <p className="detail-value">
+                    {" "}
+                    <Link
+                      to={{
+                        pathname: `/archives`,
+                      }}
+                    >
+                      Archived link (s)
+                    </Link>
+                  </p>
                 </div>
                 <div className="detail-row">
-                  <span className="detail-label">Joined:</span>
-                  <p className="detail-value">{user.joined}</p>
+                  <span className="detail-label">OS Version</span>
+                  <p className="detail-value">
+                    {deviceInfo.systemVersion || "Unknown"}
+                  </p>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Installed Build</span>
+                  <p className="detail-value">
+                    {deviceInfo.appVersion || "N/A"}
+                  </p>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Memory</span>
+                  <p className="detail-value">
+                    {deviceInfo.usedMemoryGB ?? 0}GB used of{" "}
+                    {deviceInfo.totalMemoryGB ?? 0}GB
+                  </p>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Storage</span>
+                  <p className="detail-value">
+                    {deviceInfo.diskUsedGB ?? 0}GB used of{" "}
+                    {deviceInfo.diskTotalGB ?? 0}GB (
+                    {deviceInfo.diskUsagePercent ?? 0}% full)
+                  </p>
                 </div>
               </aside>
-            </div> */}
-            {/*  */}
-
+            </div>
+             */}
+            <br />
+            <span>Current Build {deviceInfo?.appVersion}</span>
+            <span>
+              {" "}
+              <AiFillWindows /> {deviceInfo?.systemVersion} Home Edition
+            </span>
+            <br />
             {/*  */}
             <div className="profile-section">
-              <h3>Add an email</h3>
+              <h3>Download Updates Manually</h3>
               <p>
-                Sing up so as to add an email account to your profile for more
-                security purposes.
+                Check out new updates and download new features if application
+                did not update automatically when connected to the internet!
               </p>
-              <Link
-                to={{
-                  pathname: "/auth/redirect/signup",
+              <br />
+              <a
+                href="https://github.com/ssekabirarobertsims/linklist-windows-setup"
+                title="Download Manually"
+                onClick={(event) => {
+                  event.preventDefault();
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
+                  window.app_api.openExternalLink(
+                    "https://github.com/ssekabirarobertsims/linklist-windows-setup",
+                  );
                 }}
               >
-                <button title="add email">Add Your Email</button>
-              </Link>
-              {/* {editing ? (
-                <textarea
-                  className="user-bio-input-field"
-                  value={user.bio}
-                  onChange={(e) => {
-                    // set value for the bio
-                    setUser({ ...user, bio: e.target.value });
-                    // set the user bio
-                    setUserBio(e.target.value);
-                    console.log(userBio);
-                  }}
-                />
-              ) : ( */}
-              {/* <p className="profile-bio">{userBio}</p> */}
-              {/* )} */}
+                <button title="Download Updates Manually">Download</button>
+              </a>
             </div>
 
-            <br />
-            <ul>
-              <br />
-              <li>
-                <a
-                  href=""
-                  title="give feedback"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/users/feedback",
-                    );
-                  }}
-                >
-                  <MdFeedback />
-                  <p>Give Feedback</p>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  href=""
-                  title="get help"
-                  onClick={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  <GiHelp />
-                  <p>Get Help</p>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  href=""
-                  title="privacy policy"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/policy",
-                    );
-                  }}
-                >
-                  <MdPrivacyTip />
-                  <p>Privacy Policy</p>
-                </a>
-              </li>
-            </ul>
+            <p></p>
+            <span>
+              {" "}
+              Linklist © 2019. Links Management System. All Rights Reserved
+            </span>
+
             {/*  */}
           </div>
         </section>

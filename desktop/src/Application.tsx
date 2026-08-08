@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import ApplicationLoginFormWindow from "./windows/Application.Login.Form.Window";
-import ApplicationSignupFormWindow from "./windows/Application.Signup.Form.Window";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import ApplicationRecentBackupsDashboardWindow from "./windows/Application.Recent.Data.Backups.Dashboard.Window";
+import ApplicationOpenedLinksDashboardWindow from "./windows/Application.Opened.Links.Dashboard.Window";
+import ApplicationSharedLinksDashboardWindow from "./windows/Application.Shared.Links.Dashboard.Window";
 
 /**
  * @author LinkList Dev Team
@@ -10,9 +11,6 @@ import ApplicationSignupFormWindow from "./windows/Application.Signup.Form.Windo
  * @returns {JSX.Element} The Application component with routing.
  */
 
-const ApplicationAuthRedirectWindow = lazy(
-  () => import("./windows/Application.Auth.Redirect.Window"),
-);
 const ApplicationLinksDashboardWindow = lazy(
   () => import("./windows/Application.Links.Dashboard.Window"),
 );
@@ -62,6 +60,7 @@ interface user {
 
 function Application() {
   const [user, setUser] = useState<user>({} as user);
+  const navigate = useNavigate();
   const getUserInformation = async (): Promise<string> => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
@@ -75,6 +74,57 @@ function Application() {
   useEffect(() => {
     getUserInformation();
   }, []);
+
+  // Global keyboard shortcuts handler
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const active = document.activeElement as HTMLElement | null;
+      const isTypingField = !!(
+        active &&
+        (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.isContentEditable)
+      );
+
+      if (isTypingField) return; // don't hijack typing or native copy
+
+      const key = e.key?.toLowerCase();
+      const modifierPressed = e.ctrlKey || e.metaKey;
+
+      if (!modifierPressed || !key) return;
+
+      // Map shortcuts (Ctrl/Cmd + key) to routes
+      switch (key) {
+        case "c": // create
+          e.preventDefault();
+          navigate("/new");
+          break;
+        case "b": // backup
+          e.preventDefault();
+          navigate("/backup");
+          break;
+        case "e": // export
+          e.preventDefault();
+          navigate("/export/formats");
+          break;
+        case "l": // links
+          e.preventDefault();
+          navigate("/links");
+          break;
+        case "a": // archives
+          e.preventDefault();
+          navigate("/archives");
+          break;
+        case "s": // settings
+          e.preventDefault();
+          navigate("/settings");
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [navigate]);
 
   return (
     // lazy load components to allow minimizing on the mem usage while Application loading
@@ -90,6 +140,14 @@ function Application() {
         <Route path="/home" element={<ApplicationHomeDashboardWindow />} />
         <Route path={"/links"} element={<ApplicationLinksDashboardWindow />} />
         <Route
+          path={"/links/opened"}
+          element={<ApplicationOpenedLinksDashboardWindow />}
+        />
+        <Route
+          path={"/links/shared"}
+          element={<ApplicationSharedLinksDashboardWindow />}
+        />
+        <Route
           path={"/read"}
           element={<ApplicationLinksReadDashboardWindow />}
         />
@@ -98,11 +156,7 @@ function Application() {
           element={<ApplicationCreateLinkDashboardWindow />}
         />
         <Route
-          path={
-            user.loggedIn === Boolean(true)
-              ? "/auth/redirect/login"
-              : "/archives"
-          }
+          path={"/archives"}
           element={<ApplicationArchivesDashboardWindow />}
         />
         <Route
@@ -121,19 +175,11 @@ function Application() {
           path={"/backup"}
           element={<ApplicationDataBackupDashboardWindow />}
         />
+        <Route
+          path={"/backups"}
+          element={<ApplicationRecentBackupsDashboardWindow />}
+        />
         <Route path={"/profile"} element={<UserProfile />} />
-        <Route
-          path="/auth/redirect"
-          element={<ApplicationAuthRedirectWindow />}
-        />
-        <Route
-          path="/auth/redirect/login"
-          element={<ApplicationLoginFormWindow />}
-        />
-        <Route
-          path="/auth/redirect/signup"
-          element={<ApplicationSignupFormWindow />}
-        />
       </Routes>
     </Suspense>
   );

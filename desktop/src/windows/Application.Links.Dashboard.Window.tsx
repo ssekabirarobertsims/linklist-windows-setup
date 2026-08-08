@@ -11,6 +11,8 @@ type ListItemProperties = {
   user_id: string;
   _date: string;
   description: string;
+  tags?: string[];
+  notes?: string;
 };
 
 import { BiCopy, BiLink, BiTrash } from "react-icons/bi";
@@ -31,7 +33,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
   const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
 
   // fetch all existing links on component mount and display them
@@ -59,7 +61,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
   //   state to handle links list saving options
   const [showSavingOptions, setShowSavingOptions] = useState<boolean>(
-    false as boolean
+    false as boolean,
   );
   //   state to handle selected links list actions options
   const [showSelectedLinksActions, setShowSelectedLinksActions] =
@@ -71,11 +73,37 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     linksList as unknown as ListItemProperties,
   ]);
 
-  // Filter links based on search value
+  // Filter links based on search value across multiple fields (title, link, description, tags, notes)
   useEffect(() => {
-    const filteredResults = linksList.filter((item) =>
-      item.title.toLowerCase().includes(value.toLowerCase())
-    );
+    const query = value.trim().toLowerCase();
+
+    if (query === "") {
+      setSearchResults(linksList);
+      return;
+    }
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+
+    const filteredResults = linksList.filter((item) => {
+      // prepare searchable content for this item
+      const title = item.title?.toLowerCase() ?? "";
+      const link = item.link?.toLowerCase() ?? "";
+      const description = item.description?.toLowerCase() ?? "";
+      const tags = (item.tags ?? []).join(" ").toLowerCase();
+      const notes = item.notes?.toLowerCase() ?? "";
+
+      // For each token, require that it appears in at least one of the fields (AND across tokens)
+      return tokens.every((token) => {
+        return (
+          title.includes(token) ||
+          link.includes(token) ||
+          description.includes(token) ||
+          tags.includes(token) ||
+          notes.includes(token)
+        );
+      });
+    });
+
     setSearchResults(filteredResults);
   }, [value, linksList]);
 
@@ -98,7 +126,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
   // state to handle selected links
   const [selectedLinks, setSelectedLinks] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
   // arr to handle the selected links
   const selectedLinksArr: ListItemProperties[] = [] as ListItemProperties[];
@@ -127,6 +155,18 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     document.title = "Dashboard - Links | LinkList";
   }, []);
 
+  // Helper to compute favicon URL for a given link, falling back to local image
+  const getFaviconUrl = (url?: string): string => {
+    try {
+      if (!url) return "/favicon/OIP.webp";
+      const parsed = new URL(url);
+      const hostname = parsed.hostname;
+      return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+    } catch (err) {
+      return "/favicon/OIP.webp";
+    }
+  };
+
   // Render the dashboard Links page layout and content
   return (
     <>
@@ -150,12 +190,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
                   const inputs: HTMLInputElement[] =
                     window.document.querySelectorAll(
-                      ".select-link-checkbox"
+                      ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
                   // remove label and its content
                   (
                     window.document.querySelector(
-                      ".selected-links-count-placeholder"
+                      ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = `${
                     selectedLinksArr.length - selectedLinksArr.length
@@ -163,7 +203,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   // empty search results count
                   (
                     window.document.querySelector(
-                      ".search-results-count-placeholder"
+                      ".search-results-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = ``;
 
@@ -189,7 +229,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                 await window.app_api.exportDataToHTMLFile(
                   selectedLinksArr?.map((item) => item) ?? [],
                   `html`,
-                  "Saved links"
+                  "Saved links",
                 );
               }}
             >
@@ -209,12 +249,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
                 const inputs: HTMLInputElement[] =
                   window.document.querySelectorAll(
-                    ".select-link-checkbox"
+                    ".select-link-checkbox",
                   ) as unknown as HTMLInputElement[];
                 // remove label and its content
                 (
                   window.document.querySelector(
-                    ".selected-links-count-placeholder"
+                    ".selected-links-count-placeholder",
                   ) as HTMLSpanElement
                 ).innerHTML = ``;
 
@@ -239,13 +279,13 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-links-dashboard-window"
+          "application-links-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
-            "_application-links-dashboard-window-wrapper"
+            "_application-links-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -272,22 +312,23 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                         .includes(
                           (
                             event.target as HTMLInputElement
-                          ).value.toLocaleLowerCase()
-                        )
-                    )
+                          ).value.toLocaleLowerCase(),
+                        ),
+                    ),
                   );
 
                   // fill search results count
                   (
                     window.document.querySelector(
-                      ".search-results-count-placeholder"
+                      ".search-results-count-placeholder",
                     ) as HTMLSpanElement
-                  ).innerHTML = `Found ${searchResultsArr[0].length} search results`;
+                  ).innerHTML =
+                    `Found ${searchResultsArr[0].length} search results`;
 
                   // empty selected links count
                   (
                     window.document.querySelector(
-                      ".selected-links-count-placeholder"
+                      ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = ``;
 
@@ -299,7 +340,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   )
                     (
                       window.document.querySelector(
-                        ".search-results-count-placeholder"
+                        ".search-results-count-placeholder",
                       ) as HTMLSpanElement
                     ).innerHTML = ``;
                 }}
@@ -318,11 +359,31 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
               <li>
                 <Link
                   to={{
-                    pathname: "",
+                    pathname: "/links",
                     search: "",
                   }}
                 >
                   All
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={{
+                    pathname: "/links/opened",
+                    search: "",
+                  }}
+                >
+                  Opened
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={{
+                    pathname: "/links/shared",
+                    search: "",
+                  }}
+                >
+                  Shared
                 </Link>
               </li>
               <li>
@@ -333,26 +394,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   }}
                 >
                   Tagged
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={{
-                    pathname: "",
-                    search: "",
-                  }}
-                >
-                  Used
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={{
-                    pathname: "",
-                    search: "",
-                  }}
-                >
-                  Shared
                 </Link>
               </li>
             </ul>
@@ -374,11 +415,11 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                     await window.app_api.exportDataToHTMLFile(
                       linksList?.map((item) => item) ?? [],
                       `html`,
-                      "Saved links"
+                      "Saved links",
                     );
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -393,7 +434,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                     setShowSavingOptions(true);
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -416,13 +457,27 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                 searchResults.map((link: ListItemProperties) => (
                   <li key={uuidV4()} id={link.id} title={`${link.title}`}>
                     <img
-                      src="/favicon/OIP.webp"
+                      src={getFaviconUrl(link.link)}
                       alt={`${link.title} favicon`}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src =
+                          "/favicon/OIP.webp";
+                      }}
                     />
                     <aside>
-                      <span>{`${link.title}`}</span>
+                      <span>{`${link.title ? link.title : "Saved Link"}`}</span>
                       {/* add event to open external link if clicked */}
-                      <a href="" target="_blank" title={`${link.title}`}>
+                      <a
+                        href={link?.link}
+                        target="_blank"
+                        title={`${link?.title}`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-expect-error
+                          window.app_api.openExternalLink(String(link?.link)); // O(1) -- Constant time
+                        }}
+                      >
                         {link.link}
                       </a>
                       <div>
@@ -440,7 +495,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                                 link.link.length < 65
                                   ? link.link
                                   : `${link.link.slice(0, 40)}...`
-                              }`
+                              }`,
                             );
                           }}
                         >
@@ -502,13 +557,14 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).innerHTML = `${selectedLinksArr.length} selected link(s)`;
+                            ).innerHTML =
+                              `${selectedLinksArr.length} selected link(s)`;
                             // empty search results count
                             (
                               window.document.querySelector(
-                                ".search-results-count-placeholder"
+                                ".search-results-count-placeholder",
                               ) as HTMLSpanElement
                             ).innerHTML = ``;
                           } else {
@@ -518,13 +574,14 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).innerHTML = `${selectedLinksArr.length} selected link(s)`;
+                            ).innerHTML =
+                              `${selectedLinksArr.length} selected link(s)`;
                             // empty search results count
                             (
                               window.document.querySelector(
-                                ".search-results-count-placeholder"
+                                ".search-results-count-placeholder",
                               ) as HTMLSpanElement
                             ).innerHTML = ``;
                           }

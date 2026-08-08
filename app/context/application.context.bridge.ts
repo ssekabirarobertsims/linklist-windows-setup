@@ -131,4 +131,17 @@ contextBridge?.exposeInMainWorld("app_api", {
    * @function alert-users
    */
   copyLink: async (): Promise<void> => ipcRenderer.invoke("copy-link"),
+  listenForClipboardLink: (
+    callback: (payload: unknown) => void,
+  ): (() => void) => {
+    const handler = (_event: unknown, payload: unknown): void =>
+      callback(payload);
+    ipcRenderer.on("clipboard-link-detected", handler);
+    return (): void => {
+      ipcRenderer.removeListener("clipboard-link-detected", handler);
+    };
+  },
+  saveClipboardLinkFromPrompt: async (linkData: object): Promise<any> =>
+    ipcRenderer.invoke("save-clipboard-link", linkData),
+  // ///////////
 });

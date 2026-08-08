@@ -150,3 +150,13 @@ main[class="application-user-data-backup-dashboard-window"]
   background-color: #0066ff;
   cursor: pointer;
 }
+
+.recent-backups-link {
+  font-weight: calc(290 + 290);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+  text-decoration: none;
+  /* position: absolute;
+  top: 1em;
+  left: 01em; */
+}

@@ -3,12 +3,13 @@ import "../stylesheets/Windows/Application.Data.Backup.Dashboard.Window.Styleshe
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
+import { Link } from "react-router-dom";
 
 const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
   () => {
     // state to hold the date for the last backup
     const [recentBackupDate, setRecentBackupDate] = useState<string | number>(
-      ""
+      "",
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buttonRef = useRef<any>(null);
@@ -36,14 +37,14 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
         {/* Main dashboard page elements */}
         <main
           className={String(
-            "application-user-data-backup-dashboard-window"
+            "application-user-data-backup-dashboard-window",
           ).toLocaleLowerCase()}
         >
           <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
           <section
             className={String(
-              "_application-user-data-backup-dashboard-window-wrapper"
+              "_application-user-data-backup-dashboard-window-wrapper",
             ).toLocaleLowerCase()}
           >
             {/* Navigation bar and sidebar for user profile */}
@@ -98,8 +99,17 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
                       window.location.reload();
                     }}
                   >
-                    Create Local Backup
+                    Create a Backup
                   </button>
+                  <br />
+                  <Link
+                    className="recent-backups-link"
+                    to={{
+                      pathname: "/backups",
+                    }}
+                  >
+                    --See Recent Backups--
+                  </Link>
                 </div>
               </article>
             </div>
