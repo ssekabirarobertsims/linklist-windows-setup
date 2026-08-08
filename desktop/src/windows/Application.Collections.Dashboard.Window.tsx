@@ -17,13 +17,14 @@ import { MdOutlineCollectionsBookmark } from "react-icons/md";
 import { TiDocumentDelete } from "react-icons/ti";
 import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
+import { LuFolderOpenDot } from "react-icons/lu";
 
 const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
   // State for all collections, search results, search value, and selected link for editing
   // Initialize state for the list of collections, search results, search value, and selected link
   // State to hold the list of collections
   const [collection, setCollection] = useState<collectionProps[]>(
-    [] as collectionProps[]
+    [] as collectionProps[],
   );
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
 
   //   state to handle collections list saving options
   const [showSavingOptions, setShowSavingOptions] = useState<boolean>(
-    false as boolean
+    false as boolean,
   );
 
   // set state for showing the content loader
@@ -94,14 +95,14 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-collections-dashboard-window"
+          "application-collections-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
           className={String(
-            "_application-collections-dashboard-window-wrapper"
+            "_application-collections-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -138,14 +139,6 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                     key={uuidV4()}
                     id={collection.id}
                     title={`${collection.filepath}`}
-                    onClick={async (event): Promise<void> => {
-                      event?.stopPropagation(); // stop event bubbling
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
-                      await window.app_api.showItemInFolder(
-                        `${collection.filepath}`
-                      ); // open collection in windows file explorer
-                    }}
                   >
                     <aside>
                       <span>
@@ -156,6 +149,22 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
 
                       <p>{`Exported to: ${collection.filepath}`}</p>
                       <p>{`Created on: ${collection.date_created}`}</p>
+                      <p></p>
+                      <button
+                        className="show-collection-in-folder-button"
+                        title="Open collection in folder"
+                        onClick={async (event): Promise<void> => {
+                          event?.stopPropagation(); // stop event bubbling
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-expect-error
+                          await window.app_api.showItemInFolder(
+                            `${collection.filepath}`,
+                          ); // open collection in windows file explorer
+                        }}
+                      >
+                        <LuFolderOpenDot />
+                        Open In Folder
+                      </button>
                       <span
                         className="remove-from-list"
                         onClick={async (event) => {
@@ -164,7 +173,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                           // @ts-expect-error
                           await window.app_api.deleteExistingCollection(
                             collection.id ? collection.id : "",
-                            collection.filepath
+                            collection.filepath,
                           ); // delete existing collection
                           // reload for new data
                           window.location.href = "/collections";

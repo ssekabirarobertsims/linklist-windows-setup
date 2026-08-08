@@ -2,46 +2,45 @@ import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.User.Profile.Dashboard.Window.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-// import { CiEdit } from "react-icons/ci";
-import { GiHelp } from "react-icons/gi";
-import { MdFeedback, MdPrivacyTip } from "react-icons/md";
-// import { TiTick } from "react-icons/ti";
+// import { Link } from "react-router-dom";
+import { AiFillWindows } from "react-icons/ai";
 
-interface user {
-  username: string;
-  name: string;
-  email: string;
-  profile_picture_path: string;
-  token: string;
-  id: string;
-  loggedIn: boolean;
-  login_date: string;
-  bio: string;
-  joined: string;
+interface DeviceInfo {
+  appVersion: string;
+  systemVersion: string;
+  platform: string;
+  release: string;
+  deviceName: string;
+  registeredUser: string;
+  totalMemoryGB: number;
+  usedMemoryGB: number;
+  freeMemoryGB: number;
+  diskTotalGB: number;
+  diskFreeGB: number;
+  diskUsedGB: number;
+  diskUsagePercent: number;
+  now: string;
 }
 
 const ApplicationUserProfileDashboardWindow: React.FC = () => {
-  const [user, setUser] = useState<user>({} as user);
-  const getUserInformation = async (): Promise<string> => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const userInformation = await window.app_api.readUserInformation();
-    setUser(userInformation);
-    return userInformation;
+  const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>({} as DeviceInfo);
+
+  const getDeviceInformation = async (): Promise<void> => {
+    try {
+      const systemInformation =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.systemInformation()) as DeviceInfo;
+      setDeviceInfo(systemInformation);
+    } catch (error) {
+      console.warn("Failed to read device information", error);
+    }
   };
 
   useEffect(() => {
-    getUserInformation();
+    getDeviceInformation();
   }, []);
 
-  // state to handle editing
-  // const [editing, setEditing] = useState<boolean>(false);
-  // state to set the user bio
-  // const [userBio, setUserBio] = useState<string>();
-  // state to set the user profile picture file path
-  const [profilePictureFilePath, setProfilePictureFilePath] =
-    useState<string>();
-  // state set profile picture information
   const [profilePictureInformation, setProfilePictureInformation] = useState<{
     size: number;
   }>(
@@ -49,10 +48,9 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
       size: number;
     },
   );
-
   // Set the document title on mount
   useEffect(() => {
-    document.title = "Dashboard - Profile | LinkList";
+    document.title = "Dashboard - Device Profile | LinkList";
   }, []);
 
   return (
@@ -76,33 +74,42 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
           />
           <br />
           <div className="_application-user-profile-dashboard-window-components-wrapper">
-            {/*  */}
             <p></p>
-            <h2>{user.username?.toLocaleUpperCase()}'S PROFILE</h2>
-            <p className="name">@{user.name ? user.name : "name"}</p>
-            {/* Header */}
+            <h2>DEVICE PROFILE</h2>
             <header className="profile-header">
               <aside>
                 <img
-                  src={user.profile_picture_path}
+                  src="/avatars/laptop-avatar.avif"
                   className="profile-avatar"
-                  alt="avatar"
+                  alt="device avatar"
                 />
               </aside>
               <div>
-                <p>Profile picture for @{user.username}.</p>
-                <p>Any file format of your choice.</p>
+                <p className="profile-name">
+                  {deviceInfo.deviceName || "Unknown Device"}
+                </p>
+                <p className="profile-username">
+                  Registered user: {deviceInfo.registeredUser || "Unknown"}
+                </p>
+                <p>
+                  {deviceInfo.platform || "Platform"} •{" "}
+                  {deviceInfo.release || "OS Release"}
+                </p>
+                <p className="device-summary">
+                  LinkList is running on this device as a dedicated link manager
+                  application. You can manage your links, archives, and backups
+                  from this device.
+                </p>
                 <p>
                   {profilePictureInformation?.size ? (
                     <span>
-                      Current File Size{" "}
-                      {Math.floor(profilePictureInformation?.size / 1024)}kbs
+                      Current upload size{" "}
+                      {Math.floor(profilePictureInformation?.size / 1024)} KB
                     </span>
                   ) : (
                     ""
                   )}
                 </p>
-                {/* {editing && <label htmlFor="file">Upload Profile Photo</label>} */}
                 <input
                   type="file"
                   name="file"
@@ -126,140 +133,57 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                         },
                       );
 
-                      // set the data as url
                       reader.readAsDataURL(file);
-                      // set profile picture file path
-                      setProfilePictureFilePath(`${await file.name}`);
-                      // set profile picture information
                       setProfilePictureInformation(file);
                     }
                   }}
                 />
-                {/* <button
-                  className="edit-btn"
-                  onClick={() => {
-                    // change state for editing the profile
-                    setEditing(!editing);
-                    // set andd show profile edit button
-                  }}
-                >
-                  {editing ? (
-                    <>
-                      <span>
-                        {""}
-                        <TiTick />
-                      </span>
-                      Save
-                    </>
-                  ) : (
-                    <>
-                      <span>
-                        {" "}
-                        <CiEdit />
-                      </span>
-                      Edit
-                    </>
-                  )}
-                </button> */}
               </div>
             </header>
             {/*  */}
 
             <br />
-            {/* User Info Section */}
-
-            {/* Details */}
-            <div className="profile-details">
-              <h3>Personal Info</h3>
-              <aside>
-                <div className="detail-row">
-                  <span className="detail-label">Unique Id:</span>
-                  <p className="detail-value">{user.id?.slice(0, 20)}...</p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Email:</span>
-                  <p className="detail-value">{user.email}</p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Joined:</span>
-                  <p className="detail-value">{user.joined}</p>
-                </div>
-              </aside>
-            </div>
-            {/*  */}
-
+            <span id={"device-info-spans"}>
+              Device @{deviceInfo?.deviceName}
+            </span>
+            <span id={"device-info-spans"}>
+              Current Build {deviceInfo?.appVersion}
+            </span>
+            <span id={"device-info-spans"}>
+              {" "}
+              <AiFillWindows /> {deviceInfo?.systemVersion} Edition
+            </span>
+            <br />
             {/*  */}
             <div className="profile-section">
-              {/* <h3>Bio</h3> */}
-              {/* {editing ? (
-                <textarea
-                  className="user-bio-input-field"
-                  value={user.bio}
-                  onChange={(e) => {
-                    // set value for the bio
-                    setUser({ ...user, bio: e.target.value });
-                    // set the user bio
-                    setUserBio(e.target.value);
-                    console.log(userBio);
-                  }}
-                />
-              ) : ( */}
-              {/* <p className="profile-bio">{user.bio}</p> */}
-              {/* )} */}
-            </div>
-            {/*  */}
-            <br />
-            <ul>
+              <h3>Download Updates Manually</h3>
+              <p>
+                Check out new updates and download new features if application
+                did not update automatically when connected to the internet!
+              </p>
               <br />
-              <li>
-                <a
-                  href=""
-                  title="give feedback"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/users/feedback",
-                    );
-                  }}
-                >
-                  <MdFeedback />
-                  <p>Give Feedback</p>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  href=""
-                  title="get help"
-                  onClick={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  <GiHelp />
-                  <p>Get Help</p>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  href=""
-                  title="privacy policy"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/policy",
-                    );
-                  }}
-                >
-                  <MdPrivacyTip />
-                  <p>Privacy Policy</p>
-                </a>
-              </li>
-            </ul>
+              <a
+                href="https://github.com/ssekabirarobertsims/linklist-windows-setup"
+                title="Download Manually"
+                onClick={(event) => {
+                  event.preventDefault();
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
+                  window.app_api.openExternalLink(
+                    "https://github.com/ssekabirarobertsims/linklist-windows-setup",
+                  );
+                }}
+              >
+                <button title="Download Updates Manually">Download</button>
+              </a>
+            </div>
+
+            <p></p>
+            <span id={"copyright"}>
+              {" "}
+              Linklist © 2019. Links Management System. All Rights Reserved
+            </span>
+
             {/*  */}
           </div>
         </section>

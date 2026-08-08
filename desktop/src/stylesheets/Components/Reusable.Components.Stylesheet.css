@@ -432,7 +432,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1em;
   color: #fff;
   /* border: 1px solid red; */
 }
@@ -458,12 +458,13 @@ aside[class="full-desktop-aside-navigation-bar-component"]
 aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul {
-  min-height: 45vh;
+  min-height: 33vh;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
+  flex-grow: 0;
   gap: 0.5em;
   color: #fff;
   /* border: 1px solid red; */
@@ -593,6 +594,79 @@ aside[class="full-desktop-aside-navigation-bar-component"]
 aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="others"]
+  :where(li)
+  > a[id="_wrapper"]
+  > span {
+  font-size: 1.2em;
+  font-weight: calc(250 + 290);
+}
+/*  */
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"] {
+  min-height: 15vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5em;
+  color: #fff;
+  /* border: 1px solid red; */
+  flex-grow: 0;
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"]
+  :where(li) {
+  min-height: 2.3em;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0em;
+  color: hsl(0, 0%, 60%);
+  border-radius: 0.2em;
+  /* border: 1px solid var(--border-secondary-color); */
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"]
+  :where(li):is(:hover, :focus) {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"]
+  :where(li)
+  > a[id="_wrapper"] {
+  min-height: 1.5em;
+  width: min(95%, 95%);
+  color: hsl(0, 0%, 90%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 1em;
+  text-decoration: none;
+  font-size: 0.8em;
+  font-weight: calc(250 + 290);
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"]
+  :where(li):is(:hover, :focus, :active)
+  > a[id="_wrapper"] {
+  color: hsl(0, 0%, 1%);
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="tools"]
   :where(li)
   > a[id="_wrapper"]
   > span {
@@ -887,6 +961,54 @@ div[class="no-results-message"] :where(span) {
   text-align: center;
   line-height: 0.9em;
 }
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count,
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="others"]
+  :where(li)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2em;
+  height: 2em;
+  padding: 0 0.45em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-left: 0.5em;
+  box-sizing: border-box;
+}
+
+/* Emphasize badge when present */
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li):is(:hover, :focus)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count,
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul[id="others"]
+  :where(li):is(:hover, :focus)
+  > a[id="_wrapper"]
+  > p
+  > label.nav-count {
+  background: var(--primary-theme-color);
+  color: #fff;
+}
+
 div[class="no-results-message"] :where(h2) {
   font-size: 1em;
   font-weight: calc(250 + 250);

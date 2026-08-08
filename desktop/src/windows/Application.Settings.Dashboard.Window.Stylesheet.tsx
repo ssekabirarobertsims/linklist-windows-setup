@@ -12,8 +12,17 @@ import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { GrNotification, GrUpdate } from "react-icons/gr";
 import { AiFillWindows } from "react-icons/ai";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
+import {
+  MdDarkMode,
+  MdFeedback,
+  MdLightMode,
+  MdPrivacyTip,
+} from "react-icons/md";
+
 import { format } from "date-fns";
+import { GiHelp } from "react-icons/gi";
+import { BsExclamation } from "react-icons/bs";
+import { TbApiApp } from "react-icons/tb";
 
 const ApplicationSettingsDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -170,6 +179,89 @@ const ApplicationSettingsDashboardWindow: React.FunctionComponent = () => {
               {" "}
               Linklist © 2019. Links Management System. All Rights Reserved
             </span>
+            <br />
+            <ul>
+              <li>
+                <a
+                  href=""
+                  title="About linklist"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    window.app_api.openExternalLink(
+                      "https://linklists.netlify.app/info/about",
+                    );
+                  }}
+                >
+                  <BsExclamation />
+                  <p>About</p>
+                </a>
+              </li>
+              <li>
+                <a
+                  href=""
+                  title="give feedback"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    window.app_api.openExternalLink(
+                      "https://linklists.netlify.app/users/feedback",
+                    );
+                  }}
+                >
+                  <MdFeedback />
+                  <p>Feedbacks</p>
+                </a>
+              </li>
+
+              {/*  */}
+              <li>
+                <a
+                  href="https://linklists.netlify.app/info/about"
+                  title="get help"
+                  onClick={(event) => {
+                    event.preventDefault();
+                  }}
+                >
+                  <GiHelp />
+                  <p>Help</p>
+                </a>
+              </li>
+              {/*  */}
+              <li>
+                <a
+                  href="https://api-linklist-restapi.onrender.com/"
+                  title="api"
+                  onClick={(event) => {
+                    event.preventDefault();
+                  }}
+                >
+                  <TbApiApp />
+                  <p>Api</p>
+                </a>
+              </li>
+              {/*  */}
+              <li>
+                <a
+                  href=""
+                  title="privacy policy"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    window.app_api.openExternalLink(
+                      "https://linklists.netlify.app/policy",
+                    );
+                  }}
+                >
+                  <MdPrivacyTip />
+                  <p>Privacy Policy</p>
+                </a>
+              </li>
+            </ul>
+            {/*  */}
           </div>
         </section>
       </main>

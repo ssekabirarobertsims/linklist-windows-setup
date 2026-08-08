@@ -106,7 +106,7 @@ main[class="application-collections-dashboard-window"]
   :is(div[class="_application-collections-dashboard-window-components-wrapper"])
   > ul[id="_collections-list"]
   > li {
-  height: 6.5em;
+  height: 8.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -115,7 +115,7 @@ main[class="application-collections-dashboard-window"]
   gap: 1em;
   list-style: none;
   background-color: #fff;
-  border-radius: 0.3em;
+  border-radius: 0.5em;
   flex-shrink: 0;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -141,7 +141,7 @@ main[class="application-collections-dashboard-window"]
   > ul[id="_collections-list"]
   > li
   :where(aside) {
-  height: 4em;
+  min-height: 4em;
   width: min(95%, 95%);
   display: flex;
   align-items: flex-start;
@@ -161,10 +161,30 @@ main[class="application-collections-dashboard-window"]
   height: 1.5em;
   width: 1.5;
   position: absolute;
-  top: 1.3em;
+  top: 2.8em;
   right: 0em;
   cursor: pointer;
   font-size: 1em;
+}
+main[class="application-collections-dashboard-window"]
+  > section[class="_application-collections-dashboard-window-wrapper"]
+  :is(div[class="_application-collections-dashboard-window-components-wrapper"])
+  > ul[id="_collections-list"]
+  > li
+  :where(aside)
+  button[class="show-collection-in-folder-button"] {
+  height: 2.5em !important;
+  width: 10em;
+  border: none;
+  color: #fff;
+  background-color: #000;
+  border-radius: 0.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.3em;
 }
 main[class="application-collections-dashboard-window"]
   > section[class="_application-collections-dashboard-window-wrapper"]

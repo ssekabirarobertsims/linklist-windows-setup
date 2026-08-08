@@ -51,7 +51,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
 
   //   state to handle links list saving options
   const [showSavingOptions, setShowSavingOptions] = useState<boolean>(
-    false as boolean
+    false as boolean,
   );
   //   state to handle selected links list actions options
   const [
@@ -112,6 +112,19 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
     document.title = "Dashboard - Archives | LinkList";
   }, []);
 
+  // Helper to compute favicon URL for a given link, falling back to local image
+  const getFaviconUrl = (url?: string): string => {
+    try {
+      if (!url) return "/favicon/OIP.webp";
+      const parsed = new URL(url);
+      const hostname = parsed.hostname;
+      return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: unknown) {
+      return "/favicon/OIP.webp";
+    }
+  };
+
   // Render the dashboard home page layout and content
   return (
     <>
@@ -135,7 +148,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                 // @ts-expect-error
                 await window.app_api.exportDataToTXTFile(
                   linkArchivesList?.map((item) => item) ?? [],
-                  `txt`
+                  `txt`,
                 );
               }}
             >
@@ -150,12 +163,12 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
 
                   const inputs: HTMLInputElement[] =
                     window.document.querySelectorAll(
-                      ".select-link-checkbox"
+                      ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
                   // remove label and its content
                   (
                     window.document.querySelector(
-                      ".selected-links-count-placeholder"
+                      ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = `${
                     selectedArchivedLinks.length - selectedArchivedLinks.length
@@ -207,12 +220,12 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
 
                 const inputs: HTMLInputElement[] =
                   window.document.querySelectorAll(
-                    ".select-link-checkbox"
+                    ".select-link-checkbox",
                   ) as unknown as HTMLInputElement[];
                 // remove label and its content
                 (
                   window.document.querySelector(
-                    ".selected-links-count-placeholder"
+                    ".selected-links-count-placeholder",
                   ) as HTMLSpanElement
                 ).innerHTML = ``;
 
@@ -222,7 +235,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                 // uncheck all inputs
                 inputs.forEach(
                   (input: HTMLInputElement) =>
-                    (input.checked = false as boolean)
+                    (input.checked = false as boolean),
                 );
 
                 // set the selected links count to 0
@@ -237,14 +250,14 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-archives-dashboard-window"
+          "application-archives-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
           className={String(
-            "_application-archives-dashboard-window-wrapper"
+            "_application-archives-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -267,7 +280,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-expect-error
                       await window.app_api.restoreArchivedLinks(
-                        linkArchivesList
+                        linkArchivesList,
                       );
                     //
                     console.log("Restore links response:", response);
@@ -329,11 +342,11 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                     await window.app_api.exportDataToHTMLFile(
                       linkArchivesList?.map((item) => item) ?? [],
                       `html`,
-                      "Archives"
+                      "Archives",
                     );
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -348,7 +361,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                     setShowSavingOptions(true);
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -369,8 +382,12 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                 linkArchivesList.map((link: ListItemProperties) => (
                   <li key={uuidV4()} id={link.id} title={`${link.title}`}>
                     <img
-                      src="/favicon/OIP.webp"
+                      src={getFaviconUrl(link.link)}
                       alt={`${link.title} favicon`}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src =
+                          "/favicon/OIP.webp";
+                      }}
                     />
                     <aside>
                       <span>{link.title}</span>
@@ -389,13 +406,13 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                               // @ts-expect-error
                               await window.app_api.deleteExistingArchivedLink(
-                                link?.id
+                                link?.id,
                               ); // filter out links.id !== LinkID: O(1) // Constant time
                             // reload app
                             window.location.href = "/archives";
                             console.log(
                               "Delete archived link response:",
-                              response
+                              response,
                             );
                           }}
                         >
@@ -413,7 +430,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                                 link.link.length < 65
                                   ? link.link
                                   : `${link.link.slice(0, 40)}...`
-                              }`
+                              }`,
                             );
                           }}
                         >
@@ -440,7 +457,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                               // @ts-expect-error
                               await window.app_api.restoreArchivedLink(
-                                LinkData
+                                LinkData,
                               );
                             console.log("Restore link response:", response);
                             // hide loader if response includes success
@@ -486,9 +503,10 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).textContent = `${selectedArchivedLinksArr.length} link(s) selected`;
+                            ).textContent =
+                              `${selectedArchivedLinksArr.length} link(s) selected`;
                           } else {
                             selectedArchivedLinks.length--; // auto decrement number for each link selected
                             // remove the last element of the selected links arr
@@ -496,9 +514,10 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).textContent = `${selectedArchivedLinksArr.length} link(s) selected`;
+                            ).textContent =
+                              `${selectedArchivedLinksArr.length} link(s) selected`;
                           }
                         }}
                       />

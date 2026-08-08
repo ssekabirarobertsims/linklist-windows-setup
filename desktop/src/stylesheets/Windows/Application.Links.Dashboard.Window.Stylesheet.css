@@ -10,6 +10,118 @@ main[class="application-links-dashboard-window"] {
   flex-grow: 1;
   /* border: 1px solid red; */
 }
+
+.clipboard-link-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 15, 30, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  z-index: 5000;
+}
+
+.clipboard-link-prompt-card {
+  width: min(92vw, 26rem);
+  background: linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%);
+  border: 1px solid rgba(24, 44, 97, 0.12);
+  border-radius: 1.1rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.2);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.clipboard-link-prompt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.clipboard-link-prompt-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4c6ef5;
+}
+
+.clipboard-link-prompt-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #14213d;
+}
+
+.clipboard-link-prompt-close {
+  border: none;
+  background: #eef2ff;
+  color: #4c6ef5;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.clipboard-link-prompt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: #364152;
+}
+
+.clipboard-link-prompt-field span {
+  font-weight: 600;
+}
+
+.clipboard-link-prompt-field input,
+.clipboard-link-prompt-field textarea {
+  width: 100%;
+  border: 1px solid #d9e2f5;
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.92rem;
+  background: #fff;
+  color: #14213d;
+  box-sizing: border-box;
+}
+
+.clipboard-link-prompt-field input:focus,
+.clipboard-link-prompt-field textarea:focus {
+  outline: none;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.15);
+}
+
+.clipboard-link-prompt-actions {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+}
+
+.clipboard-link-prompt-action {
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clipboard-link-prompt-action-primary {
+  background: linear-gradient(135deg, #4c6ef5 0%, #2563eb 100%);
+  color: #fff;
+}
+
+.clipboard-link-prompt-action-secondary {
+  background: #eef2ff;
+  color: #37517c;
+}
 main[class="application-links-dashboard-window"]
   > section[class="_application-links-dashboard-window-wrapper"] {
   height: 100vh;

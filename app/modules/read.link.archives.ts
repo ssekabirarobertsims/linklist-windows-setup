@@ -12,13 +12,13 @@ const ReadAllLinkArchives = async (
   process: {
     handle: (arg0: string, arg1: () => Promise<object>) => void;
   },
-  application: any
+  application: any,
 ): Promise<object> => {
   // path to archived links *.json file
   const archivedLinksFilePath = path.join(
     application.getPath("userData"),
     "Archives",
-    "archived_links.json"
+    "archived_links.json",
   );
 
   //
@@ -31,8 +31,33 @@ const ReadAllLinkArchives = async (
       if (archivedLinksFilePath) {
         // parse links arr into from stringified obj to an arr[]
         existingLinkArchives = JSON.parse(
-          fs.readFileSync(archivedLinksFilePath, "utf8")
+          fs.readFileSync(archivedLinksFilePath, "utf8"),
         );
+
+        const now = Date.now();
+        const activeArchives = existingLinkArchives
+          .filter((archive: any) => {
+            const expiresAt = archive?.expiresAt;
+            if (!expiresAt) {
+              return true;
+            }
+
+            return new Date(expiresAt).getTime() > now;
+          })
+          .sort((left: any, right: any) => {
+            const leftTime = new Date(left?.archivedAt ?? 0).getTime();
+            const rightTime = new Date(right?.archivedAt ?? 0).getTime();
+            return leftTime - rightTime;
+          });
+
+        if (activeArchives.length !== existingLinkArchives.length) {
+          fs.writeFileSync(
+            archivedLinksFilePath,
+            JSON.stringify(activeArchives, null, 2),
+          );
+        }
+
+        existingLinkArchives = activeArchives;
       }
     } catch (error) {
       console.error("Failed to parse links file:", error);

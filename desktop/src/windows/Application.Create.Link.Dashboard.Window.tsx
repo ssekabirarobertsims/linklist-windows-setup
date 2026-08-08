@@ -10,6 +10,27 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { v4 } from "uuid";
 import { Link } from "react-router-dom";
 
+const generateShortCode = (): string => {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let value = "";
+
+  for (let index = 0; index < 6; index += 1) {
+    value += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return value;
+};
+
+const createCustomAlias = (value: string): string => {
+  const normalizedValue = value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return normalizedValue || `link-${generateShortCode()}`;
+};
+
 const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
   // State for form fields
   const [title, setTitle] = useState<string>("");
@@ -21,15 +42,55 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
 
   const handleSaveLink = async (event: React.MouseEvent): Promise<void> => {
     event.stopPropagation(); // prevent event bubbling
+    // validate required fields
+    const missingFields: string[] = [];
+    if (!title || title.trim() === "") missingFields.push("Title");
+    if (!link || link.trim() === "") missingFields.push("URL");
+    // Description is optional
+
+    if (missingFields.length > 0) {
+      window.alert(
+        `Please provide the following required field(s): ${missingFields.join(", ")}`,
+      );
+      return;
+    }
+
+    // check for duplicate title (case-insensitive)
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      const existingLinks = (await window.app_api.readAllExistingLinks()) as
+        | { title?: string }[]
+        | undefined;
+
+      const normalized = title.trim().toLowerCase();
+      if (
+        existingLinks &&
+        existingLinks.some(
+          (l) => (l.title ?? "").trim().toLowerCase() === normalized,
+        )
+      ) {
+        window.alert(
+          "A link with that title already exists. Please choose a different title.",
+        );
+        return;
+      }
+    } catch (err) {
+      console.warn("Could not validate duplicate titles", err);
+      // allow proceed if validation can't run
+    }
 
     // prepare the link data
     const LinkData = {
-      title: title ?? "Title",
-      link: link ?? "https://www.example.com",
-      user_id: "", // replace with actual user ID if available
-      _date: link ?? format(new Date(), "EEE, MMMM d, yyyy"),
-      description: description,
       id: v4(),
+      title: title.trim(),
+      originalUrl: link.trim(),
+      link: link.trim(),
+      shortUrl: `ll://${generateShortCode()}`,
+      customAlias: createCustomAlias(title.trim()),
+      user_id: "", // replace with actual user ID if available
+      _date: format(new Date(), "EEE, MMMM d, yyyy"),
+      description: description.trim() || "Saved from manual entry",
     };
 
     // show loader on immediate function call
@@ -41,16 +102,19 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
     const response: string = await window.app_api.createNewLink(LinkData);
     console.log("Create link response:", response);
     // hide loader if response includes success
-    if (response.toLocaleLowerCase().includes("success"))
+    if (response.toLocaleLowerCase().includes("success")) {
+      window.alert(`Link saved successfully. Short URL: ${LinkData.shortUrl}`);
       window.setTimeout(() => {
         setShowLoader(false); // hider loader
         // redirect to links page after a short delay
         window.location.href = "/links";
       }, 1200);
+    }
 
     // disable button to prevent multiple requests
-    if (buttonRef.current) {
-      buttonRef.current.disabled = true;
+    if (buttonRef && (buttonRef.current as HTMLButtonElement | null)) {
+      const btn = buttonRef.current as unknown as HTMLButtonElement | null;
+      if (btn) btn.disabled = true;
     }
   };
 
@@ -113,9 +177,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   required
                   maxLength={50}
                   value={title}
-                  onInput={(event) =>
-                    setTitle((event.target as HTMLInputElement).value)
-                  }
+                  onChange={(event) => setTitle(event.target.value)}
                 />
                 {/* Input for link URL */}
                 <label htmlFor="create-link-form-link-input">Link URL</label>
@@ -128,9 +190,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   aria-placeholder="https://example.com"
                   required
                   value={link}
-                  onInput={(event) =>
-                    setLink((event.target as HTMLInputElement).value)
-                  }
+                  onChange={(event) => setLink(event.target.value)}
                 />
                 {/* Input for link description */}
                 <label htmlFor="create-link-form-description-input">
@@ -142,10 +202,9 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   id="create-link-form-description-input"
                   placeholder="This is my favorite link..."
                   aria-placeholder="This is my favorite link..."
-                  required
                   value={description}
-                  onInput={(event) =>
-                    setDescription((event.target as HTMLInputElement).value)
+                  onChange={(event) =>
+                    setDescription((event.target as HTMLTextAreaElement).value)
                   }
                 ></textarea>
                 <p></p>
@@ -154,7 +213,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   {/* Save button */}
                   <button
                     type="button"
-                    ref={buttonRef.current}
+                    ref={buttonRef}
                     onClick={handleSaveLink}
                   >
                     {showLoader && (

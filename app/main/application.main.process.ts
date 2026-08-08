@@ -8,7 +8,11 @@ import {
   shell,
   Notification,
   IpcMain,
+  clipboard,
 } from "electron";
+import os from "node:os";
+import { v4 } from "uuid";
+const checkDiskSpace = require("check-disk-space").default;
 
 /**
  *
@@ -26,17 +30,208 @@ import {
 import { generateExportFilename } from "../functions/generate.file.names";
 import fs from "node:fs";
 import { format } from "date-fns";
-import os from "node:os";
 console.log(os.userInfo());
 console.log(os.hostname());
 
 // native icon for the application
 const nativeIcon: string = nativeImage.createFromPath(
-  path.join("../../public/icons/linklist-logo.jpg")
+  path.join("../../public/icons/linklist-logo.jpg"),
 ) as unknown as string;
 
 // set application name before starting up
 app.setName("Linklist");
+
+const savedLinksFilePath = path.join(
+  app.getPath("userData"),
+  "Links",
+  "saved_links.json",
+);
+
+const normalizeClipboardUrl = (value: string): string => {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return trimmedValue;
+  }
+
+  if (/^https?:\/\//i.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  if (/^www\./i.test(trimmedValue)) {
+    return `https://${trimmedValue}`;
+  }
+
+  return trimmedValue;
+};
+
+const isLikelyUrl = (value: string): boolean => {
+  const normalizedValue = normalizeClipboardUrl(value);
+
+  if (!normalizedValue) {
+    return false;
+  }
+
+  try {
+    const parsedUrl = new URL(
+      normalizedValue.startsWith("http")
+        ? normalizedValue
+        : `https://${normalizedValue}`,
+    );
+    return Boolean(parsedUrl.hostname);
+  } catch (error) {
+    return false;
+  }
+};
+
+const generateShortCode = (): string => {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let value = "";
+
+  for (let index = 0; index < 6; index += 1) {
+    value += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return value;
+};
+
+const createCustomAlias = (value: string): string => {
+  const normalizedValue = value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return normalizedValue || `link-${generateShortCode()}`;
+};
+
+const buildClipboardLinkEntry = (
+  value: string,
+  overrides: Partial<Record<string, string>> = {},
+): Record<string, string> => {
+  const normalizedValue = normalizeClipboardUrl(value);
+  const parsedUrl = new URL(
+    normalizedValue.startsWith("http")
+      ? normalizedValue
+      : `https://${normalizedValue}`,
+  );
+  const title =
+    overrides.title?.trim() ||
+    parsedUrl.hostname.replace(/^www\./i, "") ||
+    "Clipboard link";
+  const description =
+    overrides.description?.trim() || "Saved from clipboard automatically";
+  const shortUrl = `ll://${generateShortCode()}`;
+
+  return {
+    id: v4(),
+    title,
+    originalUrl: normalizedValue,
+    link: normalizedValue,
+    shortUrl,
+    customAlias: createCustomAlias(title),
+    user_id: "",
+    _date: format(new Date(), "EEE, MMMM d, yyyy"),
+    description,
+  };
+};
+
+const persistLinkEntry = (linkEntry: Record<string, string>): boolean => {
+  let existingLinks: Array<Record<string, string>> = [];
+
+  if (fs.existsSync(savedLinksFilePath)) {
+    try {
+      const fileContent = fs.readFileSync(savedLinksFilePath, "utf8");
+      existingLinks = JSON.parse(fileContent) as Array<Record<string, string>>;
+    } catch (error) {
+      console.error("Failed to parse saved links file:", error);
+      existingLinks = [];
+    }
+  }
+
+  const originalUrl = String(
+    linkEntry.originalUrl ?? linkEntry.link ?? "",
+  ).trim();
+  const alreadySaved = existingLinks.some((existingLink) => {
+    const existingUrl = String(
+      existingLink.originalUrl ?? existingLink.link ?? "",
+    ).trim();
+    return existingUrl.toLowerCase() === originalUrl.toLowerCase();
+  });
+
+  if (alreadySaved) {
+    return false;
+  }
+
+  existingLinks.push(linkEntry);
+  fs.writeFileSync(savedLinksFilePath, JSON.stringify(existingLinks, null, 2));
+  shell.beep();
+
+  return true;
+};
+
+const saveClipboardLink = (value: string): boolean => {
+  const normalizedValue = normalizeClipboardUrl(value);
+
+  if (!isLikelyUrl(normalizedValue)) {
+    return false;
+  }
+
+  return persistLinkEntry(buildClipboardLinkEntry(normalizedValue));
+};
+
+let lastClipboardCheckValue = "";
+let isClipboardPromptOpen = false;
+
+const triggerClipboardCheck = (): void => {
+  if (!app.isReady() || isClipboardPromptOpen) {
+    return;
+  }
+
+  try {
+    const clipboardValue = clipboard.readText().trim();
+
+    if (!clipboardValue || clipboardValue === lastClipboardCheckValue) {
+      return;
+    }
+
+    if (!isLikelyUrl(clipboardValue)) {
+      lastClipboardCheckValue = clipboardValue;
+      return;
+    }
+
+    lastClipboardCheckValue = clipboardValue;
+    isClipboardPromptOpen = true;
+
+    const mainWindow = BrowserWindow.getAllWindows().find(
+      (windowInstance) => !windowInstance.isDestroyed(),
+    );
+    const promptPayload = {
+      title: new URL(
+        clipboardValue.startsWith("http")
+          ? clipboardValue
+          : `https://${clipboardValue}`,
+      ).hostname.replace(/^www\./i, ""),
+      url: clipboardValue,
+      description: `Saved from clipboard on ${format(new Date(), "MMM d, yyyy")}`,
+    };
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("clipboard-link-detected", promptPayload);
+    }
+    isClipboardPromptOpen = false;
+  } catch (error) {
+    isClipboardPromptOpen = false;
+    console.error("Clipboard monitor failed:", error);
+  }
+};
+
+const startClipboardMonitor = (): void => {
+  triggerClipboardCheck();
+  setInterval(() => {
+    triggerClipboardCheck();
+  }, 3000);
+};
 
 // import function to check user information file tree
 import CreateRequiredApplicationFileSystem from "../functions/create.required.application.file.system";
@@ -69,7 +264,7 @@ app.on("ready", (): void => {
 
   // load file for the splash window
   ApplicationSplashWindow.loadFile(
-    path.join(__dirname, "../../../app/windows/Application.Splash.Window.html")
+    path.join(__dirname, "../../../app/windows/Application.Splash.Window.html"),
   );
   ApplicationSplashWindow.show(); // show the application splash window
 
@@ -86,7 +281,7 @@ app.on("ready", (): void => {
     webPreferences: {
       preload: path.resolve(
         app.getAppPath(),
-        "../context/application.context.bridge.js"
+        "../context/application.context.bridge.js",
       ),
       nodeIntegration: false,
       contextIsolation: true,
@@ -115,6 +310,7 @@ app.on("ready", (): void => {
       ApplicationSplashWindow.close(); // close the application splash window
       ApplicationMainWindow.show(); // show the application main window
       ApplicationMainWindow.maximize(); // maximize the application main window
+      startClipboardMonitor();
     }, 7000);
   });
 });
@@ -126,9 +322,30 @@ app.on("ready", (): void => {
  */
 
 ipcMain.handle("get-system-information", async (): Promise<object> => {
+  const diskPath = os.platform() === "win32" ? "C:/" : "/";
+  const diskInfo = await checkDiskSpace(diskPath);
+  const totalMemoryGB = Math.round(os.totalmem() / (1024 * 1024 * 1024));
+  const freeMemoryGB = Math.round(os.freemem() / (1024 * 1024 * 1024));
+  const usedMemoryGB = totalMemoryGB - freeMemoryGB;
+
   return {
     appVersion: app.getVersion(),
     systemVersion: os.version(),
+    platform: os.platform(),
+    release: os.release(),
+    deviceName: os.hostname(),
+    registeredUser: os.userInfo().username,
+    totalMemoryGB,
+    usedMemoryGB,
+    freeMemoryGB,
+    diskTotalGB: Number((diskInfo.size / (1024 * 1024 * 1024)).toFixed(2)),
+    diskFreeGB: Number((diskInfo.free / (1024 * 1024 * 1024)).toFixed(2)),
+    diskUsedGB: Number(
+      ((diskInfo.size - diskInfo.free) / (1024 * 1024 * 1024)).toFixed(2),
+    ),
+    diskUsagePercent: Number(
+      (((diskInfo.size - diskInfo.free) / diskInfo.size) * 100).toFixed(1),
+    ),
     now: format(new Date(), "EEE, MMMM d, yyyy"),
   };
 });
@@ -147,7 +364,7 @@ ipcMain.handle(
     await shell.openExternal(url);
     shell.beep(); // make window sound for alert
     await console.log(`Opened external link: ${url}`);
-  }
+  },
 );
 
 /**
@@ -163,7 +380,7 @@ ipcMain.handle(
   async (_: any, pathToShowItemInFolder: string): Promise<void> => {
     // open in windows file explorer
     await shell.showItemInFolder(pathToShowItemInFolder);
-  }
+  },
 );
 
 /**
@@ -184,12 +401,12 @@ const ensureDirectoryExists = (filePath: string): void => {
 const collectionsFilePath = path.join(
   app.getPath("userData"),
   "Collections",
-  "collections.json"
+  "collections.json",
 );
 const archivesFilePath = path.join(
   app.getPath("userData"),
   "Archives",
-  "archived_links.json"
+  "archived_links.json",
 );
 
 /**
@@ -233,6 +450,51 @@ ipcMain.handle("close-application", async (): Promise<void> => {
   app.quit();
 });
 
+const generateRandomDescription = (): string => {
+  const descriptions = [
+    "This link was quickly saved from your clipboard for convenient access later. It has not yet been reviewed or categorized, so the information shown may be incomplete. Open the link when you're ready, add notes, assign tags, or move it into a collection to keep your workspace organized",
+    "A new link has been captured directly from your clipboard and securely stored in your local LinkList library. This temporary description serves as a placeholder until you personalize it. Consider updating the title, adding meaningful notes, assigning tags, or placing it into the appropriate collection to make it easier to find and manage in the future.",
+    "This resource was automatically saved after being detected in your clipboard, ensuring you don't lose important web pages, articles, videos, or documents. While the original URL has been preserved, you can improve its organization by editing the description, attaching files, adding reminders, marking it as a favorite, or retrieving additional online information using the About This Link feature whenever you're connected to the internet.",
+    "This link is waiting to be reviewed and organized. It was added through the Clipboard Monitor for quick and effortless saving, allowing you to continue your work without interruption. Before archiving or sharing this resource, you may wish to verify its contents, customize its details, assign tags, add personal notes, and fetch website information to create a richer and more searchable entry in your LinkList library..",
+  ];
+
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+
+ipcMain.handle(
+  "save-clipboard-link",
+  async (_event, linkData: Record<string, string>): Promise<string> => {
+    if (
+      !linkData ||
+      !String(linkData.originalUrl ?? linkData.link ?? "").trim()
+    ) {
+      return "No link data was provided.";
+    }
+
+    const entry = {
+      ...linkData,
+      id: linkData.id || v4(),
+      title: linkData.title || "Clipboard link",
+      originalUrl: normalizeClipboardUrl(
+        String(linkData.originalUrl ?? linkData.link ?? ""),
+      ),
+      link: normalizeClipboardUrl(
+        String(linkData.originalUrl ?? linkData.link ?? ""),
+      ),
+      shortUrl: linkData.shortUrl || `ll://${generateShortCode()}`,
+      customAlias:
+        linkData.customAlias ||
+        createCustomAlias(linkData.title || "Clipboard link"),
+      user_id: linkData.user_id || "",
+      _date: linkData._date || format(new Date(), "EEE, MMMM d, yyyy"),
+      description: linkData.description || generateRandomDescription(),
+    };
+
+    const didSave = persistLinkEntry(entry);
+    return didSave ? "Link saved successfully." : "Link was already saved.";
+  },
+);
+
 /**
  * @function
  * @description fetch collections data from json file
@@ -270,14 +532,40 @@ DeleteExistingCollection(ipcMain, app, shell);
  * @returns {Promise<any>}
  *  @argument {IpcMain, app}
  */
-// path to saved_links.json file
-const savedLinksFilePath = path.join(
-  app.getPath("userData"),
-  "Links",
-  "saved_links.json"
-);
 import CreateNewLink from "../modules/create.link";
 CreateNewLink(ipcMain, app);
+
+/**
+ * @function
+ * @description create opened links and save to json file
+ * @access public
+ * @returns {Promise<any>}
+ *  @argument {IpcMain, app}
+ */
+// path to opened_links.json file
+const openedLinksFilePath = path.join(
+  app.getPath("userData"),
+  "Links",
+  "opened_links.json",
+);
+import CreateNewOpenedLink from "../modules/create.opened.link";
+CreateNewOpenedLink(ipcMain, app);
+
+/**
+ * @function
+ * @description create shared links and save to json file
+ * @access public
+ * @returns {Promise<any>}
+ *  @argument {IpcMain, app}
+ */
+// path to shared_links.json file
+const sharedLinksFilePath = path.join(
+  app.getPath("userData"),
+  "Links",
+  "shared_links.json",
+);
+import CreateNewSharedLink from "../modules/create.shared.link";
+CreateNewSharedLink(ipcMain, app);
 
 /**
  * @function
@@ -288,6 +576,26 @@ CreateNewLink(ipcMain, app);
  */
 import ReadAllLinks from "../modules/read.links";
 ReadAllLinks(ipcMain, app);
+
+/**
+ * @function
+ * @description fetch all existing links from json file
+ * @access public
+ * @returns {Promise<object>}
+ *  @argument {IpcMain, app}
+ */
+import ReadAllOpenedLinks from "../modules/read.opened.links";
+ReadAllOpenedLinks(ipcMain, app);
+
+/**
+ * @function
+ * @description fetch all existing links from json file
+ * @access public
+ * @returns {Promise<object>}
+ *  @argument {IpcMain, app}
+ */
+import ReadAllSharedLinks from "../modules/read.shared.links";
+ReadAllSharedLinks(ipcMain, app);
 
 /**
  * @function
@@ -351,7 +659,17 @@ FindRecentBackup(ipcMain, app);
 
 /**
  * @function
- * @description create user information after maybe login
+ * @description fetch the last created backup by user
+ * @access public
+ * @returns {Promise<object>}
+ * @argument {IpcMain, app}
+ */
+import FindAllRecentBackup from "../backups/all.backups";
+FindAllRecentBackup(ipcMain, app);
+
+/**
+ * @function
+ * @description create user information after maybe sign up
  * @access public
  * @returns {Promise<string>}
  * @argument {IpcMain, app}

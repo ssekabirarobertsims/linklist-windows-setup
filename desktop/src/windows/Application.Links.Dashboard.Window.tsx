@@ -2,15 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import "../stylesheets/Windows/Application.Links.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 // // Ensure that the environment variables are loaded correctly
 // Define the shape of a saved link item
 type ListItemProperties = {
   id: string;
   title: string;
   link: string;
+  originalUrl?: string;
+  shortUrl?: string;
+  customAlias?: string;
   user_id: string;
   _date: string;
   description: string;
+  tags?: string[];
+  notes?: string;
 };
 
 import { BiCopy, BiLink, BiTrash } from "react-icons/bi";
@@ -26,12 +32,61 @@ import { IoCloseSharp, IoReaderOutline } from "react-icons/io5";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import { MdOutlineOpenInNew, MdRadioButtonUnchecked } from "react-icons/md";
 
+const generateShortCode = (): string => {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let value = "";
+
+  for (let index = 0; index < 6; index += 1) {
+    value += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return value;
+};
+
+const createCustomAlias = (value: string): string => {
+  const normalizedValue = value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return normalizedValue || `link-${generateShortCode()}`;
+};
+
+const generateRandomDescription = (): string => {
+  const descriptions = [
+    "This link was quickly saved from your clipboard for convenient access later. It has not yet been reviewed or categorized, so the information shown may be incomplete. Open the link when you're ready, add notes, assign tags, or move it into a collection to keep your workspace organized",
+    "A new link has been captured directly from your clipboard and securely stored in your local LinkList library. This temporary description serves as a placeholder until you personalize it. Consider updating the title, adding meaningful notes, assigning tags, or placing it into the appropriate collection to make it easier to find and manage in the future.",
+    "This resource was automatically saved after being detected in your clipboard, ensuring you don't lose important web pages, articles, videos, or documents. While the original URL has been preserved, you can improve its organization by editing the description, attaching files, adding reminders, marking it as a favorite, or retrieving additional online information using the About This Link feature whenever you're connected to the internet.",
+    "This link is waiting to be reviewed and organized. It was added through the Clipboard Monitor for quick and effortless saving, allowing you to continue your work without interruption. Before archiving or sharing this resource, you may wish to verify its contents, customize its details, assign tags, add personal notes, and fetch website information to create a richer and more searchable entry in your LinkList library..",
+  ];
+
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+
+type AppApiShape = {
+  listenForClipboardLink: (
+    callback: (payload: {
+      title?: string;
+      url?: string;
+      description?: string;
+    }) => void,
+  ) => () => void;
+  saveClipboardLinkFromPrompt: (
+    linkData: Record<string, string>,
+  ) => Promise<string>;
+  readAllExistingLinks: () => Promise<ListItemProperties[]>;
+};
+
 const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
+  const appApi = (window as unknown as Window & { app_api: AppApiShape })
+    .app_api;
+
   // State for all links, search results, search value, and selected link for editing
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
   const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
 
   // fetch all existing links on component mount and display them
@@ -59,7 +114,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
   //   state to handle links list saving options
   const [showSavingOptions, setShowSavingOptions] = useState<boolean>(
-    false as boolean
+    false as boolean,
   );
   //   state to handle selected links list actions options
   const [showSelectedLinksActions, setShowSelectedLinksActions] =
@@ -71,11 +126,37 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     linksList as unknown as ListItemProperties,
   ]);
 
-  // Filter links based on search value
+  // Filter links based on search value across multiple fields (title, link, description, tags, notes)
   useEffect(() => {
-    const filteredResults = linksList.filter((item) =>
-      item.title.toLowerCase().includes(value.toLowerCase())
-    );
+    const query = value.trim().toLowerCase();
+
+    if (query === "") {
+      setSearchResults(linksList);
+      return;
+    }
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+
+    const filteredResults = linksList.filter((item) => {
+      // prepare searchable content for this item
+      const title = item.title?.toLowerCase() ?? "";
+      const link = item.link?.toLowerCase() ?? "";
+      const description = item.description?.toLowerCase() ?? "";
+      const tags = (item.tags ?? []).join(" ").toLowerCase();
+      const notes = item.notes?.toLowerCase() ?? "";
+
+      // For each token, require that it appears in at least one of the fields (AND across tokens)
+      return tokens.every((token) => {
+        return (
+          title.includes(token) ||
+          link.includes(token) ||
+          description.includes(token) ||
+          tags.includes(token) ||
+          notes.includes(token)
+        );
+      });
+    });
+
     setSearchResults(filteredResults);
   }, [value, linksList]);
 
@@ -98,8 +179,16 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
   // state to handle selected links
   const [selectedLinks, setSelectedLinks] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
+  const [clipboardPrompt, setClipboardPrompt] = useState<{
+    title: string;
+    url: string;
+    description: string;
+  } | null>(null);
+  const [clipboardTitle, setClipboardTitle] = useState<string>("");
+  const [clipboardDescription, setClipboardDescription] = useState<string>("");
+  const [clipboardSaving, setClipboardSaving] = useState<boolean>(false);
   // arr to handle the selected links
   const selectedLinksArr: ListItemProperties[] = [] as ListItemProperties[];
 
@@ -122,10 +211,103 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     };
   }, [showSavingOptions]);
 
+  useEffect(() => {
+    const handleClipboardEvent = (event: Event) => {
+      const customEvent = event as CustomEvent<{
+        title?: string;
+        url?: string;
+        description?: string;
+      }>;
+      const payload = customEvent.detail;
+      const promptData = {
+        title: payload?.title || "Clipboard link",
+        url: payload?.url || "",
+        description: generateRandomDescription(),
+      };
+
+      setClipboardPrompt(promptData);
+      setClipboardTitle(promptData.title);
+      setClipboardDescription(generateRandomDescription());
+    };
+
+    window.addEventListener("clipboard-link-detected", handleClipboardEvent);
+
+    return () => {
+      window.removeEventListener(
+        "clipboard-link-detected",
+        handleClipboardEvent,
+      );
+    };
+  }, []);
+
+  const handleClipboardSave = async (): Promise<void> => {
+    if (!clipboardPrompt) return;
+
+    const trimmedUrl = clipboardPrompt.url.trim();
+    if (!trimmedUrl) {
+      window.alert("The clipboard URL is empty.");
+      return;
+    }
+
+    setClipboardSaving(true);
+
+    try {
+      const linkData = {
+        id: uuidV4(),
+        title: clipboardTitle.trim() || clipboardPrompt.title,
+        originalUrl: trimmedUrl,
+        link: trimmedUrl,
+        shortUrl: `ll://${generateShortCode()}`,
+        customAlias: createCustomAlias(
+          clipboardTitle.trim() || clipboardPrompt.title,
+        ),
+        user_id: "",
+        _date: format(new Date(), "EEE, MMMM d, yyyy"),
+        description: generateRandomDescription(),
+      };
+
+      const response = await appApi.saveClipboardLinkFromPrompt(linkData);
+      const refreshedLinks =
+        (await appApi.readAllExistingLinks()) as ListItemProperties[];
+      setLinksList(refreshedLinks);
+      window.alert(`${response}\nShort URL: ${linkData.shortUrl}`);
+      setClipboardPrompt(null);
+    } catch (error) {
+      console.error("Failed to save clipboard link:", error);
+      window.alert("Could not save this clipboard link.");
+    } finally {
+      setClipboardSaving(false);
+    }
+  };
+
   // Set the document title on mount
   useEffect(() => {
     document.title = "Dashboard - Links | LinkList";
   }, []);
+
+  // Helper to compute favicon URL for a given link, falling back to local image
+  const getDisplayUrl = (link: ListItemProperties): string => {
+    if (link.originalUrl && link.originalUrl.trim()) {
+      return link.originalUrl.trim();
+    }
+
+    if (link.link && link.link.trim()) {
+      return link.link.trim();
+    }
+
+    return "";
+  };
+
+  const getFaviconUrl = (url?: string): string => {
+    try {
+      if (!url) return "/favicon/OIP.webp";
+      const parsed = new URL(url);
+      const hostname = parsed.hostname;
+      return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+    } catch {
+      return "/favicon/OIP.webp";
+    }
+  };
 
   // Render the dashboard Links page layout and content
   return (
@@ -150,12 +332,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
                   const inputs: HTMLInputElement[] =
                     window.document.querySelectorAll(
-                      ".select-link-checkbox"
+                      ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
                   // remove label and its content
                   (
                     window.document.querySelector(
-                      ".selected-links-count-placeholder"
+                      ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = `${
                     selectedLinksArr.length - selectedLinksArr.length
@@ -163,7 +345,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   // empty search results count
                   (
                     window.document.querySelector(
-                      ".search-results-count-placeholder"
+                      ".search-results-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = ``;
 
@@ -189,7 +371,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                 await window.app_api.exportDataToHTMLFile(
                   selectedLinksArr?.map((item) => item) ?? [],
                   `html`,
-                  "Saved links"
+                  "Saved links",
                 );
               }}
             >
@@ -209,12 +391,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
 
                 const inputs: HTMLInputElement[] =
                   window.document.querySelectorAll(
-                    ".select-link-checkbox"
+                    ".select-link-checkbox",
                   ) as unknown as HTMLInputElement[];
                 // remove label and its content
                 (
                   window.document.querySelector(
-                    ".selected-links-count-placeholder"
+                    ".selected-links-count-placeholder",
                   ) as HTMLSpanElement
                 ).innerHTML = ``;
 
@@ -239,13 +421,13 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-links-dashboard-window"
+          "application-links-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
-            "_application-links-dashboard-window-wrapper"
+            "_application-links-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -272,22 +454,23 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                         .includes(
                           (
                             event.target as HTMLInputElement
-                          ).value.toLocaleLowerCase()
-                        )
-                    )
+                          ).value.toLocaleLowerCase(),
+                        ),
+                    ),
                   );
 
                   // fill search results count
                   (
                     window.document.querySelector(
-                      ".search-results-count-placeholder"
+                      ".search-results-count-placeholder",
                     ) as HTMLSpanElement
-                  ).innerHTML = `Found ${searchResultsArr[0].length} search results`;
+                  ).innerHTML =
+                    `Found ${searchResultsArr[0].length} search results`;
 
                   // empty selected links count
                   (
                     window.document.querySelector(
-                      ".selected-links-count-placeholder"
+                      ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
                   ).innerHTML = ``;
 
@@ -299,7 +482,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   )
                     (
                       window.document.querySelector(
-                        ".search-results-count-placeholder"
+                        ".search-results-count-placeholder",
                       ) as HTMLSpanElement
                     ).innerHTML = ``;
                 }}
@@ -318,11 +501,31 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
               <li>
                 <Link
                   to={{
-                    pathname: "",
+                    pathname: "/links",
                     search: "",
                   }}
                 >
                   All
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={{
+                    pathname: "/links/opened",
+                    search: "",
+                  }}
+                >
+                  Opened
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={{
+                    pathname: "/links/shared",
+                    search: "",
+                  }}
+                >
+                  Shared
                 </Link>
               </li>
               <li>
@@ -333,26 +536,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   }}
                 >
                   Tagged
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={{
-                    pathname: "",
-                    search: "",
-                  }}
-                >
-                  Used
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={{
-                    pathname: "",
-                    search: "",
-                  }}
-                >
-                  Shared
                 </Link>
               </li>
             </ul>
@@ -374,11 +557,11 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                     await window.app_api.exportDataToHTMLFile(
                       linksList?.map((item) => item) ?? [],
                       `html`,
-                      "Saved links"
+                      "Saved links",
                     );
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -393,7 +576,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                     setShowSavingOptions(true);
                   } else {
                     window.alert(
-                      "System cannot export if links list is empty!"
+                      "System cannot export if links list is empty!",
                     );
                   }
                 }}
@@ -416,15 +599,35 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                 searchResults.map((link: ListItemProperties) => (
                   <li key={uuidV4()} id={link.id} title={`${link.title}`}>
                     <img
-                      src="/favicon/OIP.webp"
+                      src={getFaviconUrl(link.link)}
                       alt={`${link.title} favicon`}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src =
+                          "/favicon/OIP.webp";
+                      }}
                     />
                     <aside>
-                      <span>{`${link.title}`}</span>
+                      <span>{`${link.title ? link.title : "Saved Link"}`}</span>
                       {/* add event to open external link if clicked */}
-                      <a href="" target="_blank" title={`${link.title}`}>
-                        {link.link}
+                      <a
+                        href={getDisplayUrl(link)}
+                        target="_blank"
+                        title={`${link?.title}`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          const displayUrl = getDisplayUrl(link);
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-expect-error
+                          window.app_api.openExternalLink(displayUrl); // O(1) -- Constant time
+                        }}
+                      >
+                        {getDisplayUrl(link) || link.link}
                       </a>
+                      {link.shortUrl ? (
+                        <small style={{ display: "block", marginTop: 4 }}>
+                          Short URL: {link.shortUrl}
+                        </small>
+                      ) : null}
                       <div>
                         {/* Copy link button */}
                         <button
@@ -433,14 +636,15 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                           title="copy link to clipboard"
                           onClick={(event) => {
                             event.stopPropagation(); // prevent event bubbling
-                            CopyTextToClipboard(link.link); // copy link to windows clipboard
-                            console.log(link.link.length);
+                            const displayUrl = getDisplayUrl(link);
+                            CopyTextToClipboard(displayUrl); // copy link to windows clipboard
+                            console.log(displayUrl.length);
                             window.alert(
                               `Copied Link: ${
-                                link.link.length < 65
-                                  ? link.link
-                                  : `${link.link.slice(0, 40)}...`
-                              }`
+                                displayUrl.length < 65
+                                  ? displayUrl
+                                  : `${displayUrl.slice(0, 40)}...`
+                              }`,
                             );
                           }}
                         >
@@ -453,9 +657,10 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                           title="open link in default browser"
                           onClick={(event) => {
                             event.preventDefault();
+                            const displayUrl = getDisplayUrl(link);
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-expect-error
-                            window.app_api.openExternalLink(String(link?.link)); // O(1) -- Constant time
+                            window.app_api.openExternalLink(displayUrl); // O(1) -- Constant time
                           }}
                         >
                           <MdOutlineOpenInNew />
@@ -502,13 +707,14 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).innerHTML = `${selectedLinksArr.length} selected link(s)`;
+                            ).innerHTML =
+                              `${selectedLinksArr.length} selected link(s)`;
                             // empty search results count
                             (
                               window.document.querySelector(
-                                ".search-results-count-placeholder"
+                                ".search-results-count-placeholder",
                               ) as HTMLSpanElement
                             ).innerHTML = ``;
                           } else {
@@ -518,13 +724,14 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                             // show and update the number of selected links
                             (
                               window.document.querySelector(
-                                ".selected-links-count-placeholder"
+                                ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).innerHTML = `${selectedLinksArr.length} selected link(s)`;
+                            ).innerHTML =
+                              `${selectedLinksArr.length} selected link(s)`;
                             // empty search results count
                             (
                               window.document.querySelector(
-                                ".search-results-count-placeholder"
+                                ".search-results-count-placeholder",
                               ) as HTMLSpanElement
                             ).innerHTML = ``;
                           }
@@ -564,6 +771,48 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
           </div>
         </section>
       </main>
+      {clipboardPrompt && (
+        <article className="clipboard-link-prompt">
+          <h3>Save copied link</h3>
+          <label>
+            Title
+            <input
+              type="text"
+              value={clipboardTitle}
+              onChange={(event) => setClipboardTitle(event.target.value)}
+              placeholder="Link title"
+            />
+          </label>
+          <label>
+            Link
+            <input type="text" value={clipboardPrompt.url} readOnly />
+          </label>
+          <label>
+            Description
+            <textarea
+              value={generateRandomDescription()}
+              onChange={(event) => setClipboardDescription(event.target.value)}
+              rows={3}
+            />
+          </label>
+          <div className="clipboard-link-prompt-actions">
+            <button
+              type="button"
+              onClick={handleClipboardSave}
+              disabled={clipboardSaving}
+            >
+              {clipboardSaving ? "Saving..." : "Save link"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setClipboardPrompt(null)}
+              disabled={clipboardSaving}
+            >
+              Skip
+            </button>
+          </div>
+        </article>
+      )}
     </>
   );
 };

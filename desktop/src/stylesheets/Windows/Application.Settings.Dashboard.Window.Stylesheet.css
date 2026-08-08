@@ -287,3 +287,32 @@ main[class="application-settings-dashboard-window"]
   font-size: 0.8em;
   line-height: 1.1em;
 }
+
+main[class="application-settings-dashboard-window"]
+  > section[class="_application-settings-dashboard-window-wrapper"]
+  :is(div[class="_application-settings-dashboard-window-components-wrapper"])
+  :is(ul) {
+  width: min(100%, 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1em;
+  list-style: none;
+  flex-direction: row;
+}
+main[class="application-settings-dashboard-window"]
+  > section[class="_application-settings-dashboard-window-wrapper"]
+  :is(div[class="_application-settings-dashboard-window-components-wrapper"])
+  :is(ul)
+  > li
+  a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  text-decoration: none;
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+  font-weight: calc(230 + 100);
+}
+/*  */
