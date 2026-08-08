@@ -60,10 +60,7 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
               <article>
                 <div>
                   {/* <h1>Create Backup Now</h1> */}
-                  <img
-                    src="/imgs/auto-backup-file-to-cloud-storage-concept-illustration-flat-design-eps10-simple-modern-graphic-element-for-landing-page-ui-infographic-icon-vector.jpg"
-                    alt=""
-                  />
+                  <img src="/imgs/backup.jpg" alt="" />
                   <h2>
                     {(recentBackupDate as string | number)
                       ? `Last backed up application on ${

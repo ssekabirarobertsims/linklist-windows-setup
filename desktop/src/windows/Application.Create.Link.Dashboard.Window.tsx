@@ -10,6 +10,27 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { v4 } from "uuid";
 import { Link } from "react-router-dom";
 
+const generateShortCode = (): string => {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let value = "";
+
+  for (let index = 0; index < 6; index += 1) {
+    value += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return value;
+};
+
+const createCustomAlias = (value: string): string => {
+  const normalizedValue = value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return normalizedValue || `link-${generateShortCode()}`;
+};
+
 const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
   // State for form fields
   const [title, setTitle] = useState<string>("");
@@ -61,12 +82,15 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
 
     // prepare the link data
     const LinkData = {
+      id: v4(),
       title: title.trim(),
+      originalUrl: link.trim(),
       link: link.trim(),
+      shortUrl: `ll://${generateShortCode()}`,
+      customAlias: createCustomAlias(title.trim()),
       user_id: "", // replace with actual user ID if available
       _date: format(new Date(), "EEE, MMMM d, yyyy"),
-      description: description.trim(),
-      id: v4(),
+      description: description.trim() || "Saved from manual entry",
     };
 
     // show loader on immediate function call
@@ -78,12 +102,14 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
     const response: string = await window.app_api.createNewLink(LinkData);
     console.log("Create link response:", response);
     // hide loader if response includes success
-    if (response.toLocaleLowerCase().includes("success"))
+    if (response.toLocaleLowerCase().includes("success")) {
+      window.alert(`Link saved successfully. Short URL: ${LinkData.shortUrl}`);
       window.setTimeout(() => {
         setShowLoader(false); // hider loader
         // redirect to links page after a short delay
         window.location.href = "/links";
       }, 1200);
+    }
 
     // disable button to prevent multiple requests
     if (buttonRef && (buttonRef.current as HTMLButtonElement | null)) {

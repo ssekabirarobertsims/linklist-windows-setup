@@ -119,7 +119,8 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
       const parsed = new URL(url);
       const hostname = parsed.hostname;
       return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: unknown) {
       return "/favicon/OIP.webp";
     }
   };

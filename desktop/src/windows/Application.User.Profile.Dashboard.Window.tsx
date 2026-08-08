@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.User.Profile.Dashboard.Window.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-// import { CiEdit } from "react-icons/ci";
-import { GiHelp } from "react-icons/gi";
-import { MdFeedback, MdPrivacyTip } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { BsExclamation } from "react-icons/bs";
-// import { TiTick } from "react-icons/ti";
-import { TbApiApp } from "react-icons/tb";
+// import { Link } from "react-router-dom";
 import { AiFillWindows } from "react-icons/ai";
 
 interface DeviceInfo {
@@ -27,23 +21,6 @@ interface DeviceInfo {
   diskUsagePercent: number;
   now: string;
 }
-
-// Define the shape of a saved link item
-type ListItemProperties = {
-  id: string;
-  title: string;
-  link: string;
-  user_id: string;
-  date_created?: string;
-};
-// // Ensure that the environment variables are loaded correctly
-// Define the shape of a saved link item
-type collectionProps = {
-  id: string;
-  filename: string;
-  filepath: string;
-  date_created?: string;
-};
 
 const ApplicationUserProfileDashboardWindow: React.FC = () => {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>({} as DeviceInfo);
@@ -75,83 +52,6 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
   useEffect(() => {
     document.title = "Dashboard - Device Profile | LinkList";
   }, []);
-
-  // State for all links, search results, search value, and selected link for editing
-  // Initialize state for the list of links, search results, search value, and selected link
-  // State to hold the list of links
-  const [linkArchivesList, setLinkArchivesList] = useState<
-    ListItemProperties[]
-  >([] as ListItemProperties[]);
-
-  // fetch all existing links archives on component mount and display them
-  useEffect(() => {
-    const fetchLinkArchives = async (): Promise<ListItemProperties[]> => {
-      const links: ListItemProperties[] =
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        (await window.app_api.readAllLinkArchives()) as ListItemProperties[];
-      // set the links list state
-      setLinkArchivesList(links);
-      // return an arr[] for the links
-      return links;
-    };
-
-    fetchLinkArchives();
-  }, []);
-
-  // State for all collections, search results, search value, and selected link for editing
-  // Initialize state for the list of collections, search results, search value, and selected link
-  // State to hold the list of collections
-  const [collection, setCollection] = useState<collectionProps[]>(
-    [] as collectionProps[],
-  );
-
-  useEffect(() => {
-    // fetch collections data from the main process
-    const readCollectionsData = async (): Promise<collectionProps[]> => {
-      const data: collectionProps[] =
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        (await window.app_api.readCollectionsData()) as collectionProps[];
-      // set the collection state with fetched data
-      setCollection(data);
-      return data;
-    };
-
-    // call function to fetch collections data on component mount
-    readCollectionsData();
-  }, []);
-
-  // set state for the collections list
-  useEffect(() => {
-    setCollection(collection);
-  }, [collection]);
-
-  // State for all links, used to count saved links in device profile
-  const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[],
-  );
-
-  // fetch all existing links on component mount and display them
-  useEffect(() => {
-    const fetchLinks = async (): Promise<ListItemProperties[]> => {
-      const links: ListItemProperties[] =
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        (await window.app_api.readAllExistingLinks()) as ListItemProperties[];
-      // set the links list state
-      setLinksList(links);
-      // return an arr[] for the links
-      return links;
-    };
-
-    fetchLinks();
-  }, []);
-
-  // set state for the link list
-  useEffect(() => {
-    setLinksList(linksList);
-  }, [linksList]);
 
   return (
     <>
@@ -196,9 +96,9 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
                   {deviceInfo.release || "OS Release"}
                 </p>
                 <p className="device-summary">
-                  LinkList is running on this device as a dedicated link
-                  manager. The page shows storage, memory, and OS details so you
-                  can see the host system at a glance.
+                  LinkList is running on this device as a dedicated link manager
+                  application. You can manage your links, archives, and backups
+                  from this device.
                 </p>
                 <p>
                   {profilePictureInformation?.size ? (
@@ -243,84 +143,15 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
             {/*  */}
 
             <br />
-            {/* User Info Section */}
-
-            {/* Details */}
-            {/* <div className="profile-details">
-              <aside>
-                <div className="detail-row">
-                  <span className="detail-label">
-                    {" "}
-                    {
-                      Number(linksList?.length ?? [].length) as Required<number>
-                    }{" "}
-                  </span>
-                  <p className="detail-value">
-                    {" "}
-                    <Link
-                      to={{
-                        pathname: `/links`,
-                      }}
-                    >
-                      Saved link(s)
-                    </Link>
-                  </p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">
-                    {" "}
-                    {
-                      Number(
-                        linkArchivesList.length ?? [].length,
-                      ) as Required<number>
-                    }{" "}
-                  </span>
-                  <p className="detail-value">
-                    {" "}
-                    <Link
-                      to={{
-                        pathname: `/archives`,
-                      }}
-                    >
-                      Archived link (s)
-                    </Link>
-                  </p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">OS Version</span>
-                  <p className="detail-value">
-                    {deviceInfo.systemVersion || "Unknown"}
-                  </p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Installed Build</span>
-                  <p className="detail-value">
-                    {deviceInfo.appVersion || "N/A"}
-                  </p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Memory</span>
-                  <p className="detail-value">
-                    {deviceInfo.usedMemoryGB ?? 0}GB used of{" "}
-                    {deviceInfo.totalMemoryGB ?? 0}GB
-                  </p>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Storage</span>
-                  <p className="detail-value">
-                    {deviceInfo.diskUsedGB ?? 0}GB used of{" "}
-                    {deviceInfo.diskTotalGB ?? 0}GB (
-                    {deviceInfo.diskUsagePercent ?? 0}% full)
-                  </p>
-                </div>
-              </aside>
-            </div>
-             */}
-            <br />
-            <span>Current Build {deviceInfo?.appVersion}</span>
-            <span>
+            <span id={"device-info-spans"}>
+              Device @{deviceInfo?.deviceName}
+            </span>
+            <span id={"device-info-spans"}>
+              Current Build {deviceInfo?.appVersion}
+            </span>
+            <span id={"device-info-spans"}>
               {" "}
-              <AiFillWindows /> {deviceInfo?.systemVersion} Home Edition
+              <AiFillWindows /> {deviceInfo?.systemVersion} Edition
             </span>
             <br />
             {/*  */}
@@ -348,7 +179,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
             </div>
 
             <p></p>
-            <span>
+            <span id={"copyright"}>
               {" "}
               Linklist © 2019. Links Management System. All Rights Reserved
             </span>

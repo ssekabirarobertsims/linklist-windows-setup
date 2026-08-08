@@ -14,9 +14,9 @@ import { v4 as uuidV4 } from "uuid";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { MdOutlineCollectionsBookmark } from "react-icons/md";
-import { TiDocumentDelete } from "react-icons/ti";
 import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
+import { GrOfflineStorage } from "react-icons/gr";
 
 const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
   // State for all Backups, search results, search value, and selected link for editing
@@ -182,21 +182,8 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
 
                       <p>{`Created on: ${collection?._date}`}</p>
                       <p>{`Backup Type: Local Backup`}</p>
-                      <span
-                        className="remove-from-list"
-                        onClick={async (event) => {
-                          event.stopPropagation(); // prevent event bubbling
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-expect-error
-                          await window.app_api.deleteExistingCollection(
-                            collection.id ? collection.id : "",
-                            collection.filepath,
-                          ); // delete existing collection
-                          // reload for new data
-                          window.location.href = "/backup";
-                        }}
-                      >
-                        <TiDocumentDelete />
+                      <span className="remove-from-list">
+                        <GrOfflineStorage />
                       </span>
                     </aside>
                   </li>

@@ -131,7 +131,7 @@ main[class="application-user-profile-dashboard-window"]
   header
   > div
   label {
-  font-weight: calc(200 + 200);
+  font-weight: calc(250 + 200);
   font-size: 0.8em;
   cursor: pointer;
   height: 2.5em;
@@ -153,8 +153,8 @@ main[class="application-user-profile-dashboard-window"]
   header
   > div
   p {
-  font-weight: calc(200 + 200);
-  font-size: 0.7em;
+  font-weight: calc(250 + 220);
+  font-size: 0.8em;
   color: hsl(0, 0%, 10%);
   line-height: 0.8em;
 }
@@ -350,7 +350,7 @@ main[class="application-user-profile-dashboard-window"]
   > aside
   > div
   p {
-  font-weight: 600;
+  font-weight: calc(250 + 250);
   color: hsl(0, 0%, 10%);
   font-size: 0.8em;
 }
@@ -415,6 +415,13 @@ main[class="application-user-profile-dashboard-window"]
 /*  */
 .name {
   color: hsl(0, 0%, 10%);
-  font-size: 0.8em;
+  font-size: 0.9em;
   line-height: 0.9em;
+}
+#device-info-spans,
+#copyright {
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+  line-height: 0.9em;
+  font-weight: calc(250 + 250);
 }

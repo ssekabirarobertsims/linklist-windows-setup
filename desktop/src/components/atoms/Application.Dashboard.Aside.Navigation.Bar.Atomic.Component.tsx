@@ -8,7 +8,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { BiArchive, BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
-import { MdOutlineCollectionsBookmark } from "react-icons/md";
+// import { MdOutlineCollectionsBookmark } from "react-icons/md";
 // import { CgProfile } from "react-icons/cg";
 import { TbFileImport } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -26,6 +26,7 @@ type NavigationListItemProps = {
 
 import "../../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { GrPersonalComputer } from "react-icons/gr";
+import { FaRegFolderOpen } from "react-icons/fa";
 
 const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
   () => {
@@ -54,7 +55,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       {
         id: uuidV4(),
         content: "Collections",
-        icon: <MdOutlineCollectionsBookmark />,
+        icon: <FaRegFolderOpen />,
         link: `/collections`,
       },
       {
@@ -64,6 +65,10 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         link: `/new`,
         shortcut: "Ctrl + C",
       },
+    ] as NavigationListItemProps[]);
+
+    // Sidebar navigation list, dynamically generates links based on user username
+    const [list_2, setList_2] = useState<NavigationListItemProps[]>([
       {
         id: uuidV4(),
         content: "Export",
@@ -81,7 +86,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
     ] as NavigationListItemProps[]);
 
     // Sidebar navigation list, dynamically generates links based on user username
-    const [list_2, setList_2] = useState<NavigationListItemProps[]>([
+    const [list_3, setList_3] = useState<NavigationListItemProps[]>([
       {
         id: uuidV4(),
         content: "Device",
@@ -100,6 +105,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
     // Keep the sidebar list in sync (not strictly necessary here)
     useEffect(() => setList(list), [list]);
     useEffect(() => setList_2(list_2), [list_2]);
+    useEffect(() => setList_3(list_3), [list_3]);
 
     // Fetch counts for various resources and update the sidebar amounts
     useEffect(() => {
@@ -132,6 +138,26 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
           const backupsCount = backups?.length ?? 0;
 
           setList((prev) =>
+            prev.map((item) => {
+              switch (item.content.toLowerCase()) {
+                case "links":
+                  return { ...item, amount: linksCount };
+                case "archives":
+                  return { ...item, amount: archivesCount };
+                case "collections":
+                  return { ...item, amount: collectionsCount };
+                case "backup":
+                case "backups":
+                  return { ...item, amount: backupsCount };
+                case "export":
+                case "exports":
+                  return { ...item, amount: collectionsCount };
+                default:
+                  return item;
+              }
+            }),
+          );
+          setList_2((prev) =>
             prev.map((item) => {
               switch (item.content.toLowerCase()) {
                 case "links":
@@ -197,8 +223,8 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
-            <span>Others</span>
-            <ul id="others">
+            <span>Tools</span>
+            <ul id="tools">
               {list_2.map((item: NavigationListItemProps) => (
                 <li key={item.id}>
                   <Link
@@ -212,8 +238,33 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                     <span>{item.icon as ReactNode}</span>
                     <p>
                       {item.content as Required<Readonly<string>>}
+                      {item.amount ? (
+                        <label className="nav-count">{`${item?.amount}`}</label>
+                      ) : (
+                        ""
+                      )}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <span>Others</span>
+            <ul id="others">
+              {list_3.map((item: NavigationListItemProps) => (
+                <li key={item.id}>
+                  <Link
+                    id="_wrapper"
+                    title={item.content}
+                    to={{
+                      pathname: item.link as Required<Readonly<string>>,
+                      search: item.query,
+                    }}
+                  >
+                    <span>{item.icon as ReactNode}</span>
+                    <p>
+                      {item.content as Required<Readonly<string>>}
 
-                      <label>{item.amount ? `(${item.amount})` : ""}</label>
+                      <label>{item.amount ? `(${item?.amount})` : ""}</label>
                     </p>
                   </Link>
                 </li>
