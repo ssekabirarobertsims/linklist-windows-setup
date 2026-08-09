@@ -46,7 +46,7 @@ const ExportCollectionOptionsUtilComponent: FunctionComponent<
               await window.app_api.exportDataToTXTFile(
                 collection?.map((item) => item) ?? [],
                 `txt`,
-                category
+                category,
               );
               //
               window.alert("Successfully exported links to *.txt file!");
@@ -68,7 +68,7 @@ const ExportCollectionOptionsUtilComponent: FunctionComponent<
               await window.app_api.exportDataToJSONFile(
                 collection?.map((item) => item) ?? [],
                 `json`,
-                category
+                category,
               );
               //
               window.alert("Successfully exported links to *.json file!");
@@ -91,7 +91,7 @@ const ExportCollectionOptionsUtilComponent: FunctionComponent<
               await window.app_api.exportDataToHTMLFile(
                 collection?.map((item) => item) ?? [],
                 `html`,
-                category
+                category,
               );
               //
               window.alert("Successfully exported links to *.html file!");
@@ -102,6 +102,52 @@ const ExportCollectionOptionsUtilComponent: FunctionComponent<
                 <PiFileHtml />
               </p>
               Export as *.html file
+            </span>
+          </li>{" "}
+          {/* generate * file for the collection */}
+          <li
+            className="save-collection-opt"
+            onClick={async (event): Promise<void> => {
+              event.stopPropagation(); // stop event bubbling
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
+              await window.app_api.exportDataToHTMLFile(
+                collection?.map((item) => item) ?? [],
+                `html`,
+                category,
+              );
+              //
+              window.alert("Successfully exported links to *.html file!");
+            }}
+          >
+            <span>
+              <p>
+                <PiFileHtml />
+              </p>
+              Export as *.PDF file
+            </span>
+          </li>{" "}
+          {/* generate * file for the collection */}
+          <li
+            className="save-collection-opt"
+            onClick={async (event): Promise<void> => {
+              event.stopPropagation(); // stop event bubbling
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
+              await window.app_api.exportDataToHTMLFile(
+                collection?.map((item) => item) ?? [],
+                `html`,
+                category,
+              );
+              //
+              window.alert("Successfully exported links to *.html file!");
+            }}
+          >
+            <span>
+              <p>
+                <PiFileHtml />
+              </p>
+              Export as *.XML file
             </span>
           </li>{" "}
           {/* generate doc and include list for the lists */}

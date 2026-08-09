@@ -177,8 +177,8 @@ main[class="application-collections-dashboard-window"]
   width: 10em;
   border: none;
   color: #fff;
-  background-color: #000;
-  border-radius: 0.5em;
+  background-color: var(--body-theme-color-option-2);
+  border-radius: 0.3em;
   cursor: pointer;
   display: flex;
   align-items: center;

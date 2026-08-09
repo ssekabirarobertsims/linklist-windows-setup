@@ -104,7 +104,7 @@ main[class="application-backups-dashboard-window"]
   :is(div[class="_application-backups-dashboard-window-components-wrapper"])
   > ul[id="_backups-list"]
   > li {
-  height: 6.5em;
+  height: 8.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -139,7 +139,7 @@ main[class="application-backups-dashboard-window"]
   > ul[id="_backups-list"]
   > li
   :where(aside) {
-  height: 4em;
+  min-height: 4em;
   width: min(95%, 95%);
   display: flex;
   align-items: flex-start;
@@ -159,10 +159,30 @@ main[class="application-backups-dashboard-window"]
   height: 1.5em;
   width: 1.5;
   position: absolute;
-  top: 1.3em;
+  top: 2em;
   right: 0em;
   cursor: pointer;
   font-size: 1em;
+}
+main[class="application-backups-dashboard-window"]
+  > section[class="_application-backups-dashboard-window-wrapper"]
+  :is(div[class="_application-backups-dashboard-window-components-wrapper"])
+  > ul[id="_backups-list"]
+  > li
+  :where(aside)
+  button[class="show-backup-in-folder-button"] {
+  height: 2.5em !important;
+  width: 10em;
+  border: none;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  border-radius: 0.3em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.3em;
 }
 main[class="application-backups-dashboard-window"]
   > section[class="_application-backups-dashboard-window-wrapper"]
@@ -237,5 +257,19 @@ main[class="application-backups-dashboard-window"]
 }
 
 .recent-backup {
-  border: 1px solid #000;
+  border: 1px solid var(--body-theme-color-option-2);
+}
+.show-backup-in-folder-button {
+  height: 2.5em !important;
+  width: 10em;
+  border: none;
+  color: #fff;
+  background-color: var(--body-theme-color-option-2);
+  border-radius: 0.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.3em;
 }

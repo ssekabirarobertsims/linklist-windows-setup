@@ -72,13 +72,15 @@ main[class="application-create-link-dashboard-window"]
   > form
   :where(article[class="_wrapper"]) {
   min-height: 19em;
-  width: min(95%, 95%);
+  width: min(97%, 97%);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
   gap: 0.4em;
-  /* border: 1px solid red; */
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 0.5em;
 }
 main[class="application-create-link-dashboard-window"]
   > section[class="_application-create-link-dashboard-window-wrapper"]
@@ -131,7 +133,7 @@ main[class="application-create-link-dashboard-window"]
   outline-style: none;
   border: 1px solid hsl(0, 0%, 80%);
   background-color: transparent;
-  border-radius: 0.2em;
+  border-radius: 0.3em;
   padding: 10px;
 }
 main[class="application-create-link-dashboard-window"]
@@ -149,7 +151,7 @@ main[class="application-create-link-dashboard-window"]
   outline-style: none;
   border: 1px solid hsl(0, 0%, 80%);
   background-color: transparent;
-  border-radius: 0.2em;
+  border-radius: 0.3em;
   padding: 10px;
 }
 main[class="application-create-link-dashboard-window"]
@@ -188,8 +190,8 @@ main[class="application-create-link-dashboard-window"]
   width: min(100%, 100%);
   outline-style: none;
   border: none;
-  background-color: #001aaf;
-  border-radius: 0.2em;
+  background-color: #000;
+  border-radius: 0.3em;
   color: #fff;
   cursor: pointer;
   font-weight: bold;
@@ -208,8 +210,8 @@ main[class="application-create-link-dashboard-window"]
   width: min(50%, 8em);
   outline-style: none;
   border: none;
-  background-color: #0066ff;
-  border-radius: 0.2em;
+  background-color: var(--body-theme-color-option-2);
+  border-radius: 0.3em;
   color: #fff;
   cursor: pointer;
   font-weight: bold;

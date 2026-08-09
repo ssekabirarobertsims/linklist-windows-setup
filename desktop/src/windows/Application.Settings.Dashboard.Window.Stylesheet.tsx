@@ -173,7 +173,7 @@ const ApplicationSettingsDashboardWindow: React.FunctionComponent = () => {
             <span>Current Build {systemInfo?.appVersion}</span>
             <span>
               {" "}
-              <AiFillWindows /> {systemInfo?.systemVersion} Home Edition
+              <AiFillWindows /> {systemInfo?.systemVersion} Edition
             </span>
             <span>
               {" "}

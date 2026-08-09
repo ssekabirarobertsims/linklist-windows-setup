@@ -621,13 +621,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                           window.app_api.openExternalLink(displayUrl); // O(1) -- Constant time
                         }}
                       >
-                        {getDisplayUrl(link) || link.link}
+                        {link.shortUrl ? (
+                          <p>Short URL: {link.shortUrl}</p>
+                        ) : (
+                          link.link
+                        )}
                       </a>
-                      {link.shortUrl ? (
-                        <small style={{ display: "block", marginTop: 4 }}>
-                          Short URL: {link.shortUrl}
-                        </small>
-                      ) : null}
                       <div>
                         {/* Copy link button */}
                         <button

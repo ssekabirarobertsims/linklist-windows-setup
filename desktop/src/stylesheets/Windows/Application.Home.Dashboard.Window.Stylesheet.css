@@ -202,12 +202,12 @@ main[class="application-home-dashboard-window"]
   :is(div[class="_application-home-dashboard-window-components-wrapper"])
   :where(a)
   > button {
-  height: 2em;
+  height: 2.2em;
   width: min(100%, 100%);
-  border: 1px solid hsl(0, 0%, 60%);
+  border: none;
   border-radius: 0.3em;
-  color: hsl(0, 0%, 40%);
-  background-color: transparent;
+  color: hsl(0, 100%, 100%);
+  background-color: var(--body-theme-color-option-2);
   cursor: pointer;
 }
 

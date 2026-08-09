@@ -131,8 +131,8 @@ main[class="application-archives-dashboard-window"]
   :is(div[class="_application-archives-dashboard-window-components-wrapper"])
   > div[class="_save-links-collection-button-wrapper"]
   > article {
-  height: 8em;
-  width: min(90%, 17em);
+  height: 17em;
+  width: min(90%, 15em);
   background-color: hsl(0, 0%, 100%);
   display: flex;
   align-items: center;
@@ -140,7 +140,7 @@ main[class="application-archives-dashboard-window"]
   border-radius: 0.5em;
   border: 1px solid hsl(0, 0%, 90%);
   position: absolute;
-  bottom: -9em;
+  bottom: -18em;
   right: 0em;
   z-index: 5;
   -webkit-box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);

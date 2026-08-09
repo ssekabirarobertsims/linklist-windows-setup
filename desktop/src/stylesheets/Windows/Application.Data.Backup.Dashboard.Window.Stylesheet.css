@@ -133,6 +133,10 @@ main[class="application-user-data-backup-dashboard-window"]
   :is(div)
   > p {
   max-width: 70em;
+  font-weight: calc(240 + 240);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.9em;
+  text-decoration: none;
 }
 main[class="application-user-data-backup-dashboard-window"]
   > section[class="_application-user-data-backup-dashboard-window-wrapper"]
@@ -147,7 +151,7 @@ main[class="application-user-data-backup-dashboard-window"]
   border: none;
   border-radius: 0.3em;
   color: #fff;
-  background-color: #0066ff;
+  background-color: var(--body-theme-color-option-2);
   cursor: pointer;
 }
 

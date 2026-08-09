@@ -63,7 +63,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <FacebookShareButton url={url} title={title}>
+            <FacebookShareButton url={url} title={title} formTarget="_blank">
               <FacebookIcon size={28} round />
             </FacebookShareButton>
           </li>
@@ -76,7 +76,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <WhatsappShareButton url={url} title={title}>
+            <WhatsappShareButton url={url} title={title} formTarget="_blank">
               <WhatsappIcon size={28} round />
             </WhatsappShareButton>
           </li>
@@ -89,7 +89,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <EmailShareButton url={url} title={title}>
+            <EmailShareButton url={url} title={title} formTarget="_blank">
               <EmailIcon size={28} round />
             </EmailShareButton>
           </li>
@@ -102,7 +102,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <LinkedinShareButton url={url} title={title}>
+            <LinkedinShareButton url={url} title={title} formTarget="_blank">
               <LinkedinIcon size={28} round />
             </LinkedinShareButton>
           </li>
@@ -115,7 +115,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <RedditShareButton url={url} title={title}>
+            <RedditShareButton url={url} title={title} formTarget="_blank">
               <RedditIcon size={28} round />
             </RedditShareButton>
           </li>
@@ -128,7 +128,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <TwitterShareButton url={url} title={title}>
+            <TwitterShareButton url={url} title={title} formTarget="_blank">
               <TwitterIcon size={28} round />
             </TwitterShareButton>
           </li>
@@ -141,7 +141,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <ThreadsShareButton url={url} title={title}>
+            <ThreadsShareButton url={url} title={title} formTarget="_blank">
               <ThreadsIcon size={28} round />
             </ThreadsShareButton>
           </li>
@@ -154,7 +154,7 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
               else return;
             }}
           >
-            <TelegramShareButton url={url} title={title}>
+            <TelegramShareButton url={url} title={title} formTarget="_blank">
               <TelegramIcon size={28} round />
             </TelegramShareButton>
           </li>

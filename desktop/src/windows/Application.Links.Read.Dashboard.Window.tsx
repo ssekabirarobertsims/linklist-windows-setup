@@ -13,9 +13,14 @@ type ListItemProperties = {
   id: string;
   title: string;
   link: string;
+  originalUrl?: string;
+  shortUrl?: string;
+  customAlias?: string;
   user_id: string;
   _date: string;
   description: string;
+  tags?: string[];
+  notes?: string;
 };
 
 // import { format } from "date-fns";
@@ -235,7 +240,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   <MdDateRange /> Created on {selectedLink?._date}
                 </p>
                 <a
-                  href=""
+                  href={`${selectedLink?.link}`}
                   title={`${selectedLink?.title}`}
                   onClick={(event) => {
                     event.preventDefault();
@@ -245,6 +250,19 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   }}
                 >
                   <FaLink /> {`${selectedLink?.link}`}
+                </a>
+                <a
+                  href={`${selectedLink?.link}`}
+                  title={`${selectedLink?.title}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    window.app_api.openExternalLink(String(selectedLink?.link)); // O(1) -- Constant time
+                  }}
+                >
+                  <b>Short Link:</b>{" "}
+                  {`${selectedLink?.shortUrl ? selectedLink?.shortUrl : null}`}
                 </a>
                 <br />
                 <h4>Description</h4>

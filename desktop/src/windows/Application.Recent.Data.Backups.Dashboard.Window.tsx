@@ -17,6 +17,7 @@ import { MdOutlineCollectionsBookmark } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import { GrOfflineStorage } from "react-icons/gr";
+import { LuFolderOpenDot } from "react-icons/lu";
 
 const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
   // State for all Backups, search results, search value, and selected link for editing
@@ -161,14 +162,6 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
                         ? `Recent Backup`
                         : `Backup made on ${collection?._date}`
                     }
-                    onClick={async (event): Promise<void> => {
-                      event?.stopPropagation(); // stop event bubbling
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
-                      await window.app_api.showItemInFolder(
-                        `${collection.filepath}`,
-                      ); // open collection in windows file explorer
-                    }}
                   >
                     <aside>
                       <span>
@@ -182,6 +175,22 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
 
                       <p>{`Created on: ${collection?._date}`}</p>
                       <p>{`Backup Type: Local Backup`}</p>
+                      <p></p>
+                      <button
+                        className="show-backup-in-folder-button"
+                        title="Open collection in folder"
+                        onClick={async (event): Promise<void> => {
+                          event?.stopPropagation(); // stop event bubbling
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-expect-error
+                          await window.app_api.showItemInFolder(
+                            `${collection.filepath}`,
+                          ); // open collection in windows file explorer
+                        }}
+                      >
+                        <LuFolderOpenDot />
+                        Open In Folder
+                      </button>
                       <span className="remove-from-list">
                         <GrOfflineStorage />
                       </span>
