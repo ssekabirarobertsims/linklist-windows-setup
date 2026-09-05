@@ -5,7 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { BiArchive, BiExit, BiLink } from "react-icons/bi";
+import { BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
 // import { MdOutlineCollectionsBookmark } from "react-icons/md";
@@ -27,6 +27,7 @@ type NavigationListItemProps = {
 import "../../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { GrPersonalComputer } from "react-icons/gr";
 import { FaRegFolderOpen } from "react-icons/fa";
+import { BsTrash2 } from "react-icons/bs";
 
 const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
   () => {
@@ -47,8 +48,8 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       },
       {
         id: uuidV4(),
-        content: "Archives",
-        icon: <BiArchive />,
+        content: "Trash",
+        icon: <BsTrash2 />,
         link: `/archives`,
         shortcut: "Ctrl + A",
       },
@@ -86,6 +87,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
     ] as NavigationListItemProps[]);
 
     // Sidebar navigation list, dynamically generates links based on user username
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [list_3, setList_3] = useState<NavigationListItemProps[]>([
       {
         id: uuidV4(),
@@ -102,11 +104,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       },
     ] as NavigationListItemProps[]);
 
-    // Keep the sidebar list in sync (not strictly necessary here)
-    useEffect(() => setList(list), [list]);
-    useEffect(() => setList_2(list_2), [list_2]);
-    useEffect(() => setList_3(list_3), [list_3]);
-
     // Fetch counts for various resources and update the sidebar amounts
     useEffect(() => {
       const fetchCounts = async (): Promise<void> => {
@@ -114,35 +111,37 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           const allLinks = (await window.app_api.readAllExistingLinks()) as
-            | { length: number }
+            | unknown[]
             | undefined;
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           const archives = (await window.app_api.readAllLinkArchives()) as
-            | { length: number }
+            | unknown[]
             | undefined;
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           const collections = (await window.app_api.readCollectionsData()) as
-            | { length: number }
+            | unknown[]
             | undefined;
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           const backups = (await window.app_api.readAllRecentBackup()) as
-            | { length: number }
+            | unknown[]
             | undefined;
 
-          const linksCount = allLinks?.length ?? 0;
-          const archivesCount = archives?.length ?? 0;
-          const collectionsCount = collections?.length ?? 0;
-          const backupsCount = backups?.length ?? 0;
+          const linksCount = Array.isArray(allLinks) ? allLinks.length : 0;
+          const archivesCount = Array.isArray(archives) ? archives.length : 0;
+          const collectionsCount = Array.isArray(collections)
+            ? collections.length
+            : 0;
+          const backupsCount = Array.isArray(backups) ? backups.length : 0;
 
           setList((prev) =>
             prev.map((item) => {
               switch (item.content.toLowerCase()) {
                 case "links":
                   return { ...item, amount: linksCount };
-                case "archives":
+                case "trash":
                   return { ...item, amount: archivesCount };
                 case "collections":
                   return { ...item, amount: collectionsCount };
@@ -184,6 +183,9 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       };
 
       fetchCounts();
+      const refreshTimer = window.setInterval(fetchCounts, 3000);
+
+      return () => window.clearInterval(refreshTimer);
     }, []);
 
     const handleExitApplication = () => {
@@ -213,7 +215,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                     <span>{item.icon as ReactNode}</span>
                     <p>
                       {item.content as Required<Readonly<string>>}
-                      {item.amount ? (
+                      {item.amount !== undefined ? (
                         <label className="nav-count">{`${item.amount}`}</label>
                       ) : (
                         ""
@@ -238,7 +240,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                     <span>{item.icon as ReactNode}</span>
                     <p>
                       {item.content as Required<Readonly<string>>}
-                      {item.amount ? (
+                      {item.amount !== undefined ? (
                         <label className="nav-count">{`${item?.amount}`}</label>
                       ) : (
                         ""

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Windows/Application.Data.Backup.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
@@ -60,7 +61,7 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
               <article>
                 <div>
                   {/* <h1>Create Backup Now</h1> */}
-                  <img src="/imgs/backup.jpg" alt="" />
+                  <img src="/imgs/OIP.webp" alt="" />
                   <h2>
                     {(recentBackupDate as string | number)
                       ? `Last backed up application on ${

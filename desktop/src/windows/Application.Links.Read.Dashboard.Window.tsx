@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { DashboardFooterComponent } from "../components/Footer.Components";
 import "../stylesheets/Windows/Application.Links.Read.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 // import {
 //   MobileViewSideBarComponent,
@@ -23,6 +24,14 @@ type ListItemProperties = {
   notes?: string;
 };
 
+type LinkTag = {
+  tagId: string;
+  taggedLinkId: string;
+  _tagDate: string;
+  _tagTime: string;
+  tag: string;
+};
+
 // import { format } from "date-fns";
 import { BiCopy, BiLeftArrowAlt, BiPencil, BiTrash } from "react-icons/bi";
 import { RiShareForwardLine } from "react-icons/ri";
@@ -33,9 +42,13 @@ import LinksSharingFormUtilsComponent from "../components/utils/Links.Sharing.Fo
 import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
 import { Link, useSearchParams } from "react-router-dom";
 import { TbFileExport } from "react-icons/tb";
-import { FaLink } from "react-icons/fa";
+import { FaHashtag, FaLink } from "react-icons/fa";
 import { MdDateRange, MdOutlineOpenInNew } from "react-icons/md";
 import { format } from "date-fns/format";
+import { v4 as uuidv4 } from "uuid";
+
+const maximumTagsPerLink = 5;
+const maximumTagLength = 15;
 
 const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -82,6 +95,25 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
   //   const [sharedLinkTitle, setSharedLinkTitle] = useState<string | null>(null);
   // This state holds the URL of the link being shared
   const [sharedLink, setSharedLink] = useState<string | null>(null);
+  const [linkTags, setLinkTags] = useState<LinkTag[]>([]);
+  const [showAddTagForm, setShowAddTagForm] = useState<boolean>(false);
+  const [tagInput, setTagInput] = useState<string>("");
+  const [tagLimitWarning, setTagLimitWarning] = useState<string>("");
+
+  const fetchLinkTags = async (linkId: string): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const tags = (await window.app_api.readAllLinkTags()) as LinkTag[];
+    setLinkTags(tags.filter((tag) => tag.taggedLinkId === linkId));
+  };
+
+  useEffect(() => {
+    if (selectedLink) {
+      fetchLinkTags(selectedLink.id);
+    } else {
+      setLinkTags([]);
+    }
+  }, [selectedLink?.id]);
 
   // //////////////////////
   const handleSaveOpenedLink = async (
@@ -146,6 +178,61 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
     // @ts-expect-error
     const response: string = await window.app_api.createNewSharedLink(LinkData);
     console.log("Create Shared link response:", response);
+  };
+
+  const handleAddLinkTag = (event: React.MouseEvent): void => {
+    event.stopPropagation();
+
+    if (linkTags.length >= maximumTagsPerLink) {
+      setShowAddTagForm(false);
+      setTagLimitWarning("A link can have a maximum of 5 tags.");
+      return;
+    }
+
+    setTagLimitWarning("");
+    setTagInput("");
+    setShowAddTagForm(true);
+  };
+
+  const handleSaveLinkTag = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const tag = tagInput.trim();
+    if (!selectedLink || !tag) {
+      return;
+    }
+
+    if (tag.length > maximumTagLength) {
+      setTagLimitWarning("Tags must be 15 characters or fewer.");
+      return;
+    }
+
+    const now = new Date();
+    const tagData: LinkTag = {
+      tagId: uuidv4(),
+      taggedLinkId: selectedLink.id,
+      _tagDate: format(now, "EEE, MMMM d, yyyy"),
+      _tagTime: format(now, "HH:mm:ss"),
+      tag,
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const response: string = await window.app_api.createNewLinkTag(tagData);
+    console.log("Create link tag response:", response);
+
+    if (response !== "Link tag created successfully.") {
+      setShowAddTagForm(false);
+      setTagLimitWarning(response);
+      return;
+    }
+
+    setShowAddTagForm(false);
+    setTagInput("");
+    await fetchLinkTags(selectedLink.id);
   };
 
   // Set the document title on mount
@@ -275,6 +362,52 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                 }`}</p>
                 <br />
 
+                <section className="link-tags-section">
+                  <h4>Tags</h4>
+                  {tagLimitWarning && (
+                    <p className="link-tags-limit-warning">{tagLimitWarning}</p>
+                  )}
+                  {linkTags.length > 0 ? (
+                    <ul className="link-tags-list">
+                      {linkTags.map((linkTag) => (
+                        <li key={linkTag.tagId}>{linkTag.tag}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="link-tags-empty">No tags added</p>
+                  )}
+                  {showAddTagForm && (
+                    <form
+                      className="add-link-tag-form"
+                      onSubmit={handleSaveLinkTag}
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      <label htmlFor="link-tag-input">Add a tag</label>
+                      <input
+                        id="link-tag-input"
+                        type="text"
+                        value={tagInput}
+                        onChange={(event) => setTagInput(event.target.value)}
+                        placeholder="Enter tag"
+                        maxLength={maximumTagLength}
+                        autoFocus
+                      />
+                      <div className="add-link-tag-form-actions">
+                        <button type="submit">Add Tag</button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowAddTagForm(false);
+                            setTagInput("");
+                          }}
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </section>
+
                 {/*  */}
                 <h4>Link actions</h4>
                 <ul>
@@ -322,6 +455,10 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   <li onClick={handleSaveOpenedLink}>
                     <MdOutlineOpenInNew />
                     <span>Open</span>
+                  </li>
+                  <li onClick={handleAddLinkTag}>
+                    <FaHashtag />
+                    <span>Tag Link</span>
                   </li>
                   <li
                     onClick={async (event): Promise<void> => {

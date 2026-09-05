@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Collections.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 // // Ensure that the environment variables are loaded correctly
 // Define the shape of a saved link item

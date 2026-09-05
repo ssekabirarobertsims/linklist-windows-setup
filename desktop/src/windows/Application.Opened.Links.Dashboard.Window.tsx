@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Windows/Application.Links.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { Link } from "react-router-dom";

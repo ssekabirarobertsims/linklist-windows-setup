@@ -59,6 +59,12 @@ contextBridge?.exposeInMainWorld("app_api", {
   // create new links to a json file or db
   createNewSharedLink: (LinkData: object): Promise<string> =>
     ipcRenderer.invoke("create-new-shared-link", LinkData),
+  // create a tag for an existing link
+  createNewLinkTag: (tagData: object): Promise<string> =>
+    ipcRenderer.invoke("create-new-link-tag", tagData),
+  // fetch all link tags
+  readAllLinkTags: (): Promise<object> =>
+    ipcRenderer.invoke("read-all-link-tags"),
   // fetch all existing links
   readAllExistingLinks: (): Promise<object> =>
     ipcRenderer.invoke("read-all-existing-links"),

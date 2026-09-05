@@ -8,7 +8,6 @@
     - Utility classes and selectors are used for easy maintenance and scalability.
     - Each section is commented for easier navigation and future updates.
 */
-
 nav {
   min-height: 8vh;
   width: min(100%, 100%);

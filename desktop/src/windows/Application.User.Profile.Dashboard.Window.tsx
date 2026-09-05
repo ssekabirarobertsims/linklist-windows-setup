@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.User.Profile.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 // import { Link } from "react-router-dom";

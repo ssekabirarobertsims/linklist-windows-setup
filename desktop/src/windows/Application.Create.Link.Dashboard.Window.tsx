@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../stylesheets/Windows/Application.Create.Link.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 
 // import { format } from "date-fns";

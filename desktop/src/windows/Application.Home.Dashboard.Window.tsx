@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Home.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import { Link } from "react-router-dom";
 
 // bar graph chart component for displaying links data
@@ -68,7 +69,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
   // Initialize state for the list of collections, search results, search value, and selected link
   // State to hold the list of collections
   const [collection, setCollection] = useState<collectionProps[]>(
-    [] as collectionProps[]
+    [] as collectionProps[],
   );
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
   const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
 
   // fetch all existing links on component mount and display them
@@ -144,13 +145,13 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-home-dashboard-window"
+          "application-home-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
-            "_application-home-dashboard-window-wrapper"
+            "_application-home-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -179,7 +180,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       {" "}
                       {
                         Number(
-                          linksList?.length ?? [].length
+                          linksList?.length ?? [].length,
                         ) as Required<number>
                       }{" "}
                     </p>
@@ -207,7 +208,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       {" "}
                       {
                         Number(
-                          linkArchivesList.length ?? [].length
+                          linkArchivesList.length ?? [].length,
                         ) as Required<number>
                       }{" "}
                     </p>
@@ -235,7 +236,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       {" "}
                       {
                         Number(
-                          collection?.length ?? [].length
+                          collection?.length ?? [].length,
                         ) as Required<number>
                       }{" "}
                     </p>

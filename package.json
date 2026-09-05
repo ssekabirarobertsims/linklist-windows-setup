@@ -39,7 +39,11 @@
     "check-disk-space": "^3.4.0",
     "date-fns": "^4.1.0",
     "electron-log": "^5.4.3",
+    "electron-updater": "^6.8.9",
     "os-utils": "^0.0.14",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

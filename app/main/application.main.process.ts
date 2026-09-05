@@ -217,6 +217,8 @@ const triggerClipboardCheck = (): void => {
     };
 
     if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
       mainWindow.webContents.send("clipboard-link-detected", promptPayload);
     }
     isClipboardPromptOpen = false;
@@ -237,8 +239,22 @@ const startClipboardMonitor = (): void => {
 import CreateRequiredApplicationFileSystem from "../functions/create.required.application.file.system";
 CreateRequiredApplicationFileSystem(); // invoke the function to check user information file tree on app start
 
+import StartBackgroundManager from "../background/background.manager";
+StartBackgroundManager();
+
+const isBackgroundLaunch = process.argv.includes("--background");
+
+import PurgeExpiredArchivedLinks from "../modules/purge.expired.archived.links.js";
+PurgeExpiredArchivedLinks(app);
+setInterval(() => PurgeExpiredArchivedLinks(app), 60 * 1000);
+
 // open application to start
 app.on("ready", (): void => {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    args: ["--background"],
+  });
+
   // // hide all templates for menus
   // const menu = Menu.buildFromTemplate([]);
   // Menu.setApplicationMenu(menu); // set it to be shown at the application level of the application window
@@ -266,7 +282,9 @@ app.on("ready", (): void => {
   ApplicationSplashWindow.loadFile(
     path.join(__dirname, "../../../app/windows/Application.Splash.Window.html"),
   );
-  ApplicationSplashWindow.show(); // show the application splash window
+  if (!isBackgroundLaunch) {
+    ApplicationSplashWindow.show(); // show the application splash window
+  }
 
   /**
    *
@@ -306,6 +324,12 @@ app.on("ready", (): void => {
    * @description load the main window after sometime then hide the splash windows
    */
   ApplicationMainWindow.on("ready-to-show", () => {
+    if (isBackgroundLaunch) {
+      ApplicationSplashWindow.close();
+      startClipboardMonitor();
+      return;
+    }
+
     global.setTimeout((): void => {
       ApplicationSplashWindow.close(); // close the application splash window
       ApplicationMainWindow.show(); // show the application main window
@@ -566,6 +590,18 @@ const sharedLinksFilePath = path.join(
 );
 import CreateNewSharedLink from "../modules/create.shared.link";
 CreateNewSharedLink(ipcMain, app);
+
+/**
+ * @description create tags and save them to a JSON file
+ */
+import CreateNewLinkTag from "../modules/create.link.tag.js";
+CreateNewLinkTag(ipcMain, app);
+
+/**
+ * @description fetch tags from the tags JSON file
+ */
+import ReadAllLinkTags from "../modules/read.link.tags";
+ReadAllLinkTags(ipcMain, app);
 
 /**
  * @function

@@ -1,3 +1,4 @@
+@import "../Configurations/Application.Styles.Configurations.css";
 /*  */
 main[class="application-user-profile-dashboard-window"] {
   min-height: 100vh;
@@ -7,6 +8,7 @@ main[class="application-user-profile-dashboard-window"] {
   justify-content: center;
   flex-direction: row;
   gap: 0em;
+  /* font-family: Consolas, "Courier New", monospace; */
   flex-grow: 1;
   /* border: 1px solid red; */
 }

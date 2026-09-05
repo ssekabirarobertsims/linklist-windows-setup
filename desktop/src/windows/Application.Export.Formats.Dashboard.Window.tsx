@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Export.Formats.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 
 // // Ensure that the environment variables are loaded correctly
@@ -34,7 +35,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
   const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
 
   // fetch all existing links on component mount and display them
@@ -59,7 +60,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
   }, [linksList]);
 
   const [recentExportsList, setRecentExportsList] = useState<collectionProps[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -99,13 +100,13 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
       {/* Main dashboard page elements */}
       <main
         className={String(
-          "application-export-formats-dashboard-window"
+          "application-export-formats-dashboard-window",
         ).toLocaleLowerCase()}
       >
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
-            "_application-export-formats-dashboard-window-wrapper"
+            "_application-export-formats-dashboard-window-wrapper",
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
@@ -148,7 +149,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                       await window.app_api.exportDataToJSONFile(
                         linksList?.map((item) => item) ?? [],
                         `json`,
-                        "Saved links"
+                        "Saved links",
                       );
                       // reload application window
                       window.location.reload();
@@ -181,7 +182,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                       await window.app_api.exportDataToTXTFile(
                         linksList?.map((item) => item) ?? [],
                         `txt`,
-                        "Saved links"
+                        "Saved links",
                       );
                       // reload application window
                       window.location.reload();
@@ -214,7 +215,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                       await window.app_api.exportDataToHTMLFile(
                         linksList?.map((item) => item) ?? [],
                         `html`,
-                        "Saved links"
+                        "Saved links",
                       );
                       // reload application window
                       window.location.reload();

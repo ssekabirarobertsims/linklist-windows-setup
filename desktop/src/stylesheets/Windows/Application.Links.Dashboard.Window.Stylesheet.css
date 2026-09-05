@@ -1,3 +1,4 @@
+@import "../Configurations/Application.Styles.Configurations.css";
 /*  */
 main[class="application-links-dashboard-window"] {
   height: 100vh;

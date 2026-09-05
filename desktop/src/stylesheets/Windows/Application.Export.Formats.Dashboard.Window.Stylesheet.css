@@ -1,3 +1,4 @@
+@import "../Configurations/Application.Styles.Configurations.css";
 /*  */
 main[class="application-export-formats-dashboard-window"] {
   min-height: 100vh;

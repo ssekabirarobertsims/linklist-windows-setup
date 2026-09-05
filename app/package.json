@@ -39,6 +39,7 @@
     "@types/electron": "^1.4.38",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.0",
+    "baseline-browser-mapping": "^2.11.21",
     "electron": "^39.0.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",

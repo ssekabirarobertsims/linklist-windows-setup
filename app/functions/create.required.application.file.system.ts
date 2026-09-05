@@ -150,6 +150,20 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
 
   !savedLinksFile ? generateSavedLinksFileStructure() : null;
 
+  // link tags information file
+  const tagsFile = fs.existsSync(
+    path.join(app.getPath("appData"), "Linklist", "Links", "tags.json"),
+  );
+
+  const generateTagsFileStructure = async (): Promise<void> => {
+    fs.writeFileSync(
+      path.join(app.getPath("appData"), "Linklist", "Links", "tags.json"),
+      JSON.stringify([]),
+    );
+  };
+
+  !tagsFile ? generateTagsFileStructure() : null;
+
   // shared links information file
   const sharedLinksFile = fs.existsSync(
     path.join(app.getPath("appData"), "Linklist", "Links", "shared_links.json"),

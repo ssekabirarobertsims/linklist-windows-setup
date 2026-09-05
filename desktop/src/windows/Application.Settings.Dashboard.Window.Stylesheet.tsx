@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Settings.Dashboard.Window.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 //
 interface sysInfo {

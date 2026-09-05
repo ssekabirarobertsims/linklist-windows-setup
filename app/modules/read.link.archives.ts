@@ -7,6 +7,7 @@
 
 import path from "node:path";
 import fs from "node:fs";
+import PurgeExpiredArchivedLinks from "./purge.expired.archived.links";
 
 const ReadAllLinkArchives = async (
   process: {
@@ -23,6 +24,8 @@ const ReadAllLinkArchives = async (
 
   //
   process.handle("read-all-link-archives", async (): Promise<object> => {
+    PurgeExpiredArchivedLinks(application);
+
     // read existing links
     let existingLinkArchives = [];
 
@@ -34,30 +37,13 @@ const ReadAllLinkArchives = async (
           fs.readFileSync(archivedLinksFilePath, "utf8"),
         );
 
-        const now = Date.now();
-        const activeArchives = existingLinkArchives
-          .filter((archive: any) => {
-            const expiresAt = archive?.expiresAt;
-            if (!expiresAt) {
-              return true;
-            }
-
-            return new Date(expiresAt).getTime() > now;
-          })
-          .sort((left: any, right: any) => {
+        existingLinkArchives = existingLinkArchives.sort(
+          (left: any, right: any) => {
             const leftTime = new Date(left?.archivedAt ?? 0).getTime();
             const rightTime = new Date(right?.archivedAt ?? 0).getTime();
             return leftTime - rightTime;
-          });
-
-        if (activeArchives.length !== existingLinkArchives.length) {
-          fs.writeFileSync(
-            archivedLinksFilePath,
-            JSON.stringify(activeArchives, null, 2),
-          );
-        }
-
-        existingLinkArchives = activeArchives;
+          },
+        );
       }
     } catch (error) {
       console.error("Failed to parse links file:", error);

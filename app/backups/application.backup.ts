@@ -2,7 +2,8 @@ import fs from "node:fs";
 import { format } from "date-fns";
 import path from "node:path";
 import { v4 } from "uuid";
-import { shell, Notification } from "electron";
+import { shell } from "electron";
+import { notifyUser } from "../background/background.manager";
 
 /**
  * @description create backup for the application
@@ -13,7 +14,7 @@ import { shell, Notification } from "electron";
 
 const ApplicationBackups = async (
   process: { handle: (arg0: string, arg1: () => Promise<string>) => void },
-  application: any
+  application: any,
 ): Promise<void> => {
   process.handle(
     "create-local-application-backup",
@@ -24,13 +25,13 @@ const ApplicationBackups = async (
         "Linklist",
         "Backups",
         "Application",
-        "application_backups.json"
+        "application_backups.json",
       );
 
       // single random id to use on backups to match synchronously
       const randomId: string = `${v4()}-${format(
         new Date(),
-        "EEE, MMMM d, yyyy"
+        "EEE, MMMM d, yyyy",
       )}` as string;
 
       //
@@ -40,8 +41,8 @@ const ApplicationBackups = async (
           "Linklist",
           "Backups",
           "Application",
-          "application_backups.json"
-        )
+          "application_backups.json",
+        ),
       )
         ? fs.writeFileSync(backupsFilePath, JSON.stringify([]))
         : null;
@@ -55,13 +56,13 @@ const ApplicationBackups = async (
         "Linklist",
         "Backups",
         "Application",
-        randomId
+        randomId,
       );
 
       try {
         if (backupsFilePath) {
           existingBackups = JSON.parse(
-            fs.readFileSync(backupsFilePath, { encoding: "utf8" })
+            fs.readFileSync(backupsFilePath, { encoding: "utf8" }),
           );
         } else null;
       } catch (error) {
@@ -79,7 +80,7 @@ const ApplicationBackups = async (
       // file system to write a json file to contain all the backups
       fs.writeFileSync(
         backupsFilePath,
-        JSON.stringify(existingBackups, null, 2)
+        JSON.stringify(existingBackups, null, 2),
       );
 
       // create random dir for the backups
@@ -89,26 +90,24 @@ const ApplicationBackups = async (
         __dirname,
         "..",
         "json",
-        "about.software.information.json"
+        "about.software.information.json",
       ); // replace with small data with settings also
       //
       fs.writeFileSync(
         path.join(_backupBackupFileName, "application.json"),
-        JSON.stringify(fs.readFileSync(data, { encoding: "utf8" }), null, 2)
+        JSON.stringify(fs.readFileSync(data, { encoding: "utf8" }), null, 2),
       );
 
       // make windows sound for alert
       shell.beep();
 
-      // send notification of successful backup
-      new Notification({
-        title: "Application Backup",
-        body: `Application was successfully backed up!`,
-        icon: "", // replace with native icon
-      }).show();
+      notifyUser(
+        "LinkList application backup complete",
+        "Application settings were backed up successfully.",
+      );
 
       return "Application Backed Up Successfully";
-    }
+    },
   );
 };
 

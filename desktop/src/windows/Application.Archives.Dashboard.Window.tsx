@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Archives.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
+import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 // // Ensure that the environment variables are loaded correctly
 // Define the shape of a saved link item
 type ListItemProperties = {
@@ -109,7 +110,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
 
   // Set the document title on mount
   useEffect(() => {
-    document.title = "Dashboard - Archives | LinkList";
+    document.title = "Dashboard - Trash | LinkList";
   }, []);
 
   // Helper to compute favicon URL for a given link, falling back to local image
@@ -261,9 +262,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
-          <ApplicationDashboardNavigationBarAtomicComponent
-            window={"Archives"}
-          />
+          <ApplicationDashboardNavigationBarAtomicComponent window={"Trash"} />
           <br />
           <p></p>
           <p></p>
