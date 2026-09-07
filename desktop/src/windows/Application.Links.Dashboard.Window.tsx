@@ -209,8 +209,8 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     description: string;
   } | null>(null);
   const [clipboardTitle, setClipboardTitle] = useState<string>("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clipboardDescription, setClipboardDescription] = useState<string>("");
+  console.log(clipboardDescription);
   const [clipboardSaving, setClipboardSaving] = useState<boolean>(false);
 
   // hide the save collections options when clicked outside

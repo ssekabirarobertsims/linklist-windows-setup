@@ -84,8 +84,8 @@ const createCustomAlias = (value: string): string => {
 };
 
 function Application() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<user>({} as user);
+  console.log(user);
   const navigate = useNavigate();
   const [clipboardPrompt, setClipboardPrompt] = useState<{
     title: string;

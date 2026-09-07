@@ -1,0 +1,34 @@
+appId: com.linklist.desktop
+
+productName: Linklist
+
+artifactName: "Linklist Setup ${version}.${ext}"
+
+copyright: "Copyright © 2026 Linklist"
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/app/**
+  - dist/desktop/**
+  - package.json
+
+asar: true
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Linklist
+  uninstallDisplayName: Linklist

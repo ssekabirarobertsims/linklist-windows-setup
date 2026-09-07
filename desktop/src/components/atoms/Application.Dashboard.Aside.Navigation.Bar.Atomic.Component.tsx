@@ -89,7 +89,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
     ] as NavigationListItemProps[]);
 
     // Sidebar navigation list, dynamically generates links based on user username
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [list_3, setList_3] = useState<NavigationListItemProps[]>([
       {
         id: uuidV4(),
@@ -105,6 +104,10 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         shortcut: "Ctrl + s",
       },
     ] as NavigationListItemProps[]);
+
+    useEffect(() => {
+      setList_3(list_3);
+    }, [list_3]);
 
     // Fetch counts for various resources and update the sidebar amounts
     useEffect(() => {

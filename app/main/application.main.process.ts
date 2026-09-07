@@ -9,10 +9,27 @@ import {
   Notification,
   IpcMain,
   clipboard,
+  protocol,
+  net,
 } from "electron";
 import os from "node:os";
 import { v4 } from "uuid";
 const checkDiskSpace = require("check-disk-space").default;
+
+import { pathToFileURL } from "url";
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "linklist",
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      bypassCSP: true,
+    },
+  },
+]);
 
 /**
  *
@@ -33,12 +50,16 @@ import { format } from "date-fns";
 // import { log } from "electron-log";
 
 // native icon for the application
-const nativeIcon: string = nativeImage.createFromPath(
-  path.join("../../public/icons/linklist-logo.jpg"),
-) as unknown as string;
+// const nativeIcon: string = nativeImage.createFromPath(
+//   path.join("../public/icons/linklist-logo.jpg"),
+// ) as unknown as string;
+const nativeIcon = nativeImage.createFromPath(
+  path.join(app.getAppPath(), "public", "icons", "linklist-logo.jpg"),
+);
 
 // set application name before starting up
 app.setName("Linklist");
+app.setAppUserModelId("com.linklist.desktop");
 
 const savedLinksFilePath = path.join(
   app.getPath("userData"),
@@ -249,14 +270,43 @@ setInterval(() => PurgeExpiredArchivedLinks(app), 60 * 1000);
 
 // open application to start
 app.on("ready", (): void => {
+  protocol.handle("linklist", (request) => {
+    const url = new URL(request.url);
+
+    let requestedPath = decodeURIComponent(url.pathname);
+
+    if (requestedPath === "/") {
+      requestedPath = "/index.html";
+    }
+
+    const desktopRoot = path.resolve(app.getAppPath(), "../dist/desktop");
+
+    const filePath = path.resolve(desktopRoot, "." + requestedPath);
+
+    const relativePath = path.relative(desktopRoot, filePath);
+
+    const isSafePath =
+      relativePath &&
+      !relativePath.startsWith("..") &&
+      !path.isAbsolute(relativePath);
+
+    if (!isSafePath) {
+      return new Response("Forbidden", {
+        status: 403,
+      });
+    }
+
+    return net.fetch(pathToFileURL(filePath).toString());
+  });
+
   app.setLoginItemSettings({
     openAtLogin: true,
     args: ["--background"],
   });
 
   // // hide all templates for menus
-  // const menu = Menu.buildFromTemplate([]);
-  // Menu.setApplicationMenu(menu); // set it to be shown at the application level of the application window
+  const menu = Menu.buildFromTemplate([]);
+  Menu.setApplicationMenu(menu); // set it to be shown at the application level of the application window
 
   /**
    *
@@ -275,12 +325,13 @@ app.on("ready", (): void => {
   });
 
   // remove menu from the splash window
-  // ApplicationSplashWindow.setMenu(null);
+  ApplicationSplashWindow.setMenu(null);
 
   // load file for the splash window
   ApplicationSplashWindow.loadFile(
-    path.join(__dirname, "../../../app/windows/Application.Splash.Window.html"),
+    path.join(__dirname, "../windows/Application.Splash.Window.html"),
   );
+
   if (!isBackgroundLaunch) {
     ApplicationSplashWindow.show(); // show the application splash window
   }
@@ -296,26 +347,59 @@ app.on("ready", (): void => {
     width: 1800,
     // icon: nativeIcon,
     webPreferences: {
-      preload: path.resolve(
-        app.getAppPath(),
-        "../context/application.context.bridge.js",
-      ),
+      preload: path.join(__dirname, "../context/application.context.bridge.js"),
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: false,
     },
     show: false,
   });
 
   // remove menu from the main window
-  // ApplicationMainWindow.setMenu(null);
+  ApplicationMainWindow.setMenu(null);
+
+  ApplicationMainWindow.webContents.on("did-finish-load", () => {
+    console.log("✅ MAIN WINDOW FINISHED LOADING");
+  });
+
+  ApplicationMainWindow.webContents.on(
+    "did-fail-load",
+    (_event, errorCode, errorDescription, validatedURL) => {
+      console.error("❌ MAIN WINDOW FAILED TO LOAD");
+      console.error("Error code:", errorCode);
+      console.error("Description:", errorDescription);
+      console.error("URL:", validatedURL);
+    },
+  );
+
+  ApplicationMainWindow.webContents.on(
+    "console-message",
+    (_event, level, message) => {
+      console.log(`🖥️ Renderer console [${level}]:`, message);
+    },
+  );
+
+  ApplicationMainWindow.webContents.on(
+    "render-process-gone",
+    (_event, details) => {
+      console.error("💥 Renderer process gone:", details);
+    },
+  );
 
   // load file for the application or server to show app window
   // development area
-  ApplicationMainWindow.loadURL("http://localhost:5173");
+  // ApplicationMainWindow.loadURL("http://localhost:5173");
   // production area
-  // ApplicationMainWindow.loadFile(
-  //   path.join(__dirname, "../../desktop/index.html")
-  // );
+  const mainPath = path.join(__dirname, "../../desktop/index.html");
+
+  console.log("MAIN PATH:", mainPath);
+  console.log("MAIN EXISTS:", fs.existsSync(mainPath));
+
+  // ApplicationMainWindow.loadFile(mainPath);
+  // ApplicationMainWindow.loadURL("linklist://app/");
+  ApplicationMainWindow.loadFile(mainPath);
+
+  ApplicationMainWindow.webContents.openDevTools();
 
   /**
    *

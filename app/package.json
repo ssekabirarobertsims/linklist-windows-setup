@@ -1,5 +1,6 @@
 {
-  "name": "app",
+  "name": "linklist",
+  "appId": "com.linklist.desktop",
   "version": "1.0.0",
   "main": "../dist/app/main/application.main.process.js",
   "scripts": {
@@ -10,10 +11,11 @@
     "dev:desktop": "cd ../desktop && npm run dev",
     "dev:backend": "cd ../backend && npm run dev",
     "watch": "npx tsc -w",
+    "copy:assets": "ts-node scripts/copy-assets.ts",
     "compile:app": "npx tsc --build",
     "dev:app": "concurrently \"npm run dev:desktop\" \"npm run dev:mon\"",
     "build:desktop": "cd ../desktop && npm run build",
-    "build:win": "npm run build:desktop && electron-builder --win --x64",
+    "build:win": "npm run compile:app && npm run copy:assets && npm run build:desktop && electron-builder --win --x64",
     "build:linux": "npm run build:desktop && electron-builder --linux --x64",
     "build:mac": "npm run build:desktop && electron-builder --mac --arm64"
   },
