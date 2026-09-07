@@ -6,6 +6,7 @@ import "./stylesheets/Windows/Application.Links.Dashboard.Window.Stylesheet.css"
 import ApplicationRecentBackupsDashboardWindow from "./windows/Application.Recent.Data.Backups.Dashboard.Window";
 import ApplicationOpenedLinksDashboardWindow from "./windows/Application.Opened.Links.Dashboard.Window";
 import ApplicationSharedLinksDashboardWindow from "./windows/Application.Shared.Links.Dashboard.Window";
+import ApplicationTaggedLinksDashboardWindow from "./windows/Application.Tagged.Links.Dashboard.Window";
 
 /**
  * @author LinkList Dev Team
@@ -83,6 +84,7 @@ const createCustomAlias = (value: string): string => {
 };
 
 function Application() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<user>({} as user);
   const navigate = useNavigate();
   const [clipboardPrompt, setClipboardPrompt] = useState<{
@@ -203,8 +205,6 @@ function Application() {
     return userInformation;
   };
 
-  console.log(user);
-
   useEffect(() => {
     getUserInformation();
   }, []);
@@ -284,6 +284,14 @@ function Application() {
           element={<ApplicationSharedLinksDashboardWindow />}
         />
         <Route
+          path={"/links/shared"}
+          element={<ApplicationSharedLinksDashboardWindow />}
+        />
+        <Route
+          path={"/links/tagged"}
+          element={<ApplicationTaggedLinksDashboardWindow />}
+        />
+        <Route
           path={"/read"}
           element={<ApplicationLinksReadDashboardWindow />}
         />
@@ -319,8 +327,14 @@ function Application() {
       </Routes>
 
       {clipboardPrompt && (
-        <div className="clipboard-link-prompt-overlay">
-          <div className="clipboard-link-prompt-card">
+        <div
+          className="clipboard-link-prompt-overlay"
+          onClick={() => setClipboardPrompt(null)}
+        >
+          <div
+            className="clipboard-link-prompt-card"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="clipboard-link-prompt-header">
               <div>
                 <p className="clipboard-link-prompt-eyebrow">

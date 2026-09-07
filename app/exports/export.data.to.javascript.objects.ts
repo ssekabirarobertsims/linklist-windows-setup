@@ -14,17 +14,17 @@ const ExportDataToJSObjects = async (
   process: {
     handle: (
       arg0: string,
-      arg1: (event: any, data: any[], extension: string) => Promise<string>
+      arg1: (event: any, data: any[], extension: string) => Promise<string>,
     ) => void;
   },
   application: any,
-  _shell: any
+  _shell: any,
 ): Promise<string> => {
   //
   const collectionsFilePath = path.join(
     application.getPath("userData"),
     "Collections",
-    "collections.json"
+    "collections.json",
   );
 
   /**
@@ -36,7 +36,7 @@ const ExportDataToJSObjects = async (
   process.handle(
     "export-data-to-json-file",
     async (event, data: any[], extension: string): Promise<any> => {
-      console.log("Exporting data to file:", extension);
+      // console.log("Exporting data to file:", extension);
 
       const fs = require("fs");
 
@@ -46,7 +46,7 @@ const ExportDataToJSObjects = async (
       // Output file path
       const filePath = generateExportFilename(
         `${Math.ceil(Math.random() * 100)}`,
-        extension || "json"
+        extension || "json",
       );
 
       // JSON string with 2-space indentation
@@ -58,7 +58,7 @@ const ExportDataToJSObjects = async (
       if (fs.existsSync(collectionsFilePath)) {
         try {
           collections = JSON.parse(
-            fs.readFileSync(collectionsFilePath, "utf8")
+            fs.readFileSync(collectionsFilePath, "utf8"),
           );
         } catch (err) {
           console.error("Failed to parse collections file:", err);
@@ -79,7 +79,7 @@ const ExportDataToJSObjects = async (
       // Write updated collections.json back to disk
       fs.writeFileSync(
         collectionsFilePath,
-        JSON.stringify(collections, null, 2)
+        JSON.stringify(collections, null, 2),
       );
 
       // make window sound for alert
@@ -97,10 +97,11 @@ const ExportDataToJSObjects = async (
         if (err) {
           console.error("Error writing JSON file:", err);
         } else {
-          console.log("JSON file written successfully:", filePath);
+          return filePath; // Return the file path for further use
+          // console.log("JSON file written successfully:", filePath);
         }
       });
-    }
+    },
   );
 
   return "";

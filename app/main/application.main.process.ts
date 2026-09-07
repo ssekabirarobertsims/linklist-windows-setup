@@ -30,8 +30,7 @@ const checkDiskSpace = require("check-disk-space").default;
 import { generateExportFilename } from "../functions/generate.file.names";
 import fs from "node:fs";
 import { format } from "date-fns";
-console.log(os.userInfo());
-console.log(os.hostname());
+// import { log } from "electron-log";
 
 // native icon for the application
 const nativeIcon: string = nativeImage.createFromPath(
@@ -632,6 +631,26 @@ ReadAllOpenedLinks(ipcMain, app);
  */
 import ReadAllSharedLinks from "../modules/read.shared.links";
 ReadAllSharedLinks(ipcMain, app);
+
+/**
+ * @function
+ * @description create a tagged link and save to json file
+ * @access public
+ * @returns {Promise<any>}
+ *  @argument {IpcMain, app}
+ */
+import CreateTaggedLink from "../modules/create.tagged.link";
+CreateTaggedLink(ipcMain, app);
+
+/**
+ * @function
+ * @description fetch all existing tagged links from json file
+ * @access public
+ * @returns {Promise<object>}
+ *  @argument {IpcMain, app}
+ */
+import ReadAllTaggedLinks from "../modules/read.tagged.links";
+ReadAllTaggedLinks(ipcMain, app);
 
 /**
  * @function

@@ -8,6 +8,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
+import { useLocation } from "react-router-dom";
 // import { MdOutlineCollectionsBookmark } from "react-icons/md";
 // import { CgProfile } from "react-icons/cg";
 import { TbFileImport } from "react-icons/tb";
@@ -31,6 +32,7 @@ import { BsTrash2 } from "react-icons/bs";
 
 const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
   () => {
+    const location = useLocation();
     // Sidebar navigation list, dynamically generates links based on user username
     const [list, setList] = useState<NavigationListItemProps[]>([
       {
@@ -59,13 +61,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         icon: <FaRegFolderOpen />,
         link: `/collections`,
       },
-      {
-        id: uuidV4(),
-        content: "Create",
-        icon: <IoCreateOutline />,
-        link: `/new`,
-        shortcut: "Ctrl + C",
-      },
     ] as NavigationListItemProps[]);
 
     // Sidebar navigation list, dynamically generates links based on user username
@@ -83,6 +78,13 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         icon: <LuDatabaseBackup />,
         link: `/backup`,
         shortcut: "Ctrl + B",
+      },
+      {
+        id: uuidV4(),
+        content: "Create",
+        icon: <IoCreateOutline />,
+        link: `/new`,
+        shortcut: "Ctrl + C",
       },
     ] as NavigationListItemProps[]);
 
@@ -203,7 +205,21 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
 
             <ul>
               {list.map((item: NavigationListItemProps) => (
-                <li key={item.id}>
+                <li
+                  key={item.id}
+                  style={
+                    location.pathname === item.link
+                      ? {
+                          backgroundColor: "transparent",
+                          paddingLeft: ".5em",
+                          color: "#000",
+                          border: "1px solid #fff",
+                          borderTopRightRadius: "1em",
+                          borderBottomRightRadius: "1em",
+                        }
+                      : {}
+                  }
+                >
                   <Link
                     id="_wrapper"
                     title={item.content}
@@ -228,7 +244,21 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
             <span>Tools</span>
             <ul id="tools">
               {list_2.map((item: NavigationListItemProps) => (
-                <li key={item.id}>
+                <li
+                  key={item.id}
+                  style={
+                    location.pathname === item.link
+                      ? {
+                          backgroundColor: "transparent",
+                          paddingLeft: ".5em",
+                          color: "#000",
+                          border: "1px solid #fff",
+                          borderTopRightRadius: "1em",
+                          borderBottomRightRadius: "1em",
+                        }
+                      : {}
+                  }
+                >
                   <Link
                     id="_wrapper"
                     title={item.content}
@@ -253,7 +283,21 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
             <span>Others</span>
             <ul id="others">
               {list_3.map((item: NavigationListItemProps) => (
-                <li key={item.id}>
+                <li
+                  key={item.id}
+                  style={
+                    location.pathname === item.link
+                      ? {
+                          backgroundColor: "transparent",
+                          paddingLeft: ".5em",
+                          color: "#000",
+                          border: "1px solid #fff",
+                          borderTopRightRadius: "1em",
+                          borderBottomRightRadius: "1em",
+                        }
+                      : {}
+                  }
+                >
                   <Link
                     id="_wrapper"
                     title={item.content}

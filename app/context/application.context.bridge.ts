@@ -74,6 +74,12 @@ contextBridge?.exposeInMainWorld("app_api", {
   // fetch all existing links
   readAllExistingSharedLinks: (): Promise<object> =>
     ipcRenderer.invoke("read-all-existing-shared-links"),
+  // create a tagged link entry when a link is tagged
+  createTaggedLink: (LinkData: object): Promise<string> =>
+    ipcRenderer.invoke("create-tagged-link", LinkData),
+  // fetch all existing tagged links
+  readAllExistingTaggedLinks: (): Promise<object> =>
+    ipcRenderer.invoke("read-all-existing-tagged-links"),
   // update existing link data
   updateExistingLink: (LinkData: object): Promise<string> =>
     ipcRenderer.invoke("update-existing-link", LinkData),

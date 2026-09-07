@@ -6,6 +6,7 @@ main[class="application-home-dashboard-window"] {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   flex-direction: row;
   gap: 0em;
   flex-grow: 1;
@@ -17,6 +18,7 @@ main[class="application-home-dashboard-window"]
   width: min(100%, 85%);
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: flex-start;
   flex-direction: column;
   gap: 0em;

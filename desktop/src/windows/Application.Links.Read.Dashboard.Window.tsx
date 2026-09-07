@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Links.Read.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
-// import {
+import { parse } from "date-fns";
 //   MobileViewSideBarComponent,
 //   WebViewSideBarComponent,
 // } from "../components/Side.Bars.Components";
@@ -47,6 +47,21 @@ import { MdDateRange, MdOutlineOpenInNew } from "react-icons/md";
 import { format } from "date-fns/format";
 import { v4 as uuidv4 } from "uuid";
 
+// Helper function to sort links by date in reverse chronological order (most recent first)
+const sortLinksByDateDescending = (
+  links: ListItemProperties[],
+): ListItemProperties[] => {
+  return [...links].sort((a, b) => {
+    try {
+      const dateA = parse(a._date, "EEE, MMMM d, yyyy", new Date());
+      const dateB = parse(b._date, "EEE, MMMM d, yyyy", new Date());
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    } catch {
+      return 0; // If parsing fails, maintain original order
+    }
+  });
+};
+
 const maximumTagsPerLink = 5;
 const maximumTagLength = 15;
 
@@ -65,10 +80,12 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         (await window.app_api.readAllExistingLinks()) as ListItemProperties[];
+      // sort links by date in reverse chronological order (most recent first)
+      const sortedLinks = sortLinksByDateDescending(links);
       // set the links list state
-      setLinksList(links);
+      setLinksList(sortedLinks);
       // return an arr[] for the links
-      return links;
+      return sortedLinks;
     };
 
     fetchLinks();
@@ -104,7 +121,18 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const tags = (await window.app_api.readAllLinkTags()) as LinkTag[];
-    setLinkTags(tags.filter((tag) => tag.taggedLinkId === linkId));
+    const filteredTags = tags.filter((tag) => tag.taggedLinkId === linkId);
+    // Sort tags by date in reverse chronological order (most recent first)
+    const sortedTags = filteredTags.sort((a, b) => {
+      try {
+        const dateA = parse(a._tagDate, "EEE, MMMM d, yyyy", new Date());
+        const dateB = parse(b._tagDate, "EEE, MMMM d, yyyy", new Date());
+        return dateB.getTime() - dateA.getTime(); // Most recent first
+      } catch {
+        return 0; // If parsing fails, maintain original order
+      }
+    });
+    setLinkTags(sortedTags);
   };
 
   useEffect(() => {
@@ -230,6 +258,30 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
       return;
     }
 
+    // Create a tagged link entry when a tag is successfully added
+    const taggedLinkData = {
+      id: selectedLink.id,
+      title: selectedLink.title,
+      link: selectedLink.link,
+      originalUrl: selectedLink.originalUrl,
+      shortUrl: selectedLink.shortUrl,
+      customAlias: selectedLink.customAlias,
+      user_id: selectedLink.user_id || "",
+      _date: selectedLink._date,
+      description: selectedLink.description,
+      tags: [tag],
+      notes: selectedLink.notes,
+    };
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      await window.app_api.createTaggedLink(taggedLinkData);
+      console.log("Tagged link created successfully.");
+    } catch (error) {
+      console.error("Failed to create tagged link:", error);
+    }
+
     setShowAddTagForm(false);
     setTagInput("");
     await fetchLinkTags(selectedLink.id);
@@ -336,21 +388,25 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                     window.app_api.openExternalLink(String(selectedLink?.link)); // O(1) -- Constant time
                   }}
                 >
-                  <FaLink /> {`${selectedLink?.link}`}
+                  <FaLink /> {`${selectedLink?.link}`} /{" "}
+                  <a
+                    href={`${selectedLink?.link}`}
+                    title={`${selectedLink?.title}`}
+                    className="short-link-anchor"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      window.app_api.openExternalLink(
+                        String(selectedLink?.link),
+                      ); // O(1) -- Constant time
+                    }}
+                  >
+                    <b>Short Link:</b>{" "}
+                    {`${selectedLink?.shortUrl ? selectedLink?.shortUrl : null}`}
+                  </a>
                 </a>
-                <a
-                  href={`${selectedLink?.link}`}
-                  title={`${selectedLink?.title}`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(String(selectedLink?.link)); // O(1) -- Constant time
-                  }}
-                >
-                  <b>Short Link:</b>{" "}
-                  {`${selectedLink?.shortUrl ? selectedLink?.shortUrl : null}`}
-                </a>
+
                 <br />
                 <h4>Description</h4>
                 <p>{`${
@@ -360,8 +416,8 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                     ? `"${selectedLink?.title ? selectedLink?.title : "Saved Link"}" — saved to LinkList as a convenient reference for future use. This resource contains material I anticipate consulting again, so I preserved the link here to ensure reliable, quick access to the original source. The title and URL are recorded to make relocation straightforward; consider adding personal notes to capture context or why this link was particularly useful.`
                     : selectedLink?.description
                 }`}</p>
-                <br />
-
+                {/*  */}
+                <p></p>
                 <section className="link-tags-section">
                   <h4>Tags</h4>
                   {tagLimitWarning && (
@@ -370,44 +426,64 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   {linkTags.length > 0 ? (
                     <ul className="link-tags-list">
                       {linkTags.map((linkTag) => (
-                        <li key={linkTag.tagId}>{linkTag.tag}</li>
+                        <li key={linkTag.tagId}>
+                          <FaHashtag />
+                          {linkTag.tag}
+                        </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="link-tags-empty">No tags added</p>
+                    <p className="link-tags-empty">No link tags added yet!</p>
                   )}
                   {showAddTagForm && (
                     <form
                       className="add-link-tag-form"
                       onSubmit={handleSaveLinkTag}
-                      onClick={(event) => event.stopPropagation()}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setShowAddTagForm(false);
+                        setTagInput("");
+                      }}
                     >
-                      <label htmlFor="link-tag-input">Add a tag</label>
-                      <input
-                        id="link-tag-input"
-                        type="text"
-                        value={tagInput}
-                        onChange={(event) => setTagInput(event.target.value)}
-                        placeholder="Enter tag"
-                        maxLength={maximumTagLength}
-                        autoFocus
-                      />
-                      <div className="add-link-tag-form-actions">
-                        <button type="submit">Add Tag</button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setShowAddTagForm(false);
-                            setTagInput("");
-                          }}
-                        >
-                          Decline
-                        </button>
-                      </div>
+                      <article
+                        onClick={(event) => {
+                          event.stopPropagation();
+                        }}
+                      >
+                        <label htmlFor="link-tag-input">Add a link tag</label>
+                        <div className="tag-input-wrapper">
+                          <input
+                            id="link-tag-input"
+                            type="text"
+                            value={tagInput}
+                            onChange={(event) =>
+                              setTagInput(event.target.value)
+                            }
+                            placeholder="Enter tag"
+                            maxLength={maximumTagLength}
+                            autoFocus
+                          />
+                        </div>
+                        <span className="character-count">
+                          {tagInput.length}/{maximumTagLength}
+                        </span>
+                        <div className="add-link-tag-form-actions">
+                          <button type="submit">Add tag</button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowAddTagForm(false);
+                              setTagInput("");
+                            }}
+                          >
+                            Decline
+                          </button>
+                        </div>
+                      </article>
                     </form>
                   )}
                 </section>
-
+                <p></p>
                 {/*  */}
                 <h4>Link actions</h4>
                 <ul>

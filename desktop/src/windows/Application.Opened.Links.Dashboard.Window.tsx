@@ -3,7 +3,7 @@ import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Windows/Application.Links.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { Link } from "react-router-dom";
-// // Ensure that the environment variables are loaded correctly
+import { parse } from "date-fns";
 // Define the shape of a saved link item
 type ListItemProperties = {
   id: string;
@@ -27,7 +27,26 @@ import ExportCollectionOptionsUtilComponent from "../components/utils/Export.Col
 import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
 import { IoCloseSharp, IoReaderOutline } from "react-icons/io5";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
-import { MdOutlineOpenInNew, MdRadioButtonUnchecked } from "react-icons/md";
+import {
+  MdOutlineOpenInNew,
+  MdRadioButtonChecked,
+  MdRadioButtonUnchecked,
+} from "react-icons/md";
+
+// Helper function to sort links by date in reverse chronological order (most recent first)
+const sortLinksByDateDescending = (
+  links: ListItemProperties[],
+): ListItemProperties[] => {
+  return [...links].sort((a, b) => {
+    try {
+      const dateA = parse(a._date, "EEE, MMMM d, yyyy", new Date());
+      const dateB = parse(b._date, "EEE, MMMM d, yyyy", new Date());
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    } catch {
+      return 0; // If parsing fails, maintain original order
+    }
+  });
+};
 
 const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -44,10 +63,12 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         (await window.app_api.readAllExistingOpenedLinks()) as ListItemProperties[];
+      // sort links by date in reverse chronological order (most recent first)
+      const sortedLinks = sortLinksByDateDescending(links);
       // set the links list state
-      setLinksList(links);
+      setLinksList(sortedLinks);
       // return an arr[] for the links
-      return links;
+      return sortedLinks;
     };
 
     readLinks();
@@ -160,6 +181,7 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
       const parsed = new URL(url);
       const hostname = parsed.hostname;
       return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       return "/favicon/OIP.webp";
     }
@@ -171,10 +193,45 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
       {showSelectedLinksActions && (
         <article className="selected-links-actions-util-component">
           <ul>
+            {/* check all inputs*/}
+            <li
+              onClick={(event) => {
+                {
+                  event.stopPropagation(); // stop event bubbling
+
+                  const inputs: HTMLInputElement[] =
+                    window.document.querySelectorAll(
+                      ".select-link-checkbox",
+                    ) as unknown as HTMLInputElement[];
+                  // Check all visible search results
+                  setSelectedLinks(searchResults as ListItemProperties[]);
+                  // Update UI
+                  (
+                    window.document.querySelector(
+                      ".selected-links-count-placeholder",
+                    ) as HTMLSpanElement
+                  ).innerHTML = `${searchResults.length} selected link(s)`;
+                  // empty search results count
+                  (
+                    window.document.querySelector(
+                      ".search-results-count-placeholder",
+                    ) as HTMLSpanElement
+                  ).innerHTML = ``;
+
+                  // Check all visible inputs
+                  inputs.forEach((input: HTMLInputElement) => {
+                    input.checked = true as boolean;
+                  });
+                }
+              }}
+            >
+              <MdRadioButtonChecked />
+              <span>Check</span>
+            </li>
             <li
               onClick={(event) => {
                 event.stopPropagation(); // prevent event bubbling
-                CopyTextToClipboard(JSON.stringify(selectedLinksArr)); // copy all the links selected as plain text to clipboard!
+                CopyTextToClipboard(JSON.stringify(selectedLinks)); // copy all the links selected as plain text to clipboard!
               }}
             >
               <BiCopy />
@@ -190,14 +247,14 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
                     window.document.querySelectorAll(
                       ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
-                  // remove label and its content
+                  // Clear all selections
+                  setSelectedLinks([] as ListItemProperties[]);
+                  // Update UI
                   (
                     window.document.querySelector(
                       ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
-                  ).innerHTML = `${
-                    selectedLinksArr.length - selectedLinksArr.length
-                  } selected link(s)`;
+                  ).innerHTML = `0 selected link(s)`;
                   // empty search results count
                   (
                     window.document.querySelector(
@@ -209,9 +266,6 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
                   inputs.forEach((input: HTMLInputElement) => {
                     input.checked = false as boolean;
                   });
-
-                  // set the selected links count to 0
-                  setSelectedLinks([] as ListItemProperties[]);
                 }
               }}
             >
@@ -225,7 +279,7 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
                 await window.app_api.exportDataToHTMLFile(
-                  selectedLinksArr?.map((item) => item) ?? [],
+                  selectedLinks?.map((item) => item) ?? [],
                   `html`,
                   "Saved links",
                 );
@@ -389,7 +443,7 @@ const ApplicationOpenedLinksDashboardWindow: React.FunctionComponent = () => {
               <li>
                 <Link
                   to={{
-                    pathname: "",
+                    pathname: "/links/tagged",
                     search: "",
                   }}
                 >

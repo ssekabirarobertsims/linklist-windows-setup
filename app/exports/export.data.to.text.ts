@@ -14,17 +14,17 @@ const ExportDataToText = async (
   process: {
     handle: (
       arg0: string,
-      arg1: (event: any, data: any[], extension: string) => Promise<string>
+      arg1: (event: any, data: any[], extension: string) => Promise<string>,
     ) => void;
   },
   application: any,
-  _shell: any
+  _shell: any,
 ): Promise<string> => {
   //
   const collectionsFilePath = path.join(
     application.getPath("userData"),
     "Collections",
-    "collections.json"
+    "collections.json",
   );
 
   /**
@@ -36,7 +36,7 @@ const ExportDataToText = async (
   process.handle(
     "export-data-to-txt-file",
     async (event, data: any[], extension: string): Promise<any> => {
-      console.log("Exporting data to file:", extension);
+      // console.log("Exporting data to file:", extension);
       // ensure data is an array
       const arrayData = Array.isArray(data) ? data : [data]; // convert to array if not already
       // write data to file on desktop
@@ -59,7 +59,7 @@ const ExportDataToText = async (
       if (fs.existsSync(collectionsFilePath)) {
         try {
           collections = JSON.parse(
-            fs.readFileSync(collectionsFilePath, "utf8")
+            fs.readFileSync(collectionsFilePath, "utf8"),
           );
         } catch (err) {
           console.error("Failed to parse collections file:", err);
@@ -70,7 +70,7 @@ const ExportDataToText = async (
       // join array elements with new line
       const filePath = generateExportFilename(
         `${Math.ceil(Math.random() * 100)}`,
-        extension ? extension : "txt"
+        extension ? extension : "txt",
       ); // save to desktop
 
       // Create new collection entry
@@ -86,7 +86,7 @@ const ExportDataToText = async (
       // Write updated collections.json back to disk
       fs.writeFileSync(
         collectionsFilePath,
-        JSON.stringify(collections, null, 2)
+        JSON.stringify(collections, null, 2),
       );
 
       // make window sound for alert
@@ -103,10 +103,11 @@ const ExportDataToText = async (
         if (err) {
           console.error("Error writing file:", err);
         } else {
-          console.log("File written successfully to", filePath);
+          return filePath;
+          // console.log("File written successfully to", filePath);
         }
       });
-    }
+    },
   );
 
   return "";

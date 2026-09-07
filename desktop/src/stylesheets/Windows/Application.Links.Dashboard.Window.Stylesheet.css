@@ -8,12 +8,13 @@ main[class="application-links-dashboard-window"] {
   justify-content: center;
   flex-direction: row;
   gap: 0em;
+  position: relative;
   flex-grow: 1;
   /* border: 1px solid red; */
 }
 
 .clipboard-link-prompt-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(7, 15, 30, 0.45);
   display: flex;
@@ -131,6 +132,7 @@ main[class="application-links-dashboard-window"]
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  position: relative;
   gap: 0em;
   background-color: var(--lighter-primary-theme-color);
   /* border: 1px solid red; */
@@ -238,12 +240,46 @@ main[class="application-links-dashboard-window"]
   > section[class="_application-links-dashboard-window-wrapper"]
   :is(div[class="_application-links-dashboard-window-components-wrapper"])
   > ul[id="_links-tabs-navigation-ul"] {
+  width: min(100%, 100%);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 1em;
   list-style: none;
+  /* border: 1px solid red; */
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"]
+  li {
+  height: 2em;
+  width: min(25%, 5em);
+  border-radius: 20em;
+  border: 1px solid hsl(0, 0%, 90%);
+  background-color: hsl(0, 0%, 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"]
+  li:is(:hover, :focus, :active) {
+  border: none;
+  background-color: var(--dark-secondary-theme-color);
+  color: #fff;
+}
+main[class="application-links-dashboard-window"]
+  > section[class="_application-links-dashboard-window-wrapper"]
+  :is(div[class="_application-links-dashboard-window-components-wrapper"])
+  > ul[id="_links-tabs-navigation-ul"]
+  li:is(:hover, :focus, :active)
+  a {
+  color: #fff;
 }
 main[class="application-links-dashboard-window"]
   > section[class="_application-links-dashboard-window-wrapper"]
@@ -437,7 +473,7 @@ main[class="application-links-dashboard-window"]
   flex-shrink: 0;
   cursor: pointer;
   transition: all 0.3s ease;
-  /* border: 1px solid hsl(0, 0%, 90%); */
+  border: 1px solid hsl(0, 0%, 90%);
   -webkit-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);

@@ -10,6 +10,7 @@ main[class="application-read-links-dashboard-window"] {
   gap: 0em;
   flex-grow: 1;
   /* border: 1px solid red; */
+  position: relative;
 }
 main[class="application-read-links-dashboard-window"]
   > section[class="_application-read-links-dashboard-window-wrapper"] {
@@ -19,6 +20,7 @@ main[class="application-read-links-dashboard-window"]
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  position: relative;
   gap: 0em;
   background-color: var(--lighter-primary-theme-color);
   /* border: 1px solid red; */
@@ -95,7 +97,8 @@ main[class="application-read-links-dashboard-window"]
 main[class="application-read-links-dashboard-window"]
   > section[class="_application-read-links-dashboard-window-wrapper"]
   :is(div[class="_application-read-links-dashboard-window-components-wrapper"])
-  > a {
+  > a,
+.short-link-anchor {
   font-weight: normal;
   color: hsl(0, 0%, 20%);
   font-size: 0.9em;
@@ -121,15 +124,16 @@ main[class="application-read-links-dashboard-window"]
   > section[class="_application-read-links-dashboard-window-wrapper"]
   :is(div[class="_application-read-links-dashboard-window-components-wrapper"])
   > ul {
-  height: 5em;
+  height: 4em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  gap: 0em;
+  gap: 0.7em;
   list-style: none;
   border-radius: 0.3em;
+  border: 1px solid #eee;
   /* background-color: #fff;
   -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
@@ -210,7 +214,8 @@ main[class="application-read-links-dashboard-window"]
 }
 
 .link-tags-section {
-  width: min(100%, 40em);
+  width: min(100%, 100%);
+  /* position: relative; */
 }
 
 .link-tags-section h4 {
@@ -225,32 +230,57 @@ main[class="application-read-links-dashboard-window"]
   flex-wrap: wrap;
   gap: 0.5em !important;
   padding: 0;
+  list-style: none;
 }
 
 .link-tags-list li {
-  width: auto !important;
-  height: auto !important;
+  min-width: 5em !important;
   padding: 0.35em 0.65em;
-  color: hsl(0, 0%, 20%);
-  background-color: hsl(210, 30%, 93%);
+  color: hsl(0, 0%, 5%);
+  background-color: transparent;
   cursor: default !important;
+  border-radius: 20em;
+  font-size: 0.9em;
+}
+
+h4 {
+  font-weight: calc(290 + 290);
+  color: hsl(0, 0%, 20%);
+  font-size: 0.8em;
 }
 
 .link-tags-empty {
   margin: 0;
   justify-content: flex-start !important;
+  font-size: 0.8em !important;
+  font-weight: calc(100 + 100);
+  color: hsl(0, 0%, 20%);
 }
 
 .link-tags-limit-warning {
   margin: 0 0 0.5em;
   justify-content: flex-start !important;
   color: #b42318 !important;
-  font-weight: 600;
+  font-weight: calc(100 + 100);
+  font-size: 0.7em;
 }
 
 .add-link-tag-form {
-  width: min(100%, 24em);
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 15, 30, 0.45);
   display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+.add-link-tag-form > article {
+  min-height: 9em;
+  width: min(95%, 30em);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   flex-direction: column;
   gap: 0.5em;
   padding: 0.8em;
@@ -258,18 +288,41 @@ main[class="application-read-links-dashboard-window"]
   border-radius: 0.3em;
   background-color: hsl(210, 25%, 98%);
 }
-
 .add-link-tag-form label {
   color: hsl(0, 0%, 20%);
   font-size: 0.85em;
-  font-weight: 600;
+  font-weight: calc(300 + 200);
 }
 
 .add-link-tag-form input {
   min-height: 2.2em;
+  width: min(95%, 95%);
   padding: 0.35em 0.5em;
   border: 1px solid hsl(210, 15%, 75%);
   border-radius: 0.2em;
+  outline-style: none;
+  list-style: none;
+}
+
+.tag-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(95%, 95%);
+  gap: 0.5em;
+  position: relative;
+}
+
+.tag-input-wrapper input {
+  flex: 1;
+}
+
+.character-count {
+  font-size: 0.75em;
+  color: hsl(0, 0%, 50%);
+  font-weight: calc(300 + 100);
+  white-space: nowrap;
+  padding: 0.35em 0.5em;
 }
 
 .add-link-tag-form-actions {
@@ -287,6 +340,6 @@ main[class="application-read-links-dashboard-window"]
 }
 
 .add-link-tag-form-actions button[type="button"] {
-  color: hsl(0, 0%, 20%);
-  background-color: hsl(210, 15%, 88%);
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(225, 2%, 33%);
 }

@@ -119,6 +119,13 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
     }
   };
 
+  const descriptions: string[] = [
+    "This link was quickly saved from your clipboard for convenient access later. It has not yet been reviewed or categorized, so the information shown may be incomplete. Open the link when you're ready, add notes, assign tags, or move it into a collection to keep your workspace organized",
+  ] as string[];
+
+  const descriptionMaxLength: number = descriptions[0].length as number;
+  // console.log(descriptionMaxLength);
+
   // Set the document title on mount
   useEffect(() => {
     document.title = "Dashboard - Create Link | LinkList";
@@ -176,7 +183,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   placeholder="Sample title"
                   aria-placeholder="Sample title"
                   required
-                  maxLength={50}
+                  maxLength={descriptionMaxLength - 254}
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                 />
@@ -203,6 +210,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
                   id="create-link-form-description-input"
                   placeholder="This is my favorite link..."
                   aria-placeholder="This is my favorite link..."
+                  maxLength={descriptionMaxLength}
                   value={description}
                   onChange={(event) =>
                     setDescription((event.target as HTMLTextAreaElement).value)

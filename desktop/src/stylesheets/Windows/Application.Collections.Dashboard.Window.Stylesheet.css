@@ -4,6 +4,7 @@ main[class="application-collections-dashboard-window"] {
   min-height: 100vh;
   width: min(100%, 100%);
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -18,6 +19,7 @@ main[class="application-collections-dashboard-window"]
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
   flex-direction: column;
   gap: 0em;
   background-color: var(--lighter-primary-theme-color);
@@ -63,23 +65,39 @@ main[class="application-collections-dashboard-window"]
   > section[class="_application-collections-dashboard-window-wrapper"]
   :is(div[class="_application-collections-dashboard-window-components-wrapper"])
   > ul[id="_collections-actions-navigation-ul"] {
+  width: min(100%, 100%);
+  min-height: 3em;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 1em;
+  padding-left: 0.5em;
   list-style: none;
+  background-color: #fff;
+  border-radius: 0.5em;
 }
 main[class="application-collections-dashboard-window"]
   > section[class="_application-collections-dashboard-window-wrapper"]
   :is(div[class="_application-collections-dashboard-window-components-wrapper"])
   > ul[id="_collections-actions-navigation-ul"]
   li {
+  height: 3em;
+  width: 10em;
+  /* border-left: 1px solid hsl(0, 0%, 86%); */
+  /* border-right: 1px solid hsl(0, 0%, 80%); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   font-weight: calc(290 + 250);
-  color: #0066ff;
+  background-color: var(--dark-secondary-theme-color);
+  color: #fff;
   font-size: 0.8em;
   text-decoration: none;
   cursor: pointer;
+  gap: 0.2em;
+  border-radius: 0.3em;
 }
 
 /*  */
@@ -87,7 +105,7 @@ main[class="application-collections-dashboard-window"]
   > section[class="_application-collections-dashboard-window-wrapper"]
   :is(div[class="_application-collections-dashboard-window-components-wrapper"])
   > ul[id="_collections-list"] {
-  height: 31em;
+  height: 28em;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;

@@ -7,6 +7,7 @@ main[class="application-user-profile-dashboard-window"] {
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  position: relative;
   gap: 0em;
   /* font-family: Consolas, "Courier New", monospace; */
   flex-grow: 1;
@@ -18,6 +19,7 @@ main[class="application-user-profile-dashboard-window"]
   width: min(100%, 85%);
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: flex-start;
   flex-direction: column;
   gap: 0em;

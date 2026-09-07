@@ -3,6 +3,7 @@
 main[class="application-user-data-backup-dashboard-window"] {
   min-height: 100vh;
   width: min(100%, 100%);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,6 +18,7 @@ main[class="application-user-data-backup-dashboard-window"]
   width: min(100%, 85%);
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
   flex-direction: column;
   gap: 0em;
@@ -164,4 +166,92 @@ main[class="application-user-data-backup-dashboard-window"]
   /* position: absolute;
   top: 1em;
   left: 01em; */
+}
+
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"] {
+  height: 5em;
+  width: min(100%, 100%);
+  flex-grow: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0em;
+  -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 0.5em;
+  border: 1px solid hsl(0, 0%, 90%);
+}
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"]
+  > article {
+  height: 4em;
+  width: min(48%, 48%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0em;
+  /* border: 1px solid red; */
+}
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"]
+  > article[class="content-wrapper"] {
+  align-items: flex-start;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.2em;
+}
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"]
+  > article[class="switch-wrapper-3"] {
+  justify-content: flex-end;
+}
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"]
+  > article[class="content-wrapper"]
+  p {
+  font-weight: calc(200 + 200);
+  color: hsl(0, 0%, 10%);
+  font-size: 0.8em;
+}
+main[class="application-user-data-backup-dashboard-window"]
+  > section[class="_application-user-data-backup-dashboard-window-wrapper"]
+  :is(
+    div[class="_application-user-data-backup-dashboard-window-components-wrapper"]
+  )
+  aside[class="notifications"]
+  > article[class="content-wrapper"]
+  > span {
+  font-weight: calc(230 + 290);
+  color: hsl(0, 0%, 10%);
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.5em;
 }

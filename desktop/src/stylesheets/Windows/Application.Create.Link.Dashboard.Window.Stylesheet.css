@@ -3,6 +3,7 @@
 main[class="application-create-link-dashboard-window"] {
   min-height: 100vh;
   width: min(100%, 100%);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +17,7 @@ main[class="application-create-link-dashboard-window"]
   min-height: 100vh;
   width: min(100%, 85%);
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;

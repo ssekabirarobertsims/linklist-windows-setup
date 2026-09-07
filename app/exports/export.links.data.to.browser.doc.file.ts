@@ -18,18 +18,18 @@ const ExportDataToBrowserDoc = async (
         event: any,
         data: any[],
         extension: string,
-        category: string
-      ) => Promise<string>
+        category: string,
+      ) => Promise<string>,
     ) => void;
   },
   application: any,
-  _shell: any
+  _shell: any,
 ): Promise<string> => {
   //
   const collectionsFilePath = path.join(
     application.getPath("userData"),
     "Collections",
-    "collections.json"
+    "collections.json",
   );
 
   /**
@@ -44,9 +44,9 @@ const ExportDataToBrowserDoc = async (
       event,
       data: any[],
       extension: string,
-      category: string
+      category: string,
     ): Promise<any> => {
-      console.log("Exporting data to file:", extension);
+      // console.log("Exporting data to file:", extension);
 
       const fs = require("fs");
 
@@ -56,7 +56,7 @@ const ExportDataToBrowserDoc = async (
       // generate output file path
       const filePath = generateExportFilename(
         `${Math.ceil(Math.random() * 100)}`,
-        extension || "html"
+        extension || "html",
       );
 
       // Build HTML table rows
@@ -66,7 +66,7 @@ const ExportDataToBrowserDoc = async (
         <tr>
           <td>${item?.id || ""}</td>
           <td>${item?.title || ""}</td>
-          <td>${item?.link || ""}</td>
+          <td><a href="${item?.link || ""}" target="_blank" style="color: #007bff; text-decoration: underline;">${item?.link || ""}</a></td>
         </tr>
       `;
         })
@@ -82,7 +82,7 @@ const ExportDataToBrowserDoc = async (
 <title>Exported Collection</title>
 <style>
   body {
-    font-family: Arial, sans-serif;
+  font-family: "Bahnschrift", "Segoe UI", sans-serif;
     padding: 2em;
     background: #fff;
   }
@@ -104,16 +104,17 @@ const ExportDataToBrowserDoc = async (
 </head>
 <body>
 
-<h1>Exported Collection from ${category}</h1>
-<h2>Export Id: ${v4()}</h2>
-<span style="font-size: 1em; color: hsl(0, 0%, 10%)">Successfully exported ${
+<h1>Linklist</h1>
+<h2>Exported Collection from ${category}</h2>
+<span>Export Id: ${v4()}</span>
+<span style="font-size: 1em; color: hsl(0, 0%, 5%)">Successfully exported ${
         arrayData.length
       } links.</span>
 
 <table>
   <thead>
     <tr>
-      <th>ID</th>
+      <th>Link Id</th>
       <th>Title</th>
       <th>Link</th>
     </tr>
@@ -123,7 +124,7 @@ const ExportDataToBrowserDoc = async (
   </tbody>
 </table>
 
-<p style="margin-top: 2em; color: #2e2e2eff;">
+<p style="margin-top: 2em; color: rgb(0, 0, 0);">
   Export Date: ${format(new Date(), "EEE, MMMM d, yyyy")}
 </p>
 
@@ -137,7 +138,7 @@ const ExportDataToBrowserDoc = async (
       if (fs.existsSync(collectionsFilePath)) {
         try {
           collections = JSON.parse(
-            fs.readFileSync(collectionsFilePath, "utf8")
+            fs.readFileSync(collectionsFilePath, "utf8"),
           );
         } catch (err) {
           console.error("Failed to parse collections file:", err);
@@ -158,7 +159,7 @@ const ExportDataToBrowserDoc = async (
       // Write updated collections.json back to disk
       fs.writeFileSync(
         collectionsFilePath,
-        JSON.stringify(collections, null, 2)
+        JSON.stringify(collections, null, 2),
       );
 
       // make window sound for alert
@@ -176,10 +177,11 @@ const ExportDataToBrowserDoc = async (
         if (err) {
           console.error("Error writing HTML file:", err);
         } else {
-          console.log("HTML file written successfully:", filePath);
+          return filePath; // Return the file path for further use
+          // console.log("HTML file written successfully:", filePath);
         }
       });
-    }
+    },
   );
 
   return "";

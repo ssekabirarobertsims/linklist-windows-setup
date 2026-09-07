@@ -6,6 +6,7 @@ main[class="application-backups-dashboard-window"] {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   flex-direction: row;
   gap: 0em;
   flex-grow: 1;
@@ -15,6 +16,7 @@ main[class="application-backups-dashboard-window"]
   > section[class="_application-backups-dashboard-window-wrapper"] {
   min-height: 100vh;
   width: min(100%, 85%);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;

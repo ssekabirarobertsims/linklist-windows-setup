@@ -116,10 +116,10 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
           <p></p>
 
           <div className="_application-collections-dashboard-window-components-wrapper">
-            <ul id="_collections-actions-navigation-ul">
+            {/* <ul id="_collections-actions-navigation-ul">
               <li>Delete All</li>
               <li>Do Something</li>
-            </ul>
+            </ul> */}
             <p>
               <strong>NOTE:</strong> All your saved collections are listed
               below. You can manage them as you wish.

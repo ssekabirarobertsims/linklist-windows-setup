@@ -3,7 +3,7 @@ import "../stylesheets/Windows/Application.Links.Dashboard.Window.Stylesheet.css
 import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 // // Ensure that the environment variables are loaded correctly
 // Define the shape of a saved link item
 type ListItemProperties = {
@@ -31,7 +31,11 @@ import ExportCollectionOptionsUtilComponent from "../components/utils/Export.Col
 import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
 import { IoCloseSharp, IoReaderOutline } from "react-icons/io5";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
-import { MdOutlineOpenInNew, MdRadioButtonUnchecked } from "react-icons/md";
+import {
+  MdOutlineOpenInNew,
+  MdRadioButtonChecked,
+  MdRadioButtonUnchecked,
+} from "react-icons/md";
 
 const generateShortCode = (): string => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -63,6 +67,21 @@ const generateRandomDescription = (): string => {
   ];
 
   return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+
+// Helper function to sort links by date in reverse chronological order (most recent first)
+const sortLinksByDateDescending = (
+  links: ListItemProperties[],
+): ListItemProperties[] => {
+  return [...links].sort((a, b) => {
+    try {
+      const dateA = parse(a._date, "EEE, MMMM d, yyyy", new Date());
+      const dateB = parse(b._date, "EEE, MMMM d, yyyy", new Date());
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    } catch {
+      return 0; // If parsing fails, maintain original order
+    }
+  });
 };
 
 type AppApiShape = {
@@ -97,10 +116,12 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         (await window.app_api.readAllExistingLinks()) as ListItemProperties[];
+      // sort links by date in reverse chronological order (most recent first)
+      const sortedLinks = sortLinksByDateDescending(links);
       // set the links list state
-      setLinksList(links);
+      setLinksList(sortedLinks);
       // return an arr[] for the links
-      return links;
+      return sortedLinks;
     };
 
     readLinks();
@@ -188,10 +209,9 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
     description: string;
   } | null>(null);
   const [clipboardTitle, setClipboardTitle] = useState<string>("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clipboardDescription, setClipboardDescription] = useState<string>("");
   const [clipboardSaving, setClipboardSaving] = useState<boolean>(false);
-  // arr to handle the selected links
-  const selectedLinksArr: ListItemProperties[] = [] as ListItemProperties[];
 
   // hide the save collections options when clicked outside
   useEffect(() => {
@@ -316,10 +336,45 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
       {showSelectedLinksActions && (
         <article className="selected-links-actions-util-component">
           <ul>
+            {/* check all inputs*/}
+            <li
+              onClick={(event) => {
+                {
+                  event.stopPropagation(); // stop event bubbling
+
+                  const inputs: HTMLInputElement[] =
+                    window.document.querySelectorAll(
+                      ".select-link-checkbox",
+                    ) as unknown as HTMLInputElement[];
+                  // Check all visible search results
+                  setSelectedLinks(searchResults as ListItemProperties[]);
+                  // Update UI
+                  (
+                    window.document.querySelector(
+                      ".selected-links-count-placeholder",
+                    ) as HTMLSpanElement
+                  ).innerHTML = `${searchResults.length} selected link(s)`;
+                  // empty search results count
+                  (
+                    window.document.querySelector(
+                      ".search-results-count-placeholder",
+                    ) as HTMLSpanElement
+                  ).innerHTML = ``;
+
+                  // Check all visible inputs
+                  inputs.forEach((input: HTMLInputElement) => {
+                    input.checked = true as boolean;
+                  });
+                }
+              }}
+            >
+              <MdRadioButtonChecked />
+              <span>Check</span>
+            </li>
             <li
               onClick={(event) => {
                 event.stopPropagation(); // prevent event bubbling
-                CopyTextToClipboard(JSON.stringify(selectedLinksArr)); // copy all the links selected as plain text to clipboard!
+                CopyTextToClipboard(JSON.stringify(selectedLinks)); // copy all the links selected as plain text to clipboard!
               }}
             >
               <BiCopy />
@@ -335,14 +390,14 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                     window.document.querySelectorAll(
                       ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
-                  // remove label and its content
+                  // Clear all selections
+                  setSelectedLinks([] as ListItemProperties[]);
+                  // Update UI
                   (
                     window.document.querySelector(
                       ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
-                  ).innerHTML = `${
-                    selectedLinksArr.length - selectedLinksArr.length
-                  } selected link(s)`;
+                  ).innerHTML = `0 selected link(s)`;
                   // empty search results count
                   (
                     window.document.querySelector(
@@ -354,9 +409,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                   inputs.forEach((input: HTMLInputElement) => {
                     input.checked = false as boolean;
                   });
-
-                  // set the selected links count to 0
-                  setSelectedLinks([] as ListItemProperties[]);
                 }
               }}
             >
@@ -370,7 +422,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
                 await window.app_api.exportDataToHTMLFile(
-                  selectedLinksArr?.map((item) => item) ?? [],
+                  selectedLinks?.map((item) => item) ?? [],
                   `html`,
                   "Saved links",
                 );
@@ -532,7 +584,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
               <li>
                 <Link
                   to={{
-                    pathname: "",
+                    pathname: "/links/tagged",
                     search: "",
                   }}
                 >
@@ -638,7 +690,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                             event.stopPropagation(); // prevent event bubbling
                             const displayUrl = getDisplayUrl(link);
                             CopyTextToClipboard(displayUrl); // copy link to windows clipboard
-                            console.log(displayUrl.length);
                             window.alert(
                               `Copied Link: ${
                                 displayUrl.length < 65
@@ -686,31 +737,33 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                         id="select-link-checkbox"
                         className="select-link-checkbox"
                         title="select link"
-                        onClick={(event) => {
+                        checked={selectedLinks.some(
+                          (item) => item.id === link.id,
+                        )}
+                        onChange={(event) => {
                           // show actions component
                           setShowSelectedLinksActions(true);
-                          // if the input is checked, let the arr[].length increase by 1
+                          // if the input is checked, add link to selected links
                           if ((event.target as HTMLInputElement).checked) {
-                            // console.log(link.title);
-                            selectedLinks.length++; // auto increment number for each link selected
-                            // add the link to the selected links arr
-                            selectedLinksArr.push({
-                              id: link.id,
-                              title: link.title,
-                              link: link.link,
-                              user_id: "",
-                              _date: link._date,
-                              description: link.description,
-                            }); // O(n) -- FIFO(First In, First Out)
-
-                            // console.log(selectedLinksArr);
-                            // show and update the number of selected links
+                            // add the link to the selected links state
+                            setSelectedLinks([
+                              ...selectedLinks,
+                              {
+                                id: link.id,
+                                title: link.title,
+                                link: link.link,
+                                user_id: "",
+                                _date: link._date,
+                                description: link.description,
+                              },
+                            ]);
+                            // Update UI
+                            const newCount = selectedLinks.length + 1;
                             (
                               window.document.querySelector(
                                 ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).innerHTML =
-                              `${selectedLinksArr.length} selected link(s)`;
+                            ).innerHTML = `${newCount} selected link(s)`;
                             // empty search results count
                             (
                               window.document.querySelector(
@@ -718,16 +771,22 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                               ) as HTMLSpanElement
                             ).innerHTML = ``;
                           } else {
-                            selectedLinks.length--; // auto decrement number for each link selected
-                            // remove the last element of the selected links arr
-                            selectedLinksArr.pop(); // O(n) -- LIFO(Last In, First Out)
-                            // show and update the number of selected links
+                            // remove the specific link from selected links
+                            setSelectedLinks(
+                              selectedLinks.filter(
+                                (item) => item.id !== link.id,
+                              ),
+                            );
+                            // Update UI
+                            const newCount = selectedLinks.length - 1;
                             (
                               window.document.querySelector(
                                 ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
                             ).innerHTML =
-                              `${selectedLinksArr.length} selected link(s)`;
+                              newCount > 0
+                                ? `${newCount} selected link(s)`
+                                : ``;
                             // empty search results count
                             (
                               window.document.querySelector(

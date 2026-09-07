@@ -5,6 +5,7 @@ import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { Link } from "react-router-dom";
+import { LuDatabaseBackup } from "react-icons/lu";
 
 const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
   () => {
@@ -60,6 +61,31 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
             <div className="_application-user-data-backup-dashboard-window-components-wrapper">
               <article>
                 <div>
+                  <aside className="notifications">
+                    <article className="content-wrapper">
+                      <span>
+                        <LuDatabaseBackup /> Auto Backups
+                      </span>
+                      <p>
+                        Automatic backups for the application data are enabled
+                        by default for every 7 days interval.
+                      </p>
+                    </article>
+                    <article className="switch-wrapper-3">
+                      <input
+                        className="tgl tgl-light"
+                        id="switch-basic-3"
+                        title="switch"
+                        type="checkbox"
+                        checked
+                        aria-checked
+                      />
+                      <label
+                        className="tgl-btn"
+                        htmlFor="switch-basic-3"
+                      ></label>
+                    </article>
+                  </aside>
                   {/* <h1>Create Backup Now</h1> */}
                   <img src="/imgs/OIP.webp" alt="" />
                   <h2>

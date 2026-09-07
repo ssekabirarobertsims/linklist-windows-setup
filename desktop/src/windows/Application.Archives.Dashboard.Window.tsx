@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../stylesheets/Windows/Application.Archives.Dashboard.Window.Stylesheet.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import "../stylesheets/Configurations/Application.Styles.Configurations.css";
-// // Ensure that the environment variables are loaded correctly
+import { parse } from "date-fns";
 // Define the shape of a saved link item
 type ListItemProperties = {
   id: string;
@@ -21,10 +21,29 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { HiArrowDown } from "react-icons/hi";
 import ExportCollectionOptionsUtilComponent from "../components/utils/Export.Collection.Options.Util.Component";
 import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
-import { MdRadioButtonUnchecked, MdRestore } from "react-icons/md";
+import {
+  MdRadioButtonChecked,
+  MdRadioButtonUnchecked,
+  MdRestore,
+} from "react-icons/md";
 import { IoCloseSharp } from "react-icons/io5";
 import { TbFileExport, TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
+
+// Helper function to sort links by date in reverse chronological order (most recent first)
+const sortLinksByDateDescending = (
+  links: ListItemProperties[],
+): ListItemProperties[] => {
+  return [...links].sort((a, b) => {
+    try {
+      const dateA = parse(a._date, "EEE, MMMM d, yyyy", new Date());
+      const dateB = parse(b._date, "EEE, MMMM d, yyyy", new Date());
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    } catch {
+      return 0; // If parsing fails, maintain original order
+    }
+  });
+};
 
 const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -41,10 +60,12 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         (await window.app_api.readAllLinkArchives()) as ListItemProperties[];
+      // sort links by date in reverse chronological order (most recent first)
+      const sortedLinks = sortLinksByDateDescending(links);
       // set the links list state
-      setLinkArchivesList(links);
+      setLinkArchivesList(sortedLinks);
       // return an arr[] for the links
-      return links;
+      return sortedLinks;
     };
 
     fetchLinkArchives();
@@ -69,9 +90,6 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
   const [selectedArchivedLinks, setSelectedArchivedLinks] = useState<
     ListItemProperties[]
   >([] as ListItemProperties[]);
-  // arr to handle the selected links
-  const selectedArchivedLinksArr: ListItemProperties[] =
-    [] as ListItemProperties[];
 
   useEffect(() => {
     setSelectedArchivedLinks(selectedArchivedLinks);
@@ -132,10 +150,41 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
       {showSelectedArchivedLinksActions && (
         <article className="selected-links-actions-util-component">
           <ul>
+            {/* check all inputs*/}
+            <li
+              onClick={(event) => {
+                {
+                  event.stopPropagation(); // stop event bubbling
+
+                  const inputs: HTMLInputElement[] =
+                    window.document.querySelectorAll(
+                      ".select-link-checkbox",
+                    ) as unknown as HTMLInputElement[];
+                  // Check all visible archived links
+                  setSelectedArchivedLinks(
+                    linkArchivesList as ListItemProperties[],
+                  );
+                  // Update UI
+                  (
+                    window.document.querySelector(
+                      ".selected-links-count-placeholder",
+                    ) as HTMLSpanElement
+                  ).innerHTML = `${linkArchivesList.length} selected link(s)`;
+
+                  // Check all visible inputs
+                  inputs.forEach((input: HTMLInputElement) => {
+                    input.checked = true as boolean;
+                  });
+                }
+              }}
+            >
+              <MdRadioButtonChecked />
+              <span>Check</span>
+            </li>
             <li
               onClick={(event) => {
                 event.stopPropagation(); // prevent event bubbling
-                CopyTextToClipboard(JSON.stringify(selectedArchivedLinksArr)); // copy all the links selected as plain text to clipboard!
+                CopyTextToClipboard(JSON.stringify(selectedArchivedLinks)); // copy all the links selected as plain text to clipboard!
               }}
             >
               <BiCopy />
@@ -166,22 +215,19 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                     window.document.querySelectorAll(
                       ".select-link-checkbox",
                     ) as unknown as HTMLInputElement[];
-                  // remove label and its content
+                  // Clear all selections
+                  setSelectedArchivedLinks([] as ListItemProperties[]);
+                  // Update UI
                   (
                     window.document.querySelector(
                       ".selected-links-count-placeholder",
                     ) as HTMLSpanElement
-                  ).innerHTML = `${
-                    selectedArchivedLinks.length - selectedArchivedLinks.length
-                  } selected link(s)`;
+                  ).innerHTML = `0 selected link(s)`;
 
                   // uncheck all inputs
                   inputs.forEach((input: HTMLInputElement) => {
                     input.checked = false as boolean;
                   });
-
-                  // set the selected links count to 0
-                  setSelectedArchivedLinks([] as ListItemProperties[]);
                 }
               }}
             >
@@ -297,6 +343,9 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                   }
                 }}
               >
+                <span>
+                  <MdRestore />
+                </span>{" "}
                 Restore All
               </li>
               <li
@@ -316,9 +365,26 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                   }
                 }}
               >
-                Delete Forever
+                <span>
+                  <BiTrash />
+                </span>{" "}
+                Empty Trash
+              </li>
+              <li
+                onClick={async (event): Promise<void> => {
+                  event.stopPropagation(); // prevent event bubbling
+                  window.navigator.clipboard.writeText(
+                    String(JSON.stringify(linkArchivesList)),
+                  );
+                }}
+              >
+                <span>
+                  <BiCopy />
+                </span>{" "}
+                Copy Trash
               </li>
             </ul>
+            <br />
             <p>
               <strong>NOTE:</strong> Only 25 archived links are allowed to be
               stored for some period of time!
@@ -326,7 +392,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
 
             {/* Show the number of saved links */}
             <span className="links_count">
-              {linkArchivesList.length} available archived link(s)
+              {linkArchivesList.length} available trashed link(s)
             </span>
             <p></p>
             <div className="_save-links-collection-button-wrapper">
@@ -480,43 +546,50 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                         name="select"
                         id="select-link-1"
                         title="select link"
-                        onClick={(event) => {
+                        checked={selectedArchivedLinks.some(
+                          (item) => item.id === link.id,
+                        )}
+                        onChange={(event) => {
                           // show actions component
                           setShowSelectedArchivedLinksActions(true);
-                          // if the input is checked, let the arr[].length increase by 1
+                          // if the input is checked, add link to selected links
                           if ((event.target as HTMLInputElement).checked) {
-                            selectedArchivedLinks.length++; // auto increment number for each link selected
-                            // console.log(link.title);
-                            selectedArchivedLinks.length++; // auto increment number for each link selected
-                            // add the link to the selected links arr
-                            selectedArchivedLinksArr.push({
-                              id: link.id,
-                              title: link.title,
-                              link: link.link,
-                              user_id: "",
-                              _date: link._date,
-                              description: link.description,
-                            }); // O(n) -- FIFO(First In, First Out)
-
-                            // console.log(selectedArchivedLinksArr);
-                            // show and update the number of selected links
+                            // add the link to the selected links state
+                            setSelectedArchivedLinks([
+                              ...selectedArchivedLinks,
+                              {
+                                id: link.id,
+                                title: link.title,
+                                link: link.link,
+                                user_id: "",
+                                _date: link._date,
+                                description: link.description,
+                              },
+                            ]);
+                            // Update UI
+                            const newCount = selectedArchivedLinks.length + 1;
                             (
                               window.document.querySelector(
                                 ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
-                            ).textContent =
-                              `${selectedArchivedLinksArr.length} link(s) selected`;
+                            ).textContent = `${newCount} link(s) selected`;
                           } else {
-                            selectedArchivedLinks.length--; // auto decrement number for each link selected
-                            // remove the last element of the selected links arr
-                            selectedArchivedLinksArr.pop(); // O(n) -- LIFO(Last In, First Out)
-                            // show and update the number of selected links
+                            // remove the specific link from selected links
+                            setSelectedArchivedLinks(
+                              selectedArchivedLinks.filter(
+                                (item) => item.id !== link.id,
+                              ),
+                            );
+                            // Update UI
+                            const newCount = selectedArchivedLinks.length - 1;
                             (
                               window.document.querySelector(
                                 ".selected-links-count-placeholder",
                               ) as HTMLSpanElement
                             ).textContent =
-                              `${selectedArchivedLinksArr.length} link(s) selected`;
+                              newCount > 0
+                                ? `${newCount} link(s) selected`
+                                : ``;
                           }
                         }}
                       />
