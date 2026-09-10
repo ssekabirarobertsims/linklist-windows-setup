@@ -15,7 +15,7 @@ main[class="application-home-dashboard-window"] {
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   align-items: center;
   position: relative;
@@ -89,13 +89,13 @@ main[class="application-home-dashboard-window"]
   justify-content: center;
   flex-direction: row;
   gap: 0.5em;
-  /* border: 1px solid var(--border-secondary-color); */
+  /* border: 1px solid var(--secondary-font-color); */
   border-radius: 0.5em;
   flex-grow: 1;
   -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: var(--body-theme-color-option-2);
 }
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
@@ -119,7 +119,7 @@ main[class="application-home-dashboard-window"]
   > li
   :is(aside)
   > span {
-  color: #000;
+  color: #fff;
   font-size: 0.8em;
   font-weight: normal;
   display: flex;
@@ -184,7 +184,7 @@ main[class="application-home-dashboard-window"]
   :is(div[class="_application-home-dashboard-window-components-wrapper"])
   :where(p) {
   font-weight: calc(240 + 250);
-  color: hsl(0, 0%, 10%);
+  color: hsl(0, 0%, 100%);
   font-size: 0.8em;
 }
 main[class="application-home-dashboard-window"]
@@ -209,8 +209,9 @@ main[class="application-home-dashboard-window"]
   width: min(100%, 100%);
   border: none;
   border-radius: 0.3em;
-  color: hsl(0, 100%, 100%);
-  background-color: var(--body-theme-color-option-2);
+  color: hsl(0, 100%, 0%);
+  background-color: #fff;
+  /* background-color: var(--body-theme-color-option-2); */
   cursor: pointer;
 }
 

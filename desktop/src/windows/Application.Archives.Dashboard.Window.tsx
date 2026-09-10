@@ -20,7 +20,6 @@ import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { HiArrowDown } from "react-icons/hi";
 import ExportCollectionOptionsUtilComponent from "../components/utils/Export.Collection.Options.Util.Component";
-import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
 import {
   MdRadioButtonChecked,
   MdRadioButtonUnchecked,
@@ -29,6 +28,7 @@ import {
 import { IoCloseSharp } from "react-icons/io5";
 import { TbFileExport, TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -46,6 +46,10 @@ const sortLinksByDateDescending = (
 };
 
 const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
+  const CopyTextToClipboard = (text: string | number | boolean | object) => {
+    // copy text passed in as arg to the windows clipboard
+    window.navigator.clipboard.writeText(text as string); // as a string
+  };
   // State for all links, search results, search value, and selected link for editing
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
@@ -300,6 +304,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
           "application-archives-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
@@ -315,6 +320,13 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
           <p></p>
 
           <div className="_application-archives-dashboard-window-components-wrapper">
+            <h1>Trash</h1>
+            <p></p>
+            <p>
+              <strong>NOTE:</strong> Some trashed links are forever deleted
+              after some period of time!
+            </p>
+            <p></p>
             <ul id="_links-actions-navigation-ul">
               <li
                 onClick={async (event): Promise<void> => {
@@ -384,11 +396,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                 Copy Trash
               </li>
             </ul>
-            <br />
-            <p>
-              <strong>NOTE:</strong> Only 25 archived links are allowed to be
-              stored for some period of time!
-            </p>
+            <p></p>
 
             {/* Show the number of saved links */}
             <span className="links_count">

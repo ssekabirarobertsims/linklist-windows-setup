@@ -16,7 +16,7 @@ main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"] {
   min-height: 100vh;
   position: relative;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -98,7 +98,7 @@ main[class="application-export-formats-dashboard-window"]
   -webkit-box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 2px 1px 6px 1px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: var(--body-theme-color-option-2);
 }
 /* main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -136,7 +136,7 @@ main[class="application-export-formats-dashboard-window"]
   > li
   :is(aside)
   > span {
-  color: #000;
+  color: #fff;
   font-size: 1.7em;
   font-weight: normal;
   display: flex;
@@ -172,7 +172,7 @@ main[class="application-export-formats-dashboard-window"]
   :is(aside)
   > span[id="content-ul-li-p-2"] {
   color: #0066ff;
-  background-color: hsl(216, 100%, 80%);
+  background-color: hsl(216, 100%, 70%);
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -183,8 +183,8 @@ main[class="application-export-formats-dashboard-window"]
   > li
   :is(aside)
   > span[id="content-ul-li-p-3"] {
-  color: hsl(350, 100%, 53%);
-  background-color: hsl(350, 100%, 80%);
+  color: hsl(350, 100%, 20%);
+  background-color: hsl(350, 100%, 70%);
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -195,8 +195,8 @@ main[class="application-export-formats-dashboard-window"]
   > li
   :is(aside)
   > span[id="content-ul-li-p-4"] {
-  color: hsl(258, 100%, 53%);
-  background-color: hsl(258, 100%, 80%);
+  color: hsl(258, 100%, 20%);
+  background-color: hsl(258, 100%, 70%);
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -207,8 +207,8 @@ main[class="application-export-formats-dashboard-window"]
   > li
   :is(aside)
   > span[id="content-ul-li-p-5"] {
-  color: hsl(2, 100%, 53%);
-  background-color: hsl(2, 100%, 80%);
+  color: hsl(2, 100%, 20%);
+  background-color: hsl(2, 100%, 70%);
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -217,7 +217,7 @@ main[class="application-export-formats-dashboard-window"]
   )
   :where(p) {
   font-weight: calc(240 + 250);
-  color: hsl(0, 0%, 10%);
+  color: hsl(0, 0%, 100%);
   font-size: 0.8em;
 }
 main[class="application-export-formats-dashboard-window"]
@@ -231,10 +231,10 @@ main[class="application-export-formats-dashboard-window"]
   > button {
   height: 2.5em;
   width: min(100%, 8em);
-  background-color: var(--body-theme-color-option-2);
+  background-color: #fff;
   border: none;
   border-radius: 0.3em;
-  color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 0%);
   cursor: pointer;
   flex-grow: 0;
 }
@@ -252,7 +252,7 @@ main[class="application-export-formats-dashboard-window"]
   flex-direction: row;
   gap: 0.5em;
   padding: 0.5em;
-  background-color: #fff;
+  background-color: var(--body-theme-color-option-2);
   border-radius: 0.3em;
   -webkit-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
@@ -260,7 +260,7 @@ main[class="application-export-formats-dashboard-window"]
   cursor: pointer;
 }
 .recent-exports-item:is(:hover, :focus) {
-  background-color: hsl(0, 0%, 97%);
+  background-color: hsl(216, 95%, 10%);
   transform: translateY(-2px);
   -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
@@ -291,7 +291,7 @@ main[class="application-export-formats-dashboard-window"]
   > aside
   > span {
   font-weight: calc(200 + 250);
-  color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 90%);
   font-size: 0.8em;
   text-decoration: none;
   line-height: 01em;
@@ -309,7 +309,7 @@ main[class="application-export-formats-dashboard-window"]
   > aside
   > p {
   font-weight: calc(290 + 250);
-  color: hsl(0, 0%, 10%);
+  color: hsl(0, 0%, 100%);
   font-size: 0.7em;
   text-decoration: none;
 }

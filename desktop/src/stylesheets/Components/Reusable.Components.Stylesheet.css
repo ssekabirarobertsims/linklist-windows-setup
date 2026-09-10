@@ -413,7 +413,7 @@ article[class="create-link-request-loader-wrapper"]
 /*  */
 aside[class="full-desktop-aside-navigation-bar-component"] {
   min-height: 100vh;
-  width: min(15%, 15%);
+  width: min(18%, 18%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1293,4 +1293,222 @@ aside[class="floating-navigation-bar-component"] > ul :is(li) {
 aside[class="floating-navigation-bar-component"] > ul :is(li) > p {
   font-size: 0.7em !important;
   color: hsl(0, 0%, 98%) !important;
+}
+
+/*  */
+aside[class="full-desktop-mini-aside-navigation-bar-component"] {
+  min-height: 100vh;
+  width: min(5%, 5%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0em;
+  color: #fff;
+  border-right: 1px solid hsl(216, 95%, 12%);
+  background-color: hsl(216, 95%, 9%);
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"]) {
+  height: 95vh;
+  width: min(90%, 90%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 1em;
+  color: #fff;
+  /* border: 1px solid red; */
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > img {
+  height: 2.8em !important;
+  width: 2.8em !important;
+  border: 1px solid #fff;
+  flex-grow: 0;
+  border-radius: 0.5em;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > img {
+  height: 5em;
+  width: 5em;
+  background-color: #fff;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul {
+  min-height: 65vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-grow: 0;
+  gap: 0.5em;
+  color: #fff;
+  /* border: 1px solid red; */
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li) {
+  min-height: 2.3em;
+  width: min(80%, 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0em;
+  color: hsl(0, 0%, 60%);
+  border-radius: 0.2em;
+  /* border: 1px solid red; */
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li):is(:hover, :focus) {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li):is(:hover, :focus)
+  > a[id="_wrapper"] {
+  color: hsl(0, 0%, 0%);
+  /* padding-left: 5px; */
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li)
+  > a[id="_wrapper"] {
+  min-height: 1.5em;
+  width: min(95%, 95%);
+  color: hsl(0, 0%, 90%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1em;
+  text-decoration: none;
+  font-size: 0.8em;
+  font-weight: calc(250 + 290);
+  /* border: 1px solid red; */
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  :where(li)
+  > a[id="_wrapper"]
+  > span {
+  font-size: 1.6em;
+  font-weight: calc(250 + 290);
+}
+
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"]) {
+  min-height: 25vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5em;
+  color: #fff;
+  border: 1px solid hsl(0, 0%, 20%);
+  border-radius: 0.3em;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"])
+  > article {
+  min-height: 20vh;
+  width: min(95%, 95%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.2em;
+  color: #fff;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"])
+  > article
+  :where(img) {
+  height: 2.5em;
+  width: 2.5em;
+  border-radius: 100%;
+  border: none;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"])
+  > article
+  :where(span) {
+  font-weight: calc(290 + 290);
+  color: hsl(0, 0%, 100%);
+  font-size: 0.7em;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"])
+  > article
+  :where(p) {
+  font-weight: calc(250 + 250);
+  color: hsl(0, 0%, 100%);
+  font-size: 0.7em;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  :where(div[id="_user-profile"])
+  > article
+  :where(a) {
+  font-weight: calc(290 + 290);
+  color: hsl(0, 0%, 100%);
+  font-size: 0.7em;
+  text-decoration: none;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > :is(a) {
+  height: 2.5em !important;
+  width: min(95%, 95%);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > button {
+  height: 2.5em !important;
+  width: 2.5em;
+  border: 1px solid #fff !important;
+  color: #fff !important;
+  background-color: transparent !important;
+  font-size: 0.9em !important;
+  font-weight: normal !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.2em !important;
+  border-radius: 0.5em;
+  cursor: pointer !important;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > button:where(li):is(:hover, :focus) {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
 }

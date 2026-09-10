@@ -15,7 +15,7 @@ main[class="application-create-link-dashboard-window"] {
 main[class="application-create-link-dashboard-window"]
   > section[class="_application-create-link-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   position: relative;
   align-items: center;
@@ -75,14 +75,14 @@ main[class="application-create-link-dashboard-window"]
   > form
   :where(article[class="_wrapper"]) {
   min-height: 19em;
-  width: min(97%, 97%);
+  width: min(95%, 95%);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
   gap: 0.4em;
   border: 1px solid #eee;
-  padding: 10px;
+  padding: 15px;
   border-radius: 0.5em;
 }
 main[class="application-create-link-dashboard-window"]
@@ -144,6 +144,16 @@ main[class="application-create-link-dashboard-window"]
   :is(div[class="_application-create-link-dashboard-window-components-wrapper"])
   > form
   :where(article[class="_wrapper"])
+  > input:focus {
+  outline: none;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 0 1px rgba(76, 110, 245, 0.15);
+}
+main[class="application-create-link-dashboard-window"]
+  > section[class="_application-create-link-dashboard-window-wrapper"]
+  :is(div[class="_application-create-link-dashboard-window-components-wrapper"])
+  > form
+  :where(article[class="_wrapper"])
   > textarea {
   height: 6em;
   max-height: 6em;
@@ -156,6 +166,16 @@ main[class="application-create-link-dashboard-window"]
   background-color: transparent;
   border-radius: 0.3em;
   padding: 10px;
+}
+main[class="application-create-link-dashboard-window"]
+  > section[class="_application-create-link-dashboard-window-wrapper"]
+  :is(div[class="_application-create-link-dashboard-window-components-wrapper"])
+  > form
+  :where(article[class="_wrapper"])
+  > textarea:focus {
+  outline: none;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 0 1px rgba(76, 110, 245, 0.15);
 }
 main[class="application-create-link-dashboard-window"]
   > section[class="_application-create-link-dashboard-window-wrapper"]

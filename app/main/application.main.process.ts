@@ -388,18 +388,18 @@ app.on("ready", (): void => {
 
   // load file for the application or server to show app window
   // development area
-  // ApplicationMainWindow.loadURL("http://localhost:5173");
+  ApplicationMainWindow.loadURL("http://localhost:5173");
   // production area
-  const mainPath = path.join(__dirname, "../../desktop/index.html");
+  // const mainPath = path.join(__dirname, "../../desktop/index.html");
 
-  console.log("MAIN PATH:", mainPath);
-  console.log("MAIN EXISTS:", fs.existsSync(mainPath));
+  // console.log("MAIN PATH:", mainPath);
+  // console.log("MAIN EXISTS:", fs.existsSync(mainPath));
 
   // ApplicationMainWindow.loadFile(mainPath);
   // ApplicationMainWindow.loadURL("linklist://app/");
-  ApplicationMainWindow.loadFile(mainPath);
+  // ApplicationMainWindow.loadFile(mainPath);
 
-  ApplicationMainWindow.webContents.openDevTools();
+  // ApplicationMainWindow.webContents.openDevTools();
 
   /**
    *

@@ -10,6 +10,7 @@ import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import { v4 } from "uuid";
 import { Link } from "react-router-dom";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 const generateShortCode = (): string => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -141,6 +142,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
           "application-create-link-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(

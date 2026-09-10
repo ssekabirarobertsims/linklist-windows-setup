@@ -29,6 +29,7 @@ import "../../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { GrPersonalComputer } from "react-icons/gr";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { BsTrash2 } from "react-icons/bs";
+import { MdOutlineBackupTable } from "react-icons/md";
 
 const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
   () => {
@@ -57,9 +58,16 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       },
       {
         id: uuidV4(),
-        content: "Collections",
+        content: "Exports",
         icon: <FaRegFolderOpen />,
         link: `/collections`,
+      },
+      {
+        id: uuidV4(),
+        content: "Backups",
+        icon: <MdOutlineBackupTable />,
+        link: `/backups`,
+        shortcut: "",
       },
     ] as NavigationListItemProps[]);
 
@@ -87,6 +95,10 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         shortcut: "Ctrl + C",
       },
     ] as NavigationListItemProps[]);
+
+    useEffect(() => {
+      setList_2(list_2);
+    }, [list_2]);
 
     // Sidebar navigation list, dynamically generates links based on user username
     const [list_3, setList_3] = useState<NavigationListItemProps[]>([
@@ -161,26 +173,26 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
               }
             }),
           );
-          setList_2((prev) =>
-            prev.map((item) => {
-              switch (item.content.toLowerCase()) {
-                case "links":
-                  return { ...item, amount: linksCount };
-                case "archives":
-                  return { ...item, amount: archivesCount };
-                case "collections":
-                  return { ...item, amount: collectionsCount };
-                case "backup":
-                case "backups":
-                  return { ...item, amount: backupsCount };
-                case "export":
-                case "exports":
-                  return { ...item, amount: collectionsCount };
-                default:
-                  return item;
-              }
-            }),
-          );
+          // setList_2((prev) =>
+          //   prev.map((item) => {
+          //     switch (item.content.toLowerCase()) {
+          //       case "links":
+          //         return { ...item, amount: linksCount };
+          //       case "archives":
+          //         return { ...item, amount: archivesCount };
+          //       case "collections":
+          //         return { ...item, amount: collectionsCount };
+          //       case "backup":
+          //       case "backups":
+          //         return { ...item, amount: backupsCount };
+          //       case "export":
+          //       case "exports":
+          //         return { ...item, amount: collectionsCount };
+          //       default:
+          //         return item;
+          //     }
+          //   }),
+          // );
         } catch (err) {
           // non-fatal; keep defaults
           console.warn("Failed to fetch sidebar counts", err);
@@ -216,7 +228,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                           backgroundColor: "transparent",
                           paddingLeft: ".5em",
                           color: "#000",
-                          border: "1px solid #fff",
+                          borderLeft: "3px solid #fff",
                           borderTopRightRadius: "1em",
                           borderBottomRightRadius: "1em",
                         }
@@ -255,7 +267,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                           backgroundColor: "transparent",
                           paddingLeft: ".5em",
                           color: "#000",
-                          border: "1px solid #fff",
+                          borderLeft: "3px solid #fff",
                           borderTopRightRadius: "1em",
                           borderBottomRightRadius: "1em",
                         }
@@ -294,7 +306,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                           backgroundColor: "transparent",
                           paddingLeft: ".5em",
                           color: "#000",
-                          border: "1px solid #fff",
+                          borderLeft: "3px solid #fff",
                           borderTopRightRadius: "1em",
                           borderBottomRightRadius: "1em",
                         }

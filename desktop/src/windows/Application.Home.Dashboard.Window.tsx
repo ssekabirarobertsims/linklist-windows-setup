@@ -40,6 +40,7 @@ type collectionProps = {
 
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -148,6 +149,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
           "application-home-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
@@ -212,15 +214,15 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                         ) as Required<number>
                       }{" "}
                     </p>
-                    Total archived link(s)
+                    Total Trashed link(s)
                   </span>
-                  <p>Manage your archived links here. </p>
+                  <p>Manage your trashed links here. </p>
                   <Link
                     to={{
                       pathname: `/archives`,
                     }}
                   >
-                    <button type="button" title="saved links">
+                    <button type="button" title="trashed links">
                       checkout
                     </button>
                   </Link>
@@ -248,7 +250,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       pathname: `/collections`,
                     }}
                   >
-                    <button type="button" title="saved links">
+                    <button type="button" title="total saved links">
                       checkout
                     </button>
                   </Link>

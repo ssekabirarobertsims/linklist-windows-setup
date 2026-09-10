@@ -16,7 +16,7 @@ main[class="application-user-profile-dashboard-window"] {
 main[class="application-user-profile-dashboard-window"]
   > section[class="_application-user-profile-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   align-items: center;
   position: relative;

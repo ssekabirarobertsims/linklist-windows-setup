@@ -23,7 +23,6 @@ interface ShareButtonsProps {
   title: string;
 }
 
-import CopyTextToClipboard from "../../functions/Copy.Text.To.Clipboard.Function";
 import * as motion from "motion/react-client";
 import { IoIosLink } from "react-icons/io";
 
@@ -32,6 +31,10 @@ const LinksSharingFormUtilsComponent: FunctionComponent<ShareButtonsProps> = ({
   title,
 }) => {
   const [value, setValue] = useState<string>(url);
+  const CopyTextToClipboard = (text: string | number | boolean | object) => {
+    // copy text passed in as arg to the windows clipboard
+    window.navigator.clipboard.writeText(text as string); // as a string
+  };
 
   // set the state for the value on render
   useEffect(() => {

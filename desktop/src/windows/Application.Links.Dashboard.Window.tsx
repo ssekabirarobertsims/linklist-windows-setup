@@ -36,6 +36,7 @@ import {
   MdRadioButtonChecked,
   MdRadioButtonUnchecked,
 } from "react-icons/md";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 const generateShortCode = (): string => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -477,6 +478,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
           "application-links-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(

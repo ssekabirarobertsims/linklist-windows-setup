@@ -5,6 +5,7 @@ import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 // import { Link } from "react-router-dom";
 import { AiFillWindows } from "react-icons/ai";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 interface DeviceInfo {
   appVersion: string;
@@ -62,6 +63,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
           "application-user-profile-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
@@ -70,9 +72,7 @@ const ApplicationUserProfileDashboardWindow: React.FC = () => {
           ).toLocaleLowerCase()}
         >
           {/* Navigation bar and sidebar for user profile */}
-          <ApplicationDashboardNavigationBarAtomicComponent
-            window={"Profile"}
-          />
+          <ApplicationDashboardNavigationBarAtomicComponent window={"Device"} />
           <br />
           <div className="_application-user-profile-dashboard-window-components-wrapper">
             <p></p>

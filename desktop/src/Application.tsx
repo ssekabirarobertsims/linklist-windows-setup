@@ -338,7 +338,7 @@ function Application() {
             <div className="clipboard-link-prompt-header">
               <div>
                 <p className="clipboard-link-prompt-eyebrow">
-                  Link In Clipboard detected
+                  Clipboard detected
                 </p>
               </div>
               <button

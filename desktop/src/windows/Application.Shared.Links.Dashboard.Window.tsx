@@ -32,6 +32,7 @@ import {
   MdRadioButtonChecked,
   MdRadioButtonUnchecked,
 } from "react-icons/md";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -333,6 +334,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
           "application-links-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(

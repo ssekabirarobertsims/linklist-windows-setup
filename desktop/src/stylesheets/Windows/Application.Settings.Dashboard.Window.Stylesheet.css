@@ -16,7 +16,7 @@ main[class="application-settings-dashboard-window"] {
 main[class="application-settings-dashboard-window"]
   > section[class="_application-settings-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   position: relative;
   align-items: center;
@@ -98,7 +98,7 @@ main[class="application-settings-dashboard-window"]
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  gap: 0em;
+  gap: 0.3em;
   /* border: 1px solid red; */
 }
 main[class="application-settings-dashboard-window"]
@@ -218,7 +218,7 @@ main[class="application-settings-dashboard-window"]
   > section[class="_application-settings-dashboard-window-wrapper"]
   :is(div[class="_application-settings-dashboard-window-components-wrapper"])
   div[class="notifications"] {
-  height: 5em;
+  height: 4.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -243,7 +243,7 @@ main[class="application-settings-dashboard-window"]
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  gap: 0em;
+  gap: 0.3em;
   /* border: 1px solid red; */
 }
 main[class="application-settings-dashboard-window"]
@@ -269,7 +269,7 @@ main[class="application-settings-dashboard-window"]
   p {
   font-weight: calc(200 + 200);
   color: hsl(0, 0%, 10%);
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 main[class="application-settings-dashboard-window"]
   > section[class="_application-settings-dashboard-window-wrapper"]
@@ -279,7 +279,7 @@ main[class="application-settings-dashboard-window"]
   > span {
   font-weight: calc(290 + 290);
   color: hsl(0, 0%, 10%);
-  font-size: 1em;
+  font-size: 0.9em;
 }
 
 /*  */

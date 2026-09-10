@@ -46,6 +46,7 @@ import { FaHashtag, FaLink } from "react-icons/fa";
 import { MdDateRange, MdOutlineOpenInNew } from "react-icons/md";
 import { format } from "date-fns/format";
 import { v4 as uuidv4 } from "uuid";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -313,6 +314,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
           "application-read-links-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
@@ -463,10 +465,11 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                             maxLength={maximumTagLength}
                             autoFocus
                           />
+                          <span className="character-count">
+                            {tagInput.length}/{maximumTagLength}
+                          </span>
                         </div>
-                        <span className="character-count">
-                          {tagInput.length}/{maximumTagLength}
-                        </span>
+                        <p></p>
                         <div className="add-link-tag-form-actions">
                           <button type="submit">Add tag</button>
                           <button

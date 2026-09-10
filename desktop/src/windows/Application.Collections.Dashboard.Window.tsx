@@ -14,11 +14,11 @@ type collectionProps = {
 import { v4 as uuidV4 } from "uuid";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-import { MdOutlineCollectionsBookmark } from "react-icons/md";
-import { TiDocumentDelete } from "react-icons/ti";
+import { MdDeleteForever, MdOutlineCollectionsBookmark } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
-import { LuFolderOpenDot } from "react-icons/lu";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import { BiCopy } from "react-icons/bi";
 
 const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
   // State for all collections, search results, search value, and selected link for editing
@@ -99,6 +99,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
           "application-collections-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
@@ -116,18 +117,35 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
           <p></p>
 
           <div className="_application-collections-dashboard-window-components-wrapper">
+            <h1>Exports</h1>
             {/* <ul id="_collections-actions-navigation-ul">
               <li>Delete All</li>
               <li>Do Something</li>
             </ul> */}
             <p>
-              <strong>NOTE:</strong> All your saved collections are listed
-              below. You can manage them as you wish.
+              <strong>NOTE:</strong> All your saved collections/exports are
+              listed below. You can manage them as you wish.
             </p>
-
+            <p></p>
+            <ul id="_links-actions-navigation-ul">
+              <li
+                onClick={async (event): Promise<void> => {
+                  event.stopPropagation(); // prevent event bubbling
+                  window.navigator.clipboard.writeText(
+                    String(JSON.stringify(collection)),
+                  );
+                }}
+              >
+                <span>
+                  <BiCopy />
+                </span>{" "}
+                Copy Collection
+              </li>
+            </ul>
+            <p></p>
             {/* Show the number of saved collections */}
             <span className="collections_count">
-              {collection.length} available exported collection(s)
+              {collection.length} available exported exports/collection(s)
             </span>
             <p></p>
 
@@ -139,8 +157,19 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                   <li
                     key={uuidV4()}
                     id={collection.id}
-                    title={`${collection.filepath}`}
+                    title={`Click collection to open path ${collection.filepath} in file explore`}
+                    onClick={async (event): Promise<void> => {
+                      event?.stopPropagation(); // stop event bubbling
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      await window.app_api.showItemInFolder(
+                        `${collection.filepath}`,
+                      ); // open collection in windows file explorer
+                    }}
                   >
+                    <article>
+                      <img src="/imgs/folder.png" alt="icon" />
+                    </article>
                     <aside>
                       <span>
                         <MdOutlineCollectionsBookmark />
@@ -151,21 +180,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                       <p>{`Exported to: ${collection.filepath}`}</p>
                       <p>{`Created on: ${collection.date_created}`}</p>
                       <p></p>
-                      <button
-                        className="show-collection-in-folder-button"
-                        title="Open collection in folder"
-                        onClick={async (event): Promise<void> => {
-                          event?.stopPropagation(); // stop event bubbling
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-expect-error
-                          await window.app_api.showItemInFolder(
-                            `${collection.filepath}`,
-                          ); // open collection in windows file explorer
-                        }}
-                      >
-                        <LuFolderOpenDot />
-                        Open In Folder
-                      </button>
+
                       <span
                         className="remove-from-list"
                         onClick={async (event) => {
@@ -180,7 +195,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                           window.location.href = "/collections";
                         }}
                       >
-                        <TiDocumentDelete />
+                        <MdDeleteForever />
                       </span>
                     </aside>
                   </li>

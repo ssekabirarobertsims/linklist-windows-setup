@@ -4,8 +4,7 @@ import "../stylesheets/Windows/Application.Data.Backup.Dashboard.Window.Styleshe
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-import { Link } from "react-router-dom";
-import { LuDatabaseBackup } from "react-icons/lu";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
   () => {
@@ -42,6 +41,7 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
             "application-user-data-backup-dashboard-window",
           ).toLocaleLowerCase()}
         >
+          <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
           <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
           <section
@@ -62,7 +62,7 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
               <article>
                 <div>
                   <aside className="notifications">
-                    <article className="content-wrapper">
+                    {/* <article className="content-wrapper">
                       <span>
                         <LuDatabaseBackup /> Auto Backups
                       </span>
@@ -70,18 +70,19 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
                         Automatic backups for the application data are enabled
                         by default for every 7 days interval.
                       </p>
-                    </article>
+                    </article> */}
                     <article className="switch-wrapper-3">
                       <input
                         className="tgl tgl-light"
                         id="switch-basic-3"
-                        title="switch"
+                        title=" Automatic backups for the application data are enabled by default for every 7 days interval."
                         type="checkbox"
                         checked
                         aria-checked
                       />
                       <label
                         className="tgl-btn"
+                        title=" Automatic backups for the application data are enabled by default for every 7 days interval."
                         htmlFor="switch-basic-3"
                       ></label>
                     </article>
@@ -126,14 +127,14 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
                     Create a Backup
                   </button>
                   <br />
-                  <Link
+                  {/* <Link
                     className="recent-backups-link"
                     to={{
                       pathname: "/backups",
                     }}
                   >
                     --See Recent Backups--
-                  </Link>
+                  </Link> */}
                 </div>
               </article>
             </div>

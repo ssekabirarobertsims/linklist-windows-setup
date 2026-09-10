@@ -29,6 +29,7 @@ import { PiFileHtmlBold } from "react-icons/pi";
 import { BsFiletypeJson } from "react-icons/bs";
 import { v4 as uuidV4 } from "uuid";
 import { Link } from "react-router-dom";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 
 const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -103,6 +104,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
           "application-export-formats-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
         <section
           className={String(
@@ -117,7 +119,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
           <p></p>
           {/* user welcome banner and stats */}
           <div className="_application-export-formats-dashboard-window-components-wrapper">
-            <h1>Export your saved links in various formats easily</h1>
+            <h1>Export saved links</h1>
             <p>
               Choose your preferred export format for your saved links. You can
               export your links in various formats such as CSV, JSON, TXT, HTML,

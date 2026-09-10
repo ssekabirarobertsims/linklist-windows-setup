@@ -38,12 +38,12 @@ const LinksBarGraphChartComponent = ({ isAnimationActive = true }) => {
   // Initialize state for the list of links, search results, search value, and selected link
   // State to hold the list of links
   const [linksList, setLinksList] = useState<ListItemProperties[]>(
-    [] as ListItemProperties[]
+    [] as ListItemProperties[],
   );
 
   // State to hold transformed chart data
   const [chartData, setChartData] = useState<{ date: string; links: number }[]>(
-    []
+    [],
   );
 
   // fetch all existing links on component mount and display them
@@ -89,7 +89,7 @@ const LinksBarGraphChartComponent = ({ isAnimationActive = true }) => {
       <Tooltip />
       <Bar
         dataKey="links"
-        fill="#8884d8"
+        fill="var(--body-theme-color-option-2)"
         width={10}
         radius={[10, 10, 0, 0]}
         minPointSize={5}

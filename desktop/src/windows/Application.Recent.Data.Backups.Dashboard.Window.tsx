@@ -14,11 +14,11 @@ type collectionProps = {
 import { v4 as uuidV4 } from "uuid";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
-import { MdOutlineCollectionsBookmark } from "react-icons/md";
+import { MdDeleteForever, MdOutlineCollectionsBookmark } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
-import { GrOfflineStorage } from "react-icons/gr";
-import { LuFolderOpenDot } from "react-icons/lu";
+import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import { BiCopy } from "react-icons/bi";
 
 const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
   // State for all Backups, search results, search value, and selected link for editing
@@ -48,7 +48,6 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
   useEffect(() => {
     setCollection(collection);
   }, [collection]);
-  console.log(collection); //////////////////////////////////////////////////////////
 
   //   state to handle Backups list saving options
   const [showSavingOptions, setShowSavingOptions] = useState<boolean>(
@@ -116,6 +115,7 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
           "application-backups-dashboard-window",
         ).toLocaleLowerCase()}
       >
+        <ApplicationMiniAsideNavigationDashboardBarAtomicComponent />
         <ApplicationAsideNavigationDashboardBarAtomicComponent />
 
         <section
@@ -133,12 +133,30 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
           <p></p>
 
           <div className="_application-backups-dashboard-window-components-wrapper">
+            <h1>Recent Backups</h1>
+            <p></p>
             <p>
               <strong>NOTE:</strong> All your recent backups are listed below
               including application settings, links, user data etc. You can
               manage them as you wish.
             </p>
-
+            <p></p>
+            <ul id="_links-actions-navigation-ul">
+              <li
+                onClick={async (event): Promise<void> => {
+                  event.stopPropagation(); // prevent event bubbling
+                  window.navigator.clipboard.writeText(
+                    String(JSON.stringify(collection)),
+                  );
+                }}
+              >
+                <span>
+                  <BiCopy />
+                </span>{" "}
+                Copy Collection
+              </li>
+            </ul>
+            <p></p>
             {/* Show the number of saved backups */}
             <span className="backups_count">
               {collection.length ?? 0} available backup(s) made
@@ -151,6 +169,14 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
               {collection.length > 0 ? (
                 collection.map((collection: collectionProps) => (
                   <li
+                    onClick={async (event): Promise<void> => {
+                      event?.stopPropagation(); // stop event bubbling
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      await window.app_api.showItemInFolder(
+                        `${collection.filepath}`,
+                      ); // open collection in windows file explorer
+                    }}
                     className={
                       collection?.id === recentBackupId
                         ? `recent-backup`
@@ -160,10 +186,13 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
                     id={collection.id}
                     title={
                       collection?.id === recentBackupId
-                        ? `Recent Backup`
-                        : `Backup made on ${collection?._date}`
+                        ? `Recent Backup, click to open in file explorer`
+                        : `Backup made on ${collection?._date}, click to open in file explorer`
                     }
                   >
+                    <article>
+                      <img src="/imgs/folder.png" alt="icon" />
+                    </article>
                     <aside>
                       <span>
                         <MdOutlineCollectionsBookmark />
@@ -177,23 +206,9 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
                       <p>{`Created on: ${collection?._date}`}</p>
                       <p>{`Backup Type: Local Backup`}</p>
                       <p></p>
-                      <button
-                        className="show-backup-in-folder-button"
-                        title="Open collection in folder"
-                        onClick={async (event): Promise<void> => {
-                          event?.stopPropagation(); // stop event bubbling
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-expect-error
-                          await window.app_api.showItemInFolder(
-                            `${collection.filepath}`,
-                          ); // open collection in windows file explorer
-                        }}
-                      >
-                        <LuFolderOpenDot />
-                        Open In Folder
-                      </button>
+
                       <span className="remove-from-list">
-                        <GrOfflineStorage />
+                        <MdDeleteForever />
                       </span>
                     </aside>
                   </li>

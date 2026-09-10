@@ -25,8 +25,10 @@ main[class="application-links-dashboard-window"] {
 }
 
 .clipboard-link-prompt-card {
-  width: min(92vw, 26rem);
-  background: linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%);
+  height: 65vh;
+  width: min(92vw, 23rem);
+  /* background: linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%); */
+  background-color: #fff;
   border: 1px solid rgba(24, 44, 97, 0.12);
   border-radius: 0.5rem;
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.2);
@@ -38,7 +40,7 @@ main[class="application-links-dashboard-window"] {
 
 .clipboard-link-prompt-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
 }
@@ -78,7 +80,7 @@ main[class="application-links-dashboard-window"] {
 }
 
 .clipboard-link-prompt-field span {
-  font-weight: 600;
+  font-weight: calc(280 + 280);
 }
 
 .clipboard-link-prompt-field input,
@@ -90,14 +92,18 @@ main[class="application-links-dashboard-window"] {
   font-size: 0.92rem;
   background: #fff;
   color: #14213d;
+  font-size: 0.9em;
   box-sizing: border-box;
+}
+.clipboard-link-prompt-field textarea {
+  height: 10em;
 }
 
 .clipboard-link-prompt-field input:focus,
 .clipboard-link-prompt-field textarea:focus {
   outline: none;
   border-color: #4c6ef5;
-  box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.15);
+  box-shadow: 0 0 0 1px rgba(76, 110, 245, 0.15);
 }
 
 .clipboard-link-prompt-actions {
@@ -121,13 +127,13 @@ main[class="application-links-dashboard-window"] {
 }
 
 .clipboard-link-prompt-action-secondary {
-  background: #eef2ff;
-  color: #37517c;
+  background: #000;
+  color: #fff;
 }
 main[class="application-links-dashboard-window"]
   > section[class="_application-links-dashboard-window-wrapper"] {
   height: 100vh;
-  width: min(100%, 85%);
+  width: min(77%, 77%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -255,7 +261,7 @@ main[class="application-links-dashboard-window"]
   > ul[id="_links-tabs-navigation-ul"]
   li {
   height: 2em;
-  width: min(25%, 5em);
+  width: min(25%, 6em);
   border-radius: 20em;
   border: 1px solid hsl(0, 0%, 90%);
   background-color: hsl(0, 0%, 100%);
@@ -315,8 +321,9 @@ main[class="application-links-dashboard-window"]
   height: 2.9em;
   width: min(90%, 12em);
   border: none;
-  background-color: #0066ff;
+  background-color: var(--body-theme-color-option-2);
   color: hsl(0, 0%, 100%);
+  border-right: 1px solid hsl(216, 95%, 15%);
   font-weight: bold;
   cursor: pointer;
   border-bottom-left-radius: 0.4em;
@@ -330,7 +337,7 @@ main[class="application-links-dashboard-window"]
   height: 2.4em;
   width: min(10%, 2em);
   border: none;
-  background-color: hsl(216, 100%, 47%);
+  background-color: var(--body-theme-color-option-2);
   color: hsl(0, 0%, 100%);
   font-weight: bold;
   border-bottom-right-radius: 0.4em;
@@ -468,7 +475,7 @@ main[class="application-links-dashboard-window"]
   flex-direction: row;
   gap: 1em;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--body-theme-color-option-2);
   border-radius: 0.5em;
   flex-shrink: 0;
   cursor: pointer;
@@ -484,7 +491,7 @@ main[class="application-links-dashboard-window"]
   :is(div[class="_application-links-dashboard-window-components-wrapper"])
   > ul[id="_links-list"]
   > li:is(:hover, :focus) {
-  background-color: hsl(0, 0%, 97%);
+  background-color: hsl(216, 95%, 10%);
   transform: translateY(-2px);
   -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
@@ -558,7 +565,7 @@ main[class="application-links-dashboard-window"]
   :where(aside)
   span {
   font-weight: calc(290 + 250);
-  color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 90%);
   font-size: 0.8em;
   text-decoration: none;
   line-height: 01em;
@@ -571,7 +578,7 @@ main[class="application-links-dashboard-window"]
   :where(aside)
   a {
   font-weight: calc(290 + 250);
-  color: hsl(0, 0%, 10%);
+  color: hsl(0, 0%, 100%);
   font-size: 0.7em;
   text-decoration: none;
 }
@@ -582,7 +589,7 @@ main[class="application-links-dashboard-window"]
   > li
   :where(aside)
   a:where(:hover, :focus, :active) {
-  color: hsl(0, 0%, 20%);
+  color: hsl(216, 95%, 50%);
 }
 main[class="application-links-dashboard-window"]
   > section[class="_application-links-dashboard-window-wrapper"]
@@ -596,7 +603,7 @@ main[class="application-links-dashboard-window"]
   width: 2em;
   border: none;
   border-radius: 0.3em;
-  color: #000;
+  color: #fff;
   background-color: transparent;
   cursor: pointer;
   font-size: 1em;
@@ -627,7 +634,7 @@ main[class="application-links-dashboard-window"]
   width: 2em;
   border: none;
   border-radius: 0.3em;
-  color: #000;
+  color: #fff;
   background-color: transparent;
   cursor: pointer;
 }
