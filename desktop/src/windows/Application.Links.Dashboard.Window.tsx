@@ -602,7 +602,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
               <button
                 ref={buttonRef}
                 type="button"
-                title={`save collection`}
                 onClick={async (event): Promise<void> => {
                   event.stopPropagation(); // stop event bubbling
 
@@ -652,7 +651,7 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
               {/* make sure to add event to be triggered and listen by main process to handle opening of external links */}
               {searchResults.length > 0 ? (
                 searchResults.map((link: ListItemProperties) => (
-                  <li key={uuidV4()} id={link.id} title={`${link.title}`}>
+                  <li key={uuidV4()} id={link.id}>
                     <img
                       src={getFaviconUrl(link.link)}
                       alt={`${link.title} favicon`}
@@ -667,7 +666,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                       <a
                         href={getDisplayUrl(link)}
                         target="_blank"
-                        title={`${link?.title}`}
                         onClick={(event) => {
                           event.preventDefault();
                           const displayUrl = getDisplayUrl(link);
@@ -738,7 +736,6 @@ const ApplicationLinksDashboardWindow: React.FunctionComponent = () => {
                         name="select"
                         id="select-link-checkbox"
                         className="select-link-checkbox"
-                        title="select link"
                         checked={selectedLinks.some(
                           (item) => item.id === link.id,
                         )}

@@ -75,14 +75,13 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
                       <input
                         className="tgl tgl-light"
                         id="switch-basic-3"
-                        title=" Automatic backups for the application data are enabled by default for every 7 days interval."
                         type="checkbox"
                         checked
                         aria-checked
                       />
+
                       <label
                         className="tgl-btn"
-                        title=" Automatic backups for the application data are enabled by default for every 7 days interval."
                         htmlFor="switch-basic-3"
                       ></label>
                     </article>

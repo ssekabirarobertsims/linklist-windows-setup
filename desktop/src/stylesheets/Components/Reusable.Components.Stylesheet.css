@@ -456,15 +456,21 @@ aside[class="full-desktop-aside-navigation-bar-component"]
 }
 aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
+  > ul
+  .tooltip-wrapper {
+  width: min(80%, 80%);
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
   > ul {
-  min-height: 29vh;
+  min-height: 28vh;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
   flex-grow: 0;
-  gap: 0.5em;
+  gap: 0.4em;
   color: #fff;
   /* border: 1px solid red; */
 }
@@ -472,7 +478,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
   :where(li) {
-  min-height: 2.3em;
+  min-height: 2.1em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -531,13 +537,13 @@ aside[class="full-desktop-aside-navigation-bar-component"]
 aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="others"] {
-  min-height: 15vh;
+  min-height: 11vh;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
   color: #fff;
   /* border: 1px solid red; */
 }
@@ -545,7 +551,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="others"]
   :where(li) {
-  min-height: 2.3em;
+  min-height: 2.1em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -609,7 +615,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
   color: #fff;
   /* border: 1px solid red; */
   flex-grow: 0;
@@ -618,7 +624,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="tools"]
   :where(li) {
-  min-height: 2.3em;
+  min-height: 2.1em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -697,7 +703,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 0.2em;
+  gap: 0.4em;
   color: #fff;
 }
 aside[class="full-desktop-aside-navigation-bar-component"]
@@ -750,6 +756,12 @@ aside[class="full-desktop-aside-navigation-bar-component"]
 }
 aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
+  > .tooltip-wrapper {
+  width: min(100%, 100%);
+}
+aside[class="full-desktop-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > .tooltip-wrapper
   > button {
   height: 2.5em !important;
   width: min(100%, 100%);
@@ -1322,6 +1334,15 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 }
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
+  .tooltip-wrapper {
+  height: 2.8em !important;
+  width: 2.8em !important;
+  flex-grow: 0;
+  border-radius: 0.5em;
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  .tooltip-wrapper
   > img {
   height: 2.8em !important;
   width: 2.8em !important;
@@ -1339,7 +1360,7 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul {
-  min-height: 65vh;
+  min-height: 55vh;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -1353,7 +1374,14 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
-  :where(li) {
+  .tooltip-wrapper {
+  width: min(80%, 80%);
+}
+aside[class="full-desktop-mini-aside-navigation-bar-component"]
+  :is(div[id="_wrapper"])
+  > ul
+  .tooltip-wrapper
+  .mini-aside-li {
   min-height: 2.3em;
   width: min(80%, 80%);
   display: flex;
@@ -1368,7 +1396,8 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
-  :where(li):is(:hover, :focus) {
+  .tooltip-wrapper
+  .mini-aside-li:is(:hover, :focus) {
   background-color: hsl(0, 0%, 97%);
   transform: translateY(-2px);
   -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
@@ -1378,7 +1407,8 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
-  :where(li):is(:hover, :focus)
+  .tooltip-wrapper
+  .mini-aside-li:is(:hover, :focus)
   > a[id="_wrapper"] {
   color: hsl(0, 0%, 0%);
   /* padding-left: 5px; */
@@ -1386,7 +1416,8 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
-  :where(li)
+  .tooltip-wrapper
+  .mini-aside-li
   > a[id="_wrapper"] {
   min-height: 1.5em;
   width: min(95%, 95%);
@@ -1404,7 +1435,8 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
 aside[class="full-desktop-mini-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
-  :where(li)
+  .tooltip-wrapper
+  .mini-aside-li
   > a[id="_wrapper"]
   > span {
   font-size: 1.6em;
@@ -1486,9 +1518,8 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
   justify-content: center !important;
   text-decoration: none;
 }
-aside[class="full-desktop-mini-aside-navigation-bar-component"]
-  :is(div[id="_wrapper"])
-  > button {
+
+button[class="notification-button"] {
   height: 2.5em !important;
   width: 2.5em;
   border: 1px solid #fff !important;
@@ -1503,12 +1534,111 @@ aside[class="full-desktop-mini-aside-navigation-bar-component"]
   border-radius: 0.5em;
   cursor: pointer !important;
 }
-aside[class="full-desktop-mini-aside-navigation-bar-component"]
-  :is(div[id="_wrapper"])
-  > button:where(li):is(:hover, :focus) {
+button:where(li):is(:hover, :focus) {
   background-color: hsl(0, 0%, 97%);
   transform: translateY(-2px);
   -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
   box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+}
+button[class="internet-status-button"] {
+  height: 2.5em !important;
+  width: 2.5em;
+  border: 1px solid #fff !important;
+  color: #fff !important;
+  background-color: transparent !important;
+  font-size: 0.9em !important;
+  font-weight: normal !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.2em !important;
+  border-radius: 0.5em;
+  cursor: pointer !important;
+}
+button:where(li):is(:hover, :focus) {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+}
+
+.tooltip-content {
+  position: absolute;
+  z-index: 9999;
+  padding: 7px 11px;
+  background: hsl(216, 95%, 11%);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 6px;
+  -webkit-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* Show tooltip */
+.tooltip-wrapper:hover .tooltip-content {
+  opacity: 1;
+  visibility: visible;
+  font-size: 0.7em;
+}
+
+/* TOP */
+.tooltip-top .tooltip-content {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip-top:hover .tooltip-content {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* BOTTOM */
+.tooltip-bottom .tooltip-content {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.tooltip-bottom:hover .tooltip-content {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* LEFT */
+.tooltip-left .tooltip-content {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+
+.tooltip-left:hover .tooltip-content {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* RIGHT */
+.tooltip-right .tooltip-content {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.tooltip-right:hover .tooltip-content {
+  transform: translateY(-50%) translateX(0);
 }

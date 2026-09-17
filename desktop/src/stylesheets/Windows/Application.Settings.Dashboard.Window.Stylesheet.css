@@ -126,6 +126,16 @@ main[class="application-settings-dashboard-window"]
   color: hsl(0, 0%, 30%);
   font-size: 0.8em;
 }
+main[class="application-settings-dashboard-window"]
+  > section[class="_application-settings-dashboard-window-wrapper"]
+  :is(div[class="_application-settings-dashboard-window-components-wrapper"])
+  div[class="application-updates"]
+  > aside
+  :is(p)
+  > a {
+  text-decoration: none;
+  color: #0066ff;
+}
 
 main[class="application-settings-dashboard-window"]
   > section[class="_application-settings-dashboard-window-wrapper"]

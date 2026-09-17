@@ -1,9 +1,10 @@
 import { useEffect, useState, type FunctionComponent } from "react";
+import Tooltip from "../utils/Tooltip.Util.Component";
 
 import { TbApiApp } from "react-icons/tb";
 import "../../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import { GrUserWorker } from "react-icons/gr";
-import { MdFeedback, MdPrivacyTip } from "react-icons/md";
+import { MdFeedback, MdOutlineWidgets, MdPrivacyTip } from "react-icons/md";
 import { GiHelp } from "react-icons/gi";
 import { HiInformationCircle } from "react-icons/hi";
 import { LuBellDot } from "react-icons/lu";
@@ -53,154 +54,163 @@ const ApplicationMiniAsideNavigationDashboardBarAtomicComponent: FunctionCompone
         <aside className="full-desktop-mini-aside-navigation-bar-component">
           <div id="_wrapper">
             <p></p>
-            <img
-              src="/avatars/laptop-avatar.avif"
-              className="profile-avatar"
-              alt="device avatar"
-              title={`Device @${deviceInfo?.deviceName} ${deviceInfo?.systemVersion} Edition `}
-            />
+            <Tooltip
+              content={`Device @${deviceInfo?.deviceName} ${deviceInfo?.systemVersion} Edition `}
+              position="right"
+            >
+              <img
+                src="/avatars/laptop-avatar.avif"
+                className="profile-avatar"
+                alt="device avatar"
+              />
+            </Tooltip>
             <br />
             <ul>
-              <li>
-                <a
-                  href=""
-                  id="_wrapper"
-                  title="Developer"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://ssekabirarobertsims.netlify.app/info/about",
-                    );
-                  }}
-                >
-                  <span>
-                    <GrUserWorker />
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  id="_wrapper"
-                  title="About linklist"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/info/about",
-                    );
-                  }}
-                >
-                  <span>
-                    <HiInformationCircle />
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  id="_wrapper"
-                  title="give feedback"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/users/feedback",
-                    );
-                  }}
-                >
-                  <span>
-                    <MdFeedback />
-                  </span>
-                </a>
-              </li>
-
-              {/*  */}
-              <li>
-                <a
-                  id="_wrapper"
-                  href="https://linklists.netlify.app/info/about"
-                  title="get help"
-                  onClick={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  <span>
-                    <GiHelp />
-                  </span>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  id="_wrapper"
-                  href="https://api-linklist-restapi.onrender.com/"
-                  title="api"
-                  onClick={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  <span>
-                    <TbApiApp />
-                  </span>
-                </a>
-              </li>
-              {/*  */}
-              <li>
-                <a
-                  href=""
-                  id="_wrapper"
-                  title="privacy policy"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    window.app_api.openExternalLink(
-                      "https://linklists.netlify.app/policy",
-                    );
-                  }}
-                >
-                  <span>
-                    <MdPrivacyTip />
-                  </span>
-                </a>
-              </li>
-            </ul>
-            <button
-              type="button"
-              className="notification-button"
-              title="Notifications are enabled by default"
-            >
-              <LuBellDot />
-            </button>
-            <button
-              type="button"
-              className="internet-status-button"
-              title={`${isOnline ? "Device is online" : "Device is offline"}`}
-            >
-              {isOnline ? <BiWifi /> : <BiWifiOff />}
-            </button>
-            {/*  */}
-            {/* <ul>
-              {list.map((item: NavigationListItemProps) => (
-                <li key={item.id}>
-                  <Link
+              <Tooltip content="About Linklist" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    href=""
                     id="_wrapper"
-                    title={item.content}
-                    to={{
-                      pathname: item.link as Required<Readonly<string>>,
-                      search: item.query,
+                    onClick={(event) => {
+                      event.preventDefault();
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      window.app_api.openExternalLink(
+                        "https://linklists.netlify.app/info/about",
+                      );
                     }}
                   >
-                    <span>{item.icon as ReactNode}</span>
-                  </Link>
+                    <span>
+                      <HiInformationCircle />
+                    </span>
+                  </a>
                 </li>
-              ))}
-            </ul> */}
+              </Tooltip>
+              <Tooltip content="Give Feedback" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    href=""
+                    id="_wrapper"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      window.app_api.openExternalLink(
+                        "https://linklists.netlify.app/users/feedback",
+                      );
+                    }}
+                  >
+                    <span>
+                      <MdFeedback />
+                    </span>
+                  </a>
+                </li>
+              </Tooltip>
+
+              {/*  */}
+              <Tooltip content="Get Help" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    id="_wrapper"
+                    href="https://linklists.netlify.app/info/about"
+                    onClick={(event) => {
+                      event.preventDefault();
+                    }}
+                  >
+                    <span>
+                      <GiHelp />
+                    </span>
+                  </a>
+                </li>
+              </Tooltip>
+              {/*  */}
+              <Tooltip content="Api" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    id="_wrapper"
+                    href="https://api-linklist-restapi.onrender.com/"
+                    onClick={(event) => {
+                      event.preventDefault();
+                    }}
+                  >
+                    <span>
+                      <TbApiApp />
+                    </span>
+                  </a>
+                </li>
+              </Tooltip>
+              {/*  */}
+              <Tooltip content="Privacy" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    href=""
+                    id="_wrapper"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      window.app_api.openExternalLink(
+                        "https://linklists.netlify.app/policy",
+                      );
+                    }}
+                  >
+                    <span>
+                      <MdPrivacyTip />
+                    </span>
+                  </a>
+                </li>
+              </Tooltip>
+              <Tooltip content="Developer" position="right">
+                <li className="mini-aside-li">
+                  <a
+                    href=""
+                    id="_wrapper"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      window.app_api.openExternalLink(
+                        "https://ssekabirarobertsims.netlify.app/info/about",
+                      );
+                    }}
+                  >
+                    <span>
+                      <GrUserWorker />
+                    </span>
+                  </a>
+                </li>
+              </Tooltip>
+            </ul>
+            <Tooltip content="Control Desktop Widget" position="right">
+              <button
+                type="button"
+                className="notification-button"
+                onClick={() => {
+                  const appApi = (
+                    window as unknown as {
+                      app_api: { openDesktopWidget: () => Promise<unknown> };
+                    }
+                  ).app_api;
+                  void appApi.openDesktopWidget();
+                }}
+              >
+                <MdOutlineWidgets />
+              </button>
+            </Tooltip>
+            <Tooltip content="Notifications Enabled" position="right">
+              <button type="button" className="notification-button">
+                <LuBellDot />
+              </button>
+            </Tooltip>
+            <Tooltip
+              content={`${isOnline ? "Device Wi-Fi is online" : "Device Wi-Fi is offline"}`}
+              position="right"
+            >
+              <button type="button" className="internet-status-button">
+                {isOnline ? <BiWifi /> : <BiWifiOff />}
+              </button>
+            </Tooltip>
+            {/*  */}
           </div>
         </aside>
       </>

@@ -72,8 +72,11 @@ const CreateRequiredApplicationFileSystem = async (): Promise<void> => {
         defaultBrowserNewTab: false,
         defaultSaveFileFormat: "*.json",
         enableNotifications: true,
+        autoBackupsEnabled: true,
+        autoBackupIntervalDays: 7,
         showAppInMenuBar: false,
-        startAppOnSystemStartup: false,
+        startAppOnSystemStartup: true,
+        startWidgetOnSystemStartup: true,
       }),
     );
   };

@@ -143,7 +143,6 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                   </p>
                   <button
                     type="button"
-                    title="export saved links"
                     onClick={async (event): Promise<void> => {
                       event.stopPropagation(); // stop event bubbling
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -176,7 +175,6 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                   </p>
                   <button
                     type="button"
-                    title="export saved links"
                     onClick={async (event): Promise<void> => {
                       event.stopPropagation(); // stop event bubbling
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -209,7 +207,6 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
                   </p>
                   <button
                     type="button"
-                    title="export saved links"
                     onClick={async (event): Promise<void> => {
                       event.stopPropagation(); // stop event bubbling
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

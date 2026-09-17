@@ -5,7 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { BiExit, BiLink } from "react-icons/bi";
+import { BiCalendar, BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
@@ -30,6 +30,7 @@ import { GrPersonalComputer } from "react-icons/gr";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { BsTrash2 } from "react-icons/bs";
 import { MdOutlineBackupTable } from "react-icons/md";
+import Tooltip from "../utils/Tooltip.Util.Component";
 
 const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
   () => {
@@ -51,13 +52,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
       },
       {
         id: uuidV4(),
-        content: "Trash",
-        icon: <BsTrash2 />,
-        link: `/archives`,
-        shortcut: "Ctrl + A",
-      },
-      {
-        id: uuidV4(),
         content: "Exports",
         icon: <FaRegFolderOpen />,
         link: `/collections`,
@@ -68,6 +62,13 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         icon: <MdOutlineBackupTable />,
         link: `/backups`,
         shortcut: "",
+      },
+      {
+        id: uuidV4(),
+        content: "Trash",
+        icon: <BsTrash2 />,
+        link: `/archives`,
+        shortcut: "Ctrl + A",
       },
     ] as NavigationListItemProps[]);
 
@@ -93,6 +94,13 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         icon: <IoCreateOutline />,
         link: `/new`,
         shortcut: "Ctrl + C",
+      },
+      {
+        id: uuidV4(),
+        content: "Calender",
+        icon: <BiCalendar />,
+        link: `/calender`,
+        shortcut: "",
       },
     ] as NavigationListItemProps[]);
 
@@ -237,7 +245,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 >
                   <Link
                     id="_wrapper"
-                    title={item.content}
                     to={{
                       pathname: item.link as Required<Readonly<string>>,
                       search: item.query,
@@ -256,6 +263,7 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
+            <p></p>
             <span>Tools</span>
             <ul id="tools">
               {list_2.map((item: NavigationListItemProps) => (
@@ -276,7 +284,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 >
                   <Link
                     id="_wrapper"
-                    title={item.content}
                     to={{
                       pathname: item.link as Required<Readonly<string>>,
                       search: item.query,
@@ -295,6 +302,9 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
+            <br />
+            <p></p>
+            <p></p>
             <span>Others</span>
             <ul id="others">
               {list_3.map((item: NavigationListItemProps) => (
@@ -331,13 +341,15 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
-            <button
-              className="exit-application-btn"
-              onClick={handleExitApplication}
-            >
-              <BiExit />
-              Exit Application
-            </button>
+            <Tooltip content="Exit Application" position="right">
+              <button
+                className="exit-application-btn"
+                onClick={handleExitApplication}
+              >
+                <BiExit />
+                Exit Application
+              </button>
+            </Tooltip>
           </div>
         </aside>
       </>

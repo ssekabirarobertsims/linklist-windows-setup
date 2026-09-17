@@ -406,7 +406,6 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
             <div className="_save-links-collection-button-wrapper">
               <button
                 type="button"
-                title={`save collection`}
                 onClick={async (event): Promise<void> => {
                   event.stopPropagation(); // stop event bubbling
                   if (linkArchivesList.length > 0) {
@@ -453,7 +452,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
             <ul id="_links-list">
               {linkArchivesList.length > 0 ? (
                 linkArchivesList.map((link: ListItemProperties) => (
-                  <li key={uuidV4()} id={link.id} title={`${link.title}`}>
+                  <li key={uuidV4()} id={link.id}>
                     <img
                       src={getFaviconUrl(link.link)}
                       alt={`${link.title} favicon`}
@@ -471,7 +470,6 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                         {/* Delete archived link button */}
                         <button
                           type="button"
-                          title="t"
                           onClick={async (event): Promise<void> => {
                             event.stopPropagation(); // prevent event bubbling
                             // delete archived link from the saved links
@@ -494,7 +492,6 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                         {/* Copy link button */}
                         <button
                           type="button"
-                          title="t"
                           onClick={(event) => {
                             event.stopPropagation(); // prevent event bubbling
                             CopyTextToClipboard(link.link); // copy link to windows clipboard
@@ -512,7 +509,6 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                         {/* restore link button */}
                         <button
                           type="button"
-                          title="t"
                           onClick={async (event): Promise<void> => {
                             event.stopPropagation(); // prevent event bubbling
                             // prepare the link data

@@ -1,17 +1,19 @@
 import { Notification, app } from "electron";
 import { autoUpdater } from "electron-updater";
 import CreateAutomaticUserDataBackup from "../backups/automatic.user.data.backup";
-
-const backgroundCheckIntervalMs = 60 * 60 * 1000;
+import { readApplicationSettings } from "../settings/application.settings";
 
 const notifyUser = (title: string, body: string): void => {
-  if (Notification.isSupported()) {
+  if (
+    readApplicationSettings().enableNotifications &&
+    Notification.isSupported()
+  ) {
     new Notification({ title, body }).show();
   }
 };
 
 const checkForUpdates = async (): Promise<void> => {
-  if (!app.isPackaged) {
+  if (!app.isPackaged || !readApplicationSettings().autoCheckForUpdates) {
     return;
   }
 
@@ -38,6 +40,13 @@ const startBackgroundManager = (): void => {
   });
 
   const runBackgroundChecks = (): void => {
+    const settings = readApplicationSettings();
+
+    if (!settings.autoBackupsEnabled) {
+      void checkForUpdates();
+      return;
+    }
+
     try {
       const backupCreated = CreateAutomaticUserDataBackup(app);
       if (backupCreated) {
@@ -57,6 +66,8 @@ const startBackgroundManager = (): void => {
   };
 
   const beginBackgroundChecks = (): void => {
+    const backgroundCheckIntervalMs =
+      readApplicationSettings().autoBackupIntervalDays * 24 * 60 * 60 * 1000;
     runBackgroundChecks();
     setInterval(runBackgroundChecks, backgroundCheckIntervalMs);
   };

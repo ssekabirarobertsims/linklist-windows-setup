@@ -7,6 +7,7 @@ import ApplicationRecentBackupsDashboardWindow from "./windows/Application.Recen
 import ApplicationOpenedLinksDashboardWindow from "./windows/Application.Opened.Links.Dashboard.Window";
 import ApplicationSharedLinksDashboardWindow from "./windows/Application.Shared.Links.Dashboard.Window";
 import ApplicationTaggedLinksDashboardWindow from "./windows/Application.Tagged.Links.Dashboard.Window";
+import ApplicationDesktopWidgetWindow from "./windows/Application.Desktop.Widget.Window";
 
 /**
  * @author LinkList Dev Team
@@ -408,4 +409,12 @@ function Application() {
   );
 }
 
-export default Application;
+function ApplicationEntry() {
+  if (new URLSearchParams(window.location.search).has("widget")) {
+    return <ApplicationDesktopWidgetWindow />;
+  }
+
+  return <Application />;
+}
+
+export default ApplicationEntry;

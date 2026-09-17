@@ -29,6 +29,14 @@ interface user {
   joined: string;
 }
 
+// Define the shape of a saved backup item
+type backupProps = {
+  id: string;
+  filename: string;
+  filepath: string;
+  _date: string;
+};
+
 // // Ensure that the environment variables are loaded correctly
 // Define the shape of a saved link item
 type collectionProps = {
@@ -135,6 +143,27 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
     getUserInformation();
   }, []);
 
+  // State for all Backups, search results, search value, and selected link for editing
+  // Initialize state for the list of Backups, search results, search value, and selected link
+  // State to hold the list of Backups
+  const [backups, setBackups] = useState<backupProps[]>([] as backupProps[]);
+
+  useEffect(() => {
+    // fetch Backups data from the main process
+    const readBackupsData = async (): Promise<backupProps[]> => {
+      const data: backupProps[] =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        (await window.app_api.readAllRecentBackup()) as backupProps[];
+      // set the collection state with fetched data
+      setBackups(data);
+      return data;
+    };
+
+    // call function to fetch Backups data on component mount
+    readBackupsData();
+  }, []);
+
   // Set the document title on mount
   useEffect(() => {
     document.title = "Dashboard - Home | LinkList";
@@ -170,6 +199,21 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
               {String(user.username ?? "User").toLocaleLowerCase()}
             </h1>
 
+            {/* <button
+              type="button"
+              className="desktop-widget-launch-button"
+              onClick={() => {
+                const appApi = (
+                  window as unknown as {
+                    app_api: { openDesktopWidget: () => Promise<unknown> };
+                  }
+                ).app_api;
+                void appApi.openDesktopWidget();
+              }}
+            >
+              Pin LinkList widget to desktop
+            </button> */}
+
             {/* Display saved and trashed links counts and stats */}
             <ul id="content-ul">
               <li
@@ -194,9 +238,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       pathname: `/links`,
                     }}
                   >
-                    <button type="button" title="saved links">
-                      checkout
-                    </button>
+                    <button type="button">checkout</button>
                   </Link>
                 </aside>
               </li>
@@ -222,9 +264,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                       pathname: `/archives`,
                     }}
                   >
-                    <button type="button" title="trashed links">
-                      checkout
-                    </button>
+                    <button type="button">checkout</button>
                   </Link>
                 </aside>
               </li>
@@ -244,15 +284,37 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
                     </p>
                     Total link(s) collections.
                   </span>
-                  <p>Manage all your saved links collections here. </p>
+                  <p>Manage all links collections here. </p>
                   <Link
                     to={{
                       pathname: `/collections`,
                     }}
                   >
-                    <button type="button" title="total saved links">
-                      checkout
-                    </button>
+                    <button type="button">checkout</button>
+                  </Link>
+                </aside>
+              </li>
+              <li
+                className="content-ul-li"
+                id="dashboard-home-page-content-component-li-4"
+              >
+                <aside>
+                  <span id="content-ul-li-p-4">
+                    <p id="content-ul-li-p-4">
+                      {" "}
+                      {
+                        Number(backups?.length ?? [].length) as Required<number>
+                      }{" "}
+                    </p>
+                    Total Data Backup(s).
+                  </span>
+                  <p>Manage all recent data backups here. </p>
+                  <Link
+                    to={{
+                      pathname: `/backups`,
+                    }}
+                  >
+                    <button type="button">checkout</button>
                   </Link>
                 </aside>
               </li>

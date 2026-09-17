@@ -11,6 +11,14 @@ import { contextBridge, ipcRenderer } from "electron";
 contextBridge?.exposeInMainWorld("app_api", {
   // close app manually
   exitApplication: (): Promise<any> => ipcRenderer.invoke("close-application"),
+  openDesktopWidget: (): Promise<any> =>
+    ipcRenderer.invoke("open-desktop-widget"),
+  closeDesktopWidget: (): Promise<any> =>
+    ipcRenderer.invoke("close-desktop-widget"),
+  readApplicationSettings: (): Promise<any> =>
+    ipcRenderer.invoke("read-application-settings"),
+  updateApplicationSettings: (changes: object): Promise<any> =>
+    ipcRenderer.invoke("update-application-settings", changes),
   // open external links
   openExternalLink: (url: string): Promise<any> =>
     ipcRenderer.invoke("open-external-link", url),

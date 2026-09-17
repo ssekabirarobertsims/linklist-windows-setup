@@ -11,6 +11,7 @@ import {
   clipboard,
   protocol,
   net,
+  screen,
 } from "electron";
 import os from "node:os";
 import { v4 } from "uuid";
@@ -47,6 +48,11 @@ protocol.registerSchemesAsPrivileged([
 import { generateExportFilename } from "../functions/generate.file.names";
 import fs from "node:fs";
 import { format } from "date-fns";
+import {
+  readApplicationSettings,
+  updateApplicationSettings,
+  type ApplicationSettings,
+} from "../settings/application.settings";
 // import { log } from "electron-log";
 
 // native icon for the application
@@ -56,6 +62,20 @@ import { format } from "date-fns";
 const nativeIcon = nativeImage.createFromPath(
   path.join(app.getAppPath(), "public", "icons", "linklist-logo.jpg"),
 );
+
+let applicationMainWindow: BrowserWindow | null = null;
+let desktopWidgetWindow: BrowserWindow | null = null;
+let isQuitting = false;
+
+const configureWindowsStartup = (settings: ApplicationSettings): void => {
+  if (process.platform !== "win32") return;
+
+  app.setLoginItemSettings({
+    openAtLogin:
+      settings.startAppOnSystemStartup || settings.startWidgetOnSystemStartup,
+    args: ["--background"],
+  });
+};
 
 // set application name before starting up
 app.setName("Linklist");
@@ -264,6 +284,127 @@ StartBackgroundManager();
 
 const isBackgroundLaunch = process.argv.includes("--background");
 
+const desktopWidgetStateFilePath = path.join(
+  app.getPath("userData"),
+  "desktop-widget.json",
+);
+
+type DesktopWidgetState = {
+  enabled: boolean;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+};
+
+const readDesktopWidgetState = (): DesktopWidgetState => {
+  try {
+    if (fs.existsSync(desktopWidgetStateFilePath)) {
+      return JSON.parse(
+        fs.readFileSync(desktopWidgetStateFilePath, "utf8"),
+      ) as DesktopWidgetState;
+    }
+  } catch (error) {
+    console.error("Failed to read desktop widget state:", error);
+  }
+
+  return { enabled: false };
+};
+
+const writeDesktopWidgetState = (state: DesktopWidgetState): void => {
+  try {
+    fs.mkdirSync(path.dirname(desktopWidgetStateFilePath), { recursive: true });
+    fs.writeFileSync(
+      desktopWidgetStateFilePath,
+      JSON.stringify(state, null, 2),
+    );
+  } catch (error) {
+    console.error("Failed to save desktop widget state:", error);
+  }
+};
+
+const createDesktopWidget = (): void => {
+  if (desktopWidgetWindow && !desktopWidgetWindow.isDestroyed()) {
+    desktopWidgetWindow.show();
+    desktopWidgetWindow.focus();
+    return;
+  }
+
+  const savedState = readDesktopWidgetState();
+  const primaryWorkArea = screen.getPrimaryDisplay().workArea;
+  const width = savedState.width ?? 360;
+  const height = savedState.height ?? 460;
+  const x =
+    savedState.x ?? primaryWorkArea.x + primaryWorkArea.width - width - 24;
+  const y = savedState.y ?? primaryWorkArea.y + 24;
+
+  desktopWidgetWindow = new BrowserWindow({
+    x,
+    y,
+    width,
+    height,
+    minWidth: 300,
+    maxWidth: 300,
+    maxHeight: 300,
+    minHeight: 450,
+    frame: false,
+    resizable: true,
+    transparent: true,
+    backgroundColor: "transparent",
+    skipTaskbar: true,
+    icon: nativeIcon,
+    webPreferences: {
+      preload: path.join(__dirname, "../context/application.context.bridge.js"),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+    },
+  });
+
+  desktopWidgetWindow.setMenu(null);
+
+  const saveBounds = (): void => {
+    if (!desktopWidgetWindow || desktopWidgetWindow.isDestroyed()) return;
+    const [currentX, currentY] = desktopWidgetWindow.getPosition();
+    const [currentWidth, currentHeight] = desktopWidgetWindow.getSize();
+    writeDesktopWidgetState({
+      enabled: true,
+      x: currentX,
+      y: currentY,
+      width: currentWidth,
+      height: currentHeight,
+    });
+  };
+
+  desktopWidgetWindow.on("move", saveBounds);
+  desktopWidgetWindow.on("resize", saveBounds);
+  desktopWidgetWindow.on("closed", () => {
+    desktopWidgetWindow = null;
+  });
+
+  desktopWidgetWindow.loadURL(
+    app.isPackaged
+      ? "linklist://app/?widget=1"
+      : "http://localhost:5173/?widget=1",
+  );
+  writeDesktopWidgetState({
+    ...savedState,
+    enabled: true,
+    x,
+    y,
+    width,
+    height,
+  });
+  desktopWidgetWindow.show();
+};
+
+const hideDesktopWidget = (): void => {
+  if (desktopWidgetWindow && !desktopWidgetWindow.isDestroyed()) {
+    desktopWidgetWindow.hide();
+    writeDesktopWidgetState({ ...readDesktopWidgetState(), enabled: false });
+  }
+};
+
 import PurgeExpiredArchivedLinks from "../modules/purge.expired.archived.links.js";
 PurgeExpiredArchivedLinks(app);
 setInterval(() => PurgeExpiredArchivedLinks(app), 60 * 1000);
@@ -299,10 +440,8 @@ app.on("ready", (): void => {
     return net.fetch(pathToFileURL(filePath).toString());
   });
 
-  app.setLoginItemSettings({
-    openAtLogin: true,
-    args: ["--background"],
-  });
+  const applicationSettings = readApplicationSettings();
+  configureWindowsStartup(applicationSettings);
 
   // // hide all templates for menus
   const menu = Menu.buildFromTemplate([]);
@@ -341,7 +480,7 @@ app.on("ready", (): void => {
    * @function @return {void}
    * @description main window for the application
    */
-  const ApplicationMainWindow = new BrowserWindow({
+  applicationMainWindow = new BrowserWindow({
     height: 5012,
     minHeight: 5012,
     width: 1800,
@@ -356,13 +495,20 @@ app.on("ready", (): void => {
   });
 
   // remove menu from the main window
-  ApplicationMainWindow.setMenu(null);
+  applicationMainWindow.setMenu(null);
 
-  ApplicationMainWindow.webContents.on("did-finish-load", () => {
+  applicationMainWindow.on("close", (event) => {
+    if (!isQuitting) {
+      event.preventDefault();
+      applicationMainWindow?.hide();
+    }
+  });
+
+  applicationMainWindow.webContents.on("did-finish-load", () => {
     console.log("✅ MAIN WINDOW FINISHED LOADING");
   });
 
-  ApplicationMainWindow.webContents.on(
+  applicationMainWindow.webContents.on(
     "did-fail-load",
     (_event, errorCode, errorDescription, validatedURL) => {
       console.error("❌ MAIN WINDOW FAILED TO LOAD");
@@ -372,14 +518,14 @@ app.on("ready", (): void => {
     },
   );
 
-  ApplicationMainWindow.webContents.on(
+  applicationMainWindow.webContents.on(
     "console-message",
     (_event, level, message) => {
       console.log(`🖥️ Renderer console [${level}]:`, message);
     },
   );
 
-  ApplicationMainWindow.webContents.on(
+  applicationMainWindow.webContents.on(
     "render-process-gone",
     (_event, details) => {
       console.error("💥 Renderer process gone:", details);
@@ -388,7 +534,9 @@ app.on("ready", (): void => {
 
   // load file for the application or server to show app window
   // development area
-  ApplicationMainWindow.loadURL("http://localhost:5173");
+  applicationMainWindow.loadURL(
+    app.isPackaged ? "linklist://app/" : "http://localhost:5173",
+  );
   // production area
   // const mainPath = path.join(__dirname, "../../desktop/index.html");
 
@@ -406,7 +554,7 @@ app.on("ready", (): void => {
    * @function @return {void}
    * @description load the main window after sometime then hide the splash windows
    */
-  ApplicationMainWindow.on("ready-to-show", () => {
+  applicationMainWindow.on("ready-to-show", () => {
     if (isBackgroundLaunch) {
       ApplicationSplashWindow.close();
       startClipboardMonitor();
@@ -415,11 +563,22 @@ app.on("ready", (): void => {
 
     global.setTimeout((): void => {
       ApplicationSplashWindow.close(); // close the application splash window
-      ApplicationMainWindow.show(); // show the application main window
-      ApplicationMainWindow.maximize(); // maximize the application main window
+      applicationMainWindow?.show(); // show the application main window
+      applicationMainWindow?.maximize(); // maximize the application main window
       startClipboardMonitor();
     }, 7000);
   });
+
+  if (
+    applicationSettings.startWidgetOnSystemStartup ||
+    readDesktopWidgetState().enabled
+  ) {
+    createDesktopWidget();
+  }
+});
+
+app.on("before-quit", () => {
+  isQuitting = true;
 });
 
 /**
@@ -553,9 +712,43 @@ ExportDataToBrowserDoc(ipcMain, app, shell);
  * @returns {Promise<void>}
  */
 ipcMain.handle("close-application", async (): Promise<void> => {
-  // quit the application
-  app.quit();
+  applicationMainWindow?.hide();
+  if (desktopWidgetWindow && !desktopWidgetWindow.isDestroyed()) {
+    desktopWidgetWindow.show();
+  }
 });
+
+ipcMain.handle("open-desktop-widget", async (): Promise<void> => {
+  createDesktopWidget();
+});
+
+ipcMain.handle("close-desktop-widget", async (): Promise<void> => {
+  hideDesktopWidget();
+});
+
+ipcMain.handle(
+  "read-application-settings",
+  async (): Promise<ApplicationSettings> => readApplicationSettings(),
+);
+
+ipcMain.handle(
+  "update-application-settings",
+  async (
+    _event,
+    changes: Partial<ApplicationSettings>,
+  ): Promise<ApplicationSettings> => {
+    const settings = updateApplicationSettings(changes);
+    configureWindowsStartup(settings);
+
+    if (settings.startWidgetOnSystemStartup) {
+      createDesktopWidget();
+    } else if (desktopWidgetWindow && !desktopWidgetWindow.isDestroyed()) {
+      hideDesktopWidget();
+    }
+
+    return settings;
+  },
+);
 
 const generateRandomDescription = (): string => {
   const descriptions = [

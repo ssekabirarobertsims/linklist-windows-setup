@@ -3,7 +3,7 @@ import "../stylesheets/Windows/Application.Recent.Data.Backups.Dashboard.Window.
 import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 // // Ensure that the environment variables are loaded correctly
-// Define the shape of a saved link item
+// Define the shape of a saved backup item
 type collectionProps = {
   id: string;
   filename: string;

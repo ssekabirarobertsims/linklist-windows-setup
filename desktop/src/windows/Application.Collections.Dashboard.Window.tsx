@@ -157,7 +157,6 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                   <li
                     key={uuidV4()}
                     id={collection.id}
-                    title={`Click collection to open path ${collection.filepath} in file explore`}
                     onClick={async (event): Promise<void> => {
                       event?.stopPropagation(); // stop event bubbling
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

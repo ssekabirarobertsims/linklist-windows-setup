@@ -1,0 +1,13 @@
+{
+    "appTheme": "dark",
+    "appLanguage": "en",
+    "autoCheckForUpdates": true,
+    "defaultBrowserNewTab": false,
+    "defaultSaveFileFormat": "*.json",
+    "enableNotifications": true,
+    "autoBackupsEnabled": true,
+    "autoBackupIntervalDays": 7,
+    "showAppInMenuBar": false,
+    "startAppOnSystemStartup": true,
+    "startWidgetOnSystemStartup": true
+}

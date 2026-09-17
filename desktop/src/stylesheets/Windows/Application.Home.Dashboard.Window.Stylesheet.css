@@ -47,6 +47,21 @@ main[class="application-home-dashboard-window"]
   color: hsl(0, 0%, 10%);
   font-size: 1.5em;
 }
+
+.desktop-widget-launch-button {
+  min-height: 2.5rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid #16222d;
+  color: #fff;
+  background: #16222d;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.desktop-widget-launch-button:hover {
+  color: #16222d;
+  background: #e6a34b;
+}
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
   :is(div[class="_application-home-dashboard-window-components-wrapper"])
@@ -178,6 +193,17 @@ main[class="application-home-dashboard-window"]
   p[id="content-ul-li-p-3"] {
   color: hsl(350, 100%, 53%);
   background-color: hsl(350, 100%, 80%);
+}
+main[class="application-home-dashboard-window"]
+  > section[class="_application-home-dashboard-window-wrapper"]
+  :is(div[class="_application-home-dashboard-window-components-wrapper"])
+  > ul
+  > li
+  :is(aside)
+  > span
+  p[id="content-ul-li-p-4"] {
+  color: hsl(172, 100%, 40%);
+  background-color: hsl(172, 100%, 80%);
 }
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
