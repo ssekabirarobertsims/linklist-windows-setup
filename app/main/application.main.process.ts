@@ -60,7 +60,7 @@ import {
 //   path.join("../public/icons/linklist-logo.jpg"),
 // ) as unknown as string;
 const nativeIcon = nativeImage.createFromPath(
-  path.join(app.getAppPath(), "public", "icons", "linklist-logo.jpg"),
+  path.join(app.getAppPath(), "public", "icons", "logo.png"),
 );
 
 let applicationMainWindow: BrowserWindow | null = null;
