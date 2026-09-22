@@ -16,7 +16,7 @@ main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"] {
   min-height: 100vh;
   position: relative;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -49,7 +49,7 @@ main[class="application-export-formats-dashboard-window"]
   > h1 {
   font-weight: calc(290 + 250);
   color: hsl(0, 0%, 10%);
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -59,7 +59,7 @@ main[class="application-export-formats-dashboard-window"]
   > p {
   font-weight: calc(240 + 250);
   color: hsl(0, 0%, 10%);
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -76,7 +76,7 @@ main[class="application-export-formats-dashboard-window"]
   gap: 1em;
   /* border: 1px solid var(--border-secondary-color); */
   border-radius: 0.3em;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -86,7 +86,7 @@ main[class="application-export-formats-dashboard-window"]
   > ul
   > li {
   min-height: 12em;
-  width: min(100%, 17em);
+  width: min(33.3%, 17em);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,7 +218,8 @@ main[class="application-export-formats-dashboard-window"]
   :where(p) {
   font-weight: calc(240 + 250);
   color: hsl(0, 0%, 100%);
-  font-size: 0.8em;
+  font-size: 0.7em;
+  line-height: 1.4em;
 }
 main[class="application-export-formats-dashboard-window"]
   > section[class="_application-export-formats-dashboard-window-wrapper"]
@@ -229,7 +230,7 @@ main[class="application-export-formats-dashboard-window"]
   > li
   :is(aside)
   > button {
-  height: 2.5em;
+  height: 2.3em;
   width: min(100%, 8em);
   background-color: #fff;
   border: none;
@@ -332,7 +333,7 @@ main[class="application-export-formats-dashboard-window"]
   )
   > a
   > button {
-  height: 3em;
+  height: 2.5em;
   width: min(100%, 100%);
   border: none;
   border-radius: 0.3em;

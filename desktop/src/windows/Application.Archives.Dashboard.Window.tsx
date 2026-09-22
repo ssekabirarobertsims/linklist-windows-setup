@@ -13,7 +13,7 @@ type ListItemProperties = {
   description: string;
 };
 
-import { BiArchive, BiCopy, BiTrash } from "react-icons/bi";
+import { BiCopy, BiExport, BiTrash } from "react-icons/bi";
 
 import { v4 as uuidV4 } from "uuid";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
@@ -29,6 +29,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import { TbFileExport, TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
+import { BsTrash2 } from "react-icons/bs";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -423,7 +425,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                   }
                 }}
               >
-                Export collection
+                <BiExport /> Export
               </button>
               <span
                 onClick={(event) => {
@@ -607,11 +609,11 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
                   <div className="no-results-message">
                     {showContentLoader && <ContentLoaderComponent />}
                     <span>
-                      <BiArchive />
+                      <BsTrash2 />
                     </span>
-                    <h2>No link archives found!</h2>
+                    <h2>No links in trash found!</h2>
                     <p>
-                      Your archived links list is empty. Deleted links will
+                      Your trash for links list is empty. Deleted links will
                       appear here.
                     </p>
                     <span
@@ -631,6 +633,7 @@ const ApplicationArchivesDashboardWindow: React.FunctionComponent = () => {
             </ul>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
     </>
   );

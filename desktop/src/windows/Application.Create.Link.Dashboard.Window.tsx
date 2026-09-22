@@ -11,6 +11,7 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { v4 } from "uuid";
 import { Link } from "react-router-dom";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const generateShortCode = (): string => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -247,6 +248,7 @@ const ApplicationCreateLinkDashboardWindow: React.FunctionComponent = () => {
             </form>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
       {/* Footer and prime sidebar */}
       {/* <DashboardFooterComponent /> */}

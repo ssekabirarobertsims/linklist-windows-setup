@@ -16,7 +16,7 @@ main[class="application-settings-dashboard-window"] {
 main[class="application-settings-dashboard-window"]
   > section[class="_application-settings-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(80%, 80%);
   display: flex;
   position: relative;
   align-items: center;
@@ -107,8 +107,8 @@ main[class="application-settings-dashboard-window"]
   div[class="application-updates"]
   > aside
   :is(h4) {
-  font-weight: calc(280 + 280);
-  color: hsl(0, 0%, 10%);
+  font-weight: calc(220 + 280);
+  color: hsl(0, 10%, 10%);
   font-size: 1em;
   display: flex;
   align-items: center;
@@ -278,7 +278,7 @@ main[class="application-settings-dashboard-window"]
   > div[class="content-wrapper"]
   p {
   font-weight: calc(200 + 200);
-  color: hsl(0, 0%, 10%);
+  color: hsl(0, 0%, 30%);
   font-size: 0.8em;
 }
 main[class="application-settings-dashboard-window"]
@@ -287,7 +287,7 @@ main[class="application-settings-dashboard-window"]
   div[class="notifications"]
   > div[class="content-wrapper"]
   > span {
-  font-weight: calc(290 + 290);
+  font-weight: calc(280 + 260);
   color: hsl(0, 0%, 10%);
   font-size: 0.9em;
 }

@@ -3,6 +3,7 @@ import "../stylesheets/Windows/Application.Home.Dashboard.Window.Stylesheet.css"
 import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import "../stylesheets/Configurations/Application.Styles.Configurations.css";
 import { Link } from "react-router-dom";
+import { BiCalendar } from "react-icons/bi";
 
 // bar graph chart component for displaying links data
 import LinksBarGraphChartComponent from "../components/charts/Bar.Graph.Component";
@@ -49,6 +50,7 @@ type collectionProps = {
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -322,14 +324,17 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
             {/* banner for the home window */}
             <div className="application-home-dashboard-window-banner">
               <p>
-                Welcome to your dashboard, where you can manage your saved and
-                archived links, view your link collections,{" "}
+                Welcome to your dashboard, where you can manage your saved
+                contents including links, backups among others
                 <Link
                   to={{
-                    pathname: "/new",
+                    pathname: "/calendar",
                   }}
                 >
-                  start saving.
+                  <p></p>
+                  <button type="button" className="calendar-button">
+                    <BiCalendar /> Calendar
+                  </button>
                 </Link>
               </p>
             </div>
@@ -340,6 +345,7 @@ const ApplicationHomeDashboardWindow: React.FunctionComponent = () => {
             </div>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
     </>
   );

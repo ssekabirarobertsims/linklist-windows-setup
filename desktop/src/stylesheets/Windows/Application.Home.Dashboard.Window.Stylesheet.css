@@ -15,7 +15,7 @@ main[class="application-home-dashboard-window"] {
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   display: flex;
   align-items: center;
   position: relative;
@@ -211,7 +211,7 @@ main[class="application-home-dashboard-window"]
   :where(p) {
   font-weight: calc(240 + 250);
   color: hsl(0, 0%, 100%);
-  font-size: 0.8em;
+  font-size: 0.7em;
 }
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
@@ -225,6 +225,7 @@ main[class="application-home-dashboard-window"]
   flex-direction: column;
   /* border: 1px solid red; */
   text-decoration: none;
+  gap: 1em;
 }
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
@@ -240,20 +241,34 @@ main[class="application-home-dashboard-window"]
   /* background-color: var(--body-theme-color-option-2); */
   cursor: pointer;
 }
+main[class="application-home-dashboard-window"]
+  > section[class="_application-home-dashboard-window-wrapper"]
+  :is(div[class="_application-home-dashboard-window-components-wrapper"])
+  :where(a)
+  > button[class="calendar-button"] {
+  height: 2.2em;
+  width: min(100%, 100%);
+  border: none;
+  border-radius: 0.3em;
+  color: hsl(0, 0%, 100%);
+  /* background-color: #fff; */
+  background-color: var(--body-theme-color-option-2);
+  cursor: pointer;
+}
 
 /*  */
 main[class="application-home-dashboard-window"]
   > section[class="_application-home-dashboard-window-wrapper"]
   :is(div[class="_application-home-dashboard-window-components-wrapper"])
   > div[class="application-home-dashboard-window-banner"] {
-  height: 11vh;
+  height: 15vh;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
   gap: 0em;
-  /* border: 1px solid var(--border-secondary-color); */
+  border: 1px solid var(--border-secondary-color);
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);

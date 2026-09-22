@@ -30,6 +30,7 @@ import { BsFiletypeJson } from "react-icons/bs";
 import { v4 as uuidV4 } from "uuid";
 import { Link } from "react-router-dom";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
   // State for all links, search results, search value, and selected link for editing
@@ -281,6 +282,7 @@ const ApplicationExportFormatsDashboardWindow: React.FunctionComponent = () => {
             </Link>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
     </>
   );

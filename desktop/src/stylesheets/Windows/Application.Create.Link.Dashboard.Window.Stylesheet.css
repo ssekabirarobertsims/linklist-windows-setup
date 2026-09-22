@@ -15,7 +15,7 @@ main[class="application-create-link-dashboard-window"] {
 main[class="application-create-link-dashboard-window"]
   > section[class="_application-create-link-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   display: flex;
   position: relative;
   align-items: center;

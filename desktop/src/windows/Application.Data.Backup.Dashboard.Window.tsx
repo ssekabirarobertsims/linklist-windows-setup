@@ -5,6 +5,7 @@ import "../stylesheets/Components/Reusable.Components.Stylesheet.css";
 import ApplicationAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Aside.Navigation.Bar.Atomic.Component";
 import ApplicationDashboardNavigationBarAtomicComponent from "../components/atoms/Application.Dashboard.Navigation.Bar.Atomic.Component";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
   () => {
@@ -138,6 +139,7 @@ const ApplicationUserDataBackupDashboardWindow: React.FunctionComponent =
               </article>
             </div>
           </section>
+          <ApplicationCalendarComponent />
         </main>
       </>
     );

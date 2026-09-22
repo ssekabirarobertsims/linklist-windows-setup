@@ -139,11 +139,11 @@ const ApplicationDesktopWidgetWindow: FunctionComponent = () => {
   return (
     <main className="desktop-widget-window">
       <header className="desktop-widget-header">
-        {/* <div className="desktop-widget-drag-region">
+        <div className="desktop-widget-drag-region">
           <span className="desktop-widget-kicker">LinkList</span>
           <h1>Desktop widget</h1>
         </div>
-        <div className="desktop-widget-actions">
+        {/* <div className="desktop-widget-actions">
           <button
             type="button"
             aria-label="Refresh widget data"
@@ -223,6 +223,7 @@ const ApplicationDesktopWidgetWindow: FunctionComponent = () => {
         )}
       </section>
       <br />
+      <span className="device-info">Device @{deviceInfo?.deviceName}</span>
       <span className="device-info">
         Current Build {deviceInfo?.appVersion}
       </span>

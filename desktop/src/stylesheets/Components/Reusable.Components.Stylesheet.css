@@ -66,9 +66,10 @@ nav > article :where(div[id="_b"]) {
   gap: 0.5em;
 }
 nav > article :where(div[id="_b"]) > img {
-  height: 2em;
-  width: 2em;
+  height: 3em;
+  width: 3em;
   border-radius: 100%;
+  /* border: 1px solid var(--body-theme-color-option-2); */
 }
 nav > article :where(div[id="_b"]) > span {
   font-weight: calc(290 + 250);
@@ -80,7 +81,7 @@ nav > article :where(div[id="_b"]) > span {
 
 /* Loader styles */
 div[class="page-content-loader-wrapper"] {
-  height: 100vh;
+  height: 98vh;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -413,7 +414,7 @@ article[class="create-link-request-loader-wrapper"]
 /*  */
 aside[class="full-desktop-aside-navigation-bar-component"] {
   min-height: 100vh;
-  width: min(18%, 18%);
+  width: min(15%, 15%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,7 +479,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul
   :where(li) {
-  min-height: 2.1em;
+  min-height: 2.3em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -551,7 +552,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="others"]
   :where(li) {
-  min-height: 2.1em;
+  min-height: 2.3em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -624,7 +625,7 @@ aside[class="full-desktop-aside-navigation-bar-component"]
   :is(div[id="_wrapper"])
   > ul[id="tools"]
   :where(li) {
-  min-height: 2.1em;
+  min-height: 2.3em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -1216,8 +1217,8 @@ div[class="no-results-message"] :where(span[id="refresh"]) {
 .switch-wrapper-3 .tgl + .tgl-btn {
   outline: 0;
   display: block;
-  width: 45px;
-  height: 25px;
+  width: 35px;
+  height: 20px;
   position: relative;
   cursor: pointer;
   user-select: none;
@@ -1641,4 +1642,325 @@ button:where(li):is(:hover, :focus) {
 
 .tooltip-right:hover .tooltip-content {
   transform: translateY(-50%) translateX(0);
+}
+
+/*  */
+
+.mini-calendar {
+  width: min(20%, 20%);
+  min-height: 100vh;
+  background: var(--body-theme-color-option-2);
+  /* border-left: 2px solid var(--body-theme-color-option-2); */
+  border-bottom: none;
+  border-top: none;
+  border-radius: 0px;
+  padding: 10px;
+  overflow: hidden;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* ================================
+   HEADER
+================================ */
+
+.mini-calendar-header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--body-theme-color-option-2);
+}
+
+.mini-calendar-header h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ================================
+   NAVIGATION
+================================ */
+
+.mini-calendar-navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.mini-calendar-navigation button {
+  width: 23px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dbe1ea;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--body-theme-color-option-2);
+  font-size: 17px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.mini-calendar-navigation button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #111827;
+}
+
+/* ================================
+   WEEK DAYS
+================================ */
+
+.mini-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-bottom: 1px solid hsl(220, 13%, 30%);
+  color: #fff;
+}
+
+.mini-calendar-weekday {
+  color: #fff;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--body-theme-color-option-2); */
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* ================================
+   mini-CALENDAR GRID
+================================ */
+
+.mini-calendar-grid {
+  min-height: 40vh;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+/* ================================
+   DAY
+================================ */
+
+.mini-calendar-day {
+  position: relative;
+  height: 50px;
+  padding: 3px;
+  border-right: 1px solid hsl(214, 24%, 20%);
+  border-bottom: 1px solid hsl(214, 24%, 20%);
+  background: var(--body-theme-color-option-2);
+  box-sizing: border-box;
+  color: #fff;
+  border-radius: 0.3em;
+}
+
+.mini-calendar-day:nth-child(7n) {
+  border-right: none;
+}
+
+/* Remove bottom border from final row */
+
+.mini-calendar-day:nth-last-child(-n + 7) {
+  border-bottom: none;
+}
+
+/* ================================
+   DATE
+================================ */
+
+.mini-calendar-day-content {
+  position: relative;
+  display: flex;
+  /* background-color: var(--body-theme-color-option-2); */
+  font-size: 0.8em !important;
+  align-items: flex-start;
+  width: 30px;
+  height: 30px;
+  justify-content: flex-start;
+}
+
+.mini-calendar-date {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8em !important;
+  font-weight: 300;
+  border-radius: 100%;
+}
+
+/* ================================
+   DAYS FROM OTHER MONTHS
+================================ */
+
+.mini-calendar-day-other-month {
+  font-size: 0.8em !important;
+  background: hsl(0, 0%, 100%);
+}
+
+.mini-calendar-day-other-month .mini-calendar-date {
+  color: hsl(215, 18%, 0%);
+  font-size: 0.8em !important;
+}
+
+/* ================================
+   DAYS WITH SAVED LINKS
+================================ */
+
+.mini-calendar-date-has-links {
+  height: 25px;
+  width: 25px;
+  border: 1px solid #0066ff;
+  color: #0066ff;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.8em;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================================
+   TODAY
+================================ */
+
+.mini-calendar-day-today
+  .mini-calendar-date:not(.mini-calendar-date-has-links) {
+  background: hsl(221, 83%, 53%);
+  font-size: 0.8em !important;
+  color: #ffffff;
+}
+
+/*
+   If today also has saved links,
+   the red activity circle takes priority.
+*/
+
+.mini-calendar-day-today .mini-calendar-date-has-links {
+  color: #dc2626;
+}
+
+/* ================================
+   TOOLTIP
+================================ */
+
+.mini-calendar-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%) translateY(4px);
+  z-index: 1000;
+  width: max-content;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background-color: hsl(221, 83%, 53%);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+}
+
+/* Tooltip arrow */
+
+.mini-calendar-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid hsl(221, 83%, 53%);
+}
+
+/* Show tooltip */
+
+.mini-calendar-date-has-links:hover .mini-calendar-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+  .mini-calendar-header {
+    padding: 0 15px;
+  }
+
+  .mini-calendar-header h2 {
+    font-size: 16px;
+  }
+
+  .mini-calendar-day {
+    min-height: 80px;
+    padding: 7px;
+  }
+
+  .mini-calendar-weekday {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .mini-calendar {
+    border-radius: 10px;
+  }
+
+  .mini-calendar-day {
+    min-height: 65px;
+    padding: 5px;
+  }
+
+  .mini-calendar-date {
+    width: 25px;
+    height: 25px;
+
+    font-size: 11px;
+  }
+}
+
+.p {
+  font-size: 0.9em;
+  color: hsl(0, 0%, 10%);
+}
+
+.mini-calendar-aside-content {
+  height: 28vh;
+  width: min(100%, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #fff;
+  border-radius: 0.3em;
+}
+.mini-calendar-aside-content-h2 {
+  font-size: 0.9em;
+  font-weight: calc(200 + 200);
+  color: #fff;
 }

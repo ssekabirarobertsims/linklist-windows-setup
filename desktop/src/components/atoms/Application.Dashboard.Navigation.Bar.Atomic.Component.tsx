@@ -57,8 +57,8 @@ const ApplicationDashboardNavigationBarAtomicComponent: FunctionComponent<
             <span>{window}</span>
           </div>
           <div id="_b">
-            {/* <img src="/avatars/laptop-avatar.avif" alt="" />
-            <span>
+            <img src="/icons/logo.png" alt="" />
+            {/* <span>
               <LuBellDot />
             </span> */}
           </div>

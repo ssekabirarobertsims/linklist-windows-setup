@@ -8,6 +8,7 @@ import ApplicationOpenedLinksDashboardWindow from "./windows/Application.Opened.
 import ApplicationSharedLinksDashboardWindow from "./windows/Application.Shared.Links.Dashboard.Window";
 import ApplicationTaggedLinksDashboardWindow from "./windows/Application.Tagged.Links.Dashboard.Window";
 import ApplicationDesktopWidgetWindow from "./windows/Application.Desktop.Widget.Window";
+import ApplicationCalendarDashboardWindow from "./windows/Application.Calendar.Dashboard.Window";
 
 /**
  * @author LinkList Dev Team
@@ -325,6 +326,10 @@ function Application() {
           element={<ApplicationRecentBackupsDashboardWindow />}
         />
         <Route path={"/profile"} element={<UserProfile />} />
+        <Route
+          path={"/calendar"}
+          element={<ApplicationCalendarDashboardWindow />}
+        />
       </Routes>
 
       {clipboardPrompt && (

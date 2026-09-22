@@ -19,6 +19,7 @@ import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 import { BiCopy } from "react-icons/bi";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
   // State for all Backups, search results, search value, and selected link for editing
@@ -244,6 +245,7 @@ const ApplicationRecentBackupsDashboardWindow: React.FunctionComponent = () => {
             </ul>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
       {/* Footer and prime sidebar */}
       {/* <DashboardFooterComponent /> */}

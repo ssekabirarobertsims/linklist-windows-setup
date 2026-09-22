@@ -15,7 +15,7 @@ main[class="application-read-links-dashboard-window"] {
 main[class="application-read-links-dashboard-window"]
   > section[class="_application-read-links-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -236,11 +236,19 @@ main[class="application-read-links-dashboard-window"]
 .link-tags-list li {
   min-width: 5em !important;
   padding: 0.35em 0.65em;
-  color: hsl(0, 0%, 5%);
+  color: hsl(0, 0%, 100%);
   background-color: transparent;
   cursor: default !important;
   border-radius: 20em;
-  font-size: 0.9em;
+  font-size: 0.8em;
+  background-color: var(--body-theme-color-option-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1em;
+}
+.link-tags-list li > span {
+  font-size: 0.8em;
 }
 
 h4 {

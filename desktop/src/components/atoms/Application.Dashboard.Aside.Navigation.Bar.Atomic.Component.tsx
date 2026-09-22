@@ -5,7 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { BiCalendar, BiExit, BiLink } from "react-icons/bi";
+import { BiExit, BiLink } from "react-icons/bi";
 import { IoCreateOutline, IoSettingsOutline } from "react-icons/io5";
 import { LuDatabaseBackup } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
@@ -95,13 +95,13 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
         link: `/new`,
         shortcut: "Ctrl + C",
       },
-      {
-        id: uuidV4(),
-        content: "Calender",
-        icon: <BiCalendar />,
-        link: `/calender`,
-        shortcut: "",
-      },
+      // {
+      //   id: uuidV4(),
+      //   content: "Calender",
+      //   icon: <BiCalendar />,
+      //   link: `/calender`,
+      //   shortcut: "",
+      // },
     ] as NavigationListItemProps[]);
 
     useEffect(() => {
@@ -302,8 +302,6 @@ const ApplicationAsideNavigationDashboardBarAtomicComponent: FunctionComponent =
                 </li>
               ))}
             </ul>
-            <br />
-            <p></p>
             <p></p>
             <span>Others</span>
             <ul id="others">

@@ -47,6 +47,7 @@ import { MdDateRange, MdOutlineOpenInNew } from "react-icons/md";
 import { format } from "date-fns/format";
 import { v4 as uuidv4 } from "uuid";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -382,7 +383,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                 </p>
                 <a
                   href={`${selectedLink?.link}`}
-                  title={`${selectedLink?.title}`}
+                  title={`${selectedLink?.link}`}
                   onClick={(event) => {
                     event.preventDefault();
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -393,7 +394,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   <FaLink /> {`${selectedLink?.link}`} /{" "}
                   <a
                     href={`${selectedLink?.link}`}
-                    title={`${selectedLink?.title}`}
+                    title={`${selectedLink?.link}`}
                     className="short-link-anchor"
                     onClick={(event) => {
                       event.preventDefault();
@@ -429,7 +430,9 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                     <ul className="link-tags-list">
                       {linkTags.map((linkTag) => (
                         <li key={linkTag.tagId}>
-                          <FaHashtag />
+                          <span>
+                            <FaHashtag />
+                          </span>
                           {linkTag.tag}
                         </li>
                       ))}
@@ -533,7 +536,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
                   {/* invoke event to the application to open external links */}
                   <li onClick={handleSaveOpenedLink}>
                     <MdOutlineOpenInNew />
-                    <span>Open</span>
+                    <span>Browse</span>
                   </li>
                   <li onClick={handleAddLinkTag}>
                     <FaHashtag />
@@ -563,6 +566,7 @@ const ApplicationLinksReadDashboardWindow: React.FunctionComponent = () => {
             )}
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
     </>
   );

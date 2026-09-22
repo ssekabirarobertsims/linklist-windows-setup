@@ -15,7 +15,7 @@ main[class="application-archives-dashboard-window"] {
 main[class="application-archives-dashboard-window"]
   > section[class="_application-archives-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   display: flex;
   position: relative;
   align-items: center;
@@ -144,7 +144,7 @@ main[class="application-archives-dashboard-window"]
   > div[class="_save-links-collection-button-wrapper"]
   > button {
   height: 2.9em;
-  width: min(90%, 12em);
+  width: min(90%, 7em);
   border: none;
   /* background-color: #0066ff; */
   color: hsl(0, 0%, 100%);
@@ -186,7 +186,7 @@ main[class="application-archives-dashboard-window"]
   align-items: center;
   justify-content: center;
   border-radius: 0.5em;
-  border: 1px solid hsl(0, 0%, 90%);
+  border: 1px solid var(--body-theme-color-option-2);
   position: absolute;
   bottom: -18em;
   right: 0em;
@@ -275,7 +275,7 @@ main[class="application-archives-dashboard-window"]
   > section[class="_application-archives-dashboard-window-wrapper"]
   :is(div[class="_application-archives-dashboard-window-components-wrapper"])
   > ul[id="_links-list"] {
-  height: 23.5em;
+  height: 24.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
@@ -296,7 +296,7 @@ main[class="application-archives-dashboard-window"]
   :is(div[class="_application-archives-dashboard-window-components-wrapper"])
   > ul[id="_links-list"]
   > li {
-  height: 7em;
+  height: 5.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -332,8 +332,8 @@ main[class="application-archives-dashboard-window"]
   > ul[id="_links-list"]
   > li
   :where(img) {
-  height: 4.5em;
-  width: min(7%, 7%);
+  height: 4.2em;
+  width: min(9%, 9%);
   border-radius: 0.2em;
   margin-left: 10px;
 }
@@ -343,7 +343,7 @@ main[class="application-archives-dashboard-window"]
   > ul[id="_links-list"]
   > li
   :where(aside) {
-  height: 4.5em;
+  height: 4.2em;
   width: min(93%, 93%);
   border-radius: 0.5em;
   display: flex;
@@ -394,7 +394,7 @@ main[class="application-archives-dashboard-window"]
   span {
   font-weight: calc(290 + 250);
   color: hsl(0, 0%, 90%);
-  font-size: 0.8em;
+  font-size: 0.7em;
   text-decoration: none;
   line-height: 01em;
 }
@@ -434,5 +434,5 @@ main[class="application-archives-dashboard-window"]
   color: #fff;
   background-color: transparent;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
 }

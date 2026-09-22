@@ -19,6 +19,7 @@ import { TbReload } from "react-icons/tb";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
 import { BiCopy } from "react-icons/bi";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
   // State for all collections, search results, search value, and selected link for editing
@@ -87,7 +88,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
 
   // Set the document title on mount
   useEffect(() => {
-    document.title = "Dashboard - Collections | LinkList";
+    document.title = "Dashboard - Exports | LinkList";
   }, []);
 
   // Render the dashboard home page layout and content
@@ -109,7 +110,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
         >
           {/* Navigation bar and sidebar for user profile */}
           <ApplicationDashboardNavigationBarAtomicComponent
-            window={"Collections/Exports"}
+            window={"Exports"}
           />
           <br />
           <p></p>
@@ -123,8 +124,8 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
               <li>Do Something</li>
             </ul> */}
             <p>
-              <strong>NOTE:</strong> All your saved collections/exports are
-              listed below. You can manage them as you wish.
+              <strong>NOTE:</strong> All your saved exports are listed below.
+              You can manage them as you wish.
             </p>
             <p></p>
             <ul id="_links-actions-navigation-ul">
@@ -139,13 +140,13 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
                 <span>
                   <BiCopy />
                 </span>{" "}
-                Copy Collection
+                Copy Exports
               </li>
             </ul>
             <p></p>
             {/* Show the number of saved collections */}
             <span className="collections_count">
-              {collection.length} available exported exports/collection(s)
+              {collection.length} available exported exports(s)
             </span>
             <p></p>
 
@@ -230,6 +231,7 @@ const ApplicationCollectionsDashboardWindow: React.FunctionComponent = () => {
             </ul>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
       {/* Footer and prime sidebar */}
       {/* <DashboardFooterComponent /> */}

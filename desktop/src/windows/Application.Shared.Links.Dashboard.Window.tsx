@@ -16,7 +16,7 @@ type ListItemProperties = {
   notes?: string;
 };
 
-import { BiCopy, BiLink, BiTrash } from "react-icons/bi";
+import { BiCalendar, BiCopy, BiExport, BiLink, BiTrash } from "react-icons/bi";
 import { TbFileExport, TbReload } from "react-icons/tb";
 import { v4 as uuidV4 } from "uuid";
 import { BsSearch } from "react-icons/bs";
@@ -25,7 +25,7 @@ import ApplicationDashboardNavigationBarAtomicComponent from "../components/atom
 import { HiArrowDown } from "react-icons/hi";
 import ExportCollectionOptionsUtilComponent from "../components/utils/Export.Collection.Options.Util.Component";
 import CopyTextToClipboard from "../functions/Copy.Text.To.Clipboard.Function";
-import { IoCloseSharp, IoReaderOutline } from "react-icons/io5";
+import { IoCloseSharp, IoOpen, IoReaderOutline } from "react-icons/io5";
 import { ContentLoaderComponent } from "../components/utils/Content.Loader.Util.Components";
 import {
   MdOutlineOpenInNew,
@@ -33,6 +33,9 @@ import {
   MdRadioButtonUnchecked,
 } from "react-icons/md";
 import ApplicationMiniAsideNavigationDashboardBarAtomicComponent from "../components/atoms/Application.Dashboard.Mini.Aside.Navigation.Bar.Atomic.Component";
+import { FaHashtag, FaShare } from "react-icons/fa";
+import { LuLayoutList } from "react-icons/lu";
+import ApplicationCalendarComponent from "../components/calendar/Calendar.Component";
 
 // Helper function to sort links by date in reverse chronological order (most recent first)
 const sortLinksByDateDescending = (
@@ -418,7 +421,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
                     search: "",
                   }}
                 >
-                  All
+                  <LuLayoutList /> All
                 </Link>
               </li>
               <li>
@@ -428,7 +431,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
                     search: "",
                   }}
                 >
-                  Opened
+                  <IoOpen /> Opened
                 </Link>
               </li>
               <li>
@@ -438,7 +441,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
                     search: "",
                   }}
                 >
-                  Shared
+                  <FaShare /> Shared
                 </Link>
               </li>
               <li>
@@ -448,7 +451,17 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
                     search: "",
                   }}
                 >
-                  Tagged
+                  <FaHashtag /> Tagged
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={{
+                    pathname: "/calendar",
+                    search: "",
+                  }}
+                >
+                  <BiCalendar /> Calendar
                 </Link>
               </li>
             </ul>
@@ -479,7 +492,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
                   }
                 }}
               >
-                Export collection
+                <BiExport /> Export
               </button>
               <span
                 onClick={(event) => {
@@ -664,6 +677,7 @@ const ApplicationSharedLinksDashboardWindow: React.FunctionComponent = () => {
             </ul>
           </div>
         </section>
+        <ApplicationCalendarComponent />
       </main>
     </>
   );

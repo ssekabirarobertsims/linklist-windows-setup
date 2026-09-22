@@ -73,7 +73,7 @@ const LinksBarGraphChartComponent = ({ isAnimationActive = true }) => {
       style={{
         width: "100%",
         maxHeight: "17em",
-        aspectRatio: 1.618,
+        aspectRatio: 1.0,
       }}
       responsive
       data={chartData}
@@ -90,7 +90,7 @@ const LinksBarGraphChartComponent = ({ isAnimationActive = true }) => {
       <Bar
         dataKey="links"
         fill="var(--body-theme-color-option-2)"
-        width={10}
+        width={8}
         radius={[10, 10, 0, 0]}
         minPointSize={5}
         isAnimationActive={isAnimationActive}

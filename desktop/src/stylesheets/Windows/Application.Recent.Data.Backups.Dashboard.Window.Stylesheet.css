@@ -15,7 +15,7 @@ main[class="application-backups-dashboard-window"] {
 main[class="application-backups-dashboard-window"]
   > section[class="_application-backups-dashboard-window-wrapper"] {
   min-height: 100vh;
-  width: min(77%, 77%);
+  width: min(60%, 60%);
   position: relative;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@ main[class="application-backups-dashboard-window"]
   > section[class="_application-backups-dashboard-window-wrapper"]
   :is(div[class="_application-backups-dashboard-window-components-wrapper"])
   > ul[id="_backups-list"] {
-  height: 21.5em;
+  height: 24.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: flex-start;
@@ -172,7 +172,7 @@ main[class="application-backups-dashboard-window"]
   :is(div[class="_application-backups-dashboard-window-components-wrapper"])
   > ul[id="_backups-list"]
   > li {
-  height: 6.5em;
+  height: 5.5em;
   width: min(100%, 100%);
   display: flex;
   align-items: center;
@@ -189,7 +189,7 @@ main[class="application-backups-dashboard-window"]
   -webkit-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
-  padding: 5px;
+  padding: 10px;
   /* border: 1px solid red; */
 }
 main[class="application-backups-dashboard-window"]
@@ -209,8 +209,8 @@ main[class="application-backups-dashboard-window"]
   > ul[id="_backups-list"]
   > li
   :where(article) {
-  min-height: 6em;
-  width: min(8%, 8%);
+  min-height: 4.2em;
+  width: min(9%, 9%);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -227,8 +227,8 @@ main[class="application-backups-dashboard-window"]
   > li
   :where(article)
   > img {
-  height: 4.5em;
-  width: min(90%, 90%);
+  height: 4.2em;
+  width: min(100%, 100%);
   /* border: 1px solid red; */
 }
 main[class="application-backups-dashboard-window"]
@@ -260,7 +260,7 @@ main[class="application-backups-dashboard-window"]
   top: 1em;
   right: 0.8em;
   cursor: pointer;
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 main[class="application-backups-dashboard-window"]
   > section[class="_application-backups-dashboard-window-wrapper"]
@@ -303,7 +303,7 @@ main[class="application-backups-dashboard-window"]
   span {
   font-weight: calc(290 + 250);
   color: hsl(0, 0%, 90%);
-  font-size: 0.9em;
+  font-size: 0.7em;
   text-decoration: none;
   line-height: 01em;
   display: flex;
@@ -320,7 +320,7 @@ main[class="application-backups-dashboard-window"]
   p {
   font-weight: calc(290 + 250);
   color: hsl(0, 0%, 100%);
-  font-size: 0.8em;
+  font-size: 0.7em;
   text-decoration: none;
 }
 main[class="application-backups-dashboard-window"]
@@ -352,7 +352,7 @@ main[class="application-backups-dashboard-window"]
 }
 
 .recent-backup {
-  border: 1px solid var(--body-theme-color-option-2);
+  border: 1px solid #0066ff;
 }
 .show-backup-in-folder-button {
   font-weight: calc(290 + 250);

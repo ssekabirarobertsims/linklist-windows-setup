@@ -4,26 +4,31 @@
   min-height: 100vh;
   width: 100%;
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   flex-direction: column;
   overflow: hidden;
   /* -webkit-app-region: drag; */
   background: #fff;
-  border-radius: 0.5em;
+  font-family: "Bahnschrift", "Segoe UI", sans-serif !important;
+  /* border-radius: 0.5em; */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  /* border: 1px solid red; */
+  z-index: auto;
 }
 
 .desktop-widget-header {
-  height: 1em;
-  width: min(75%, 75%);
-  border-radius: 10em;
-  background-color: #fff;
+  height: 4.5em;
+  width: min(100%, 100%);
+  background-color: var(--body-theme-color-option-2);
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   gap: 1rem;
-  padding: 1.1rem 1.1rem 0.9rem;
   color: #f4f0e8;
   -webkit-app-region: drag;
+  padding: 0.7em;
+  cursor: move;
 }
 
 .desktop-widget-drag-region {
@@ -33,7 +38,7 @@
 .desktop-widget-kicker {
   display: block;
   margin-bottom: 0.25rem;
-  color: #e6a34b;
+  color: #0066ff;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -80,16 +85,15 @@
 .desktop-widget-tabs {
   height: 3em;
   width: min(95%, 95%);
-  border-radius: 10em;
   background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.2em;
-  -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
+  /* -webkit-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 2px 2px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1); */
   cursor: grab;
 }
 
@@ -97,18 +101,20 @@
   width: min(21%, 21%);
   height: 2.2em;
   /* border: 1px solid red; */
+  background-color: var(--body-theme-color-option-2);
   display: flex;
-  border-radius: 0.3em;
+  border-radius: 0.2em;
   justify-content: center;
   align-items: center;
   gap: 0.2em;
-  background-color: transparent;
   border: none;
   cursor: pointer;
+  flex-grow: 1;
   position: relative;
+  color: #fff;
 }
 .desktop-widget-tabs button > span {
-  font-size: 1.5em;
+  font-size: 1.1em;
   font-weight: 700;
 }
 
@@ -136,13 +142,14 @@
 }
 
 .desktop-widget-list {
-  min-height: 20em;
+  height: 12em;
   width: min(95%, 95%);
   display: flex;
-  flex: 1;
+  position: relative;
   flex-direction: column;
   gap: 0.55rem;
   overflow-y: auto;
+  overflow-x: hidden;
   /* border: 1px solid red; */
 }
 
